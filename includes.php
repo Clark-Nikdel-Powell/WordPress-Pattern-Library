@@ -1,4 +1,12 @@
 <?php
+/**
+ * Pattern Library
+ *
+ * A package for defining commonly-used atoms and organisms, which expedites the front-end development process.
+ *
+ * @version 0.2.0
+ */
+
 /*——————————————————————————————————————————————————————————————————————————————
 /  Templates: what we base all the other classes on.
 ——————————————————————————————————————————————————————————————————————————————*/

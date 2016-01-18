@@ -3,9 +3,11 @@ namespace CNP;
 
 class PostThumbnail extends AtomTemplate {
 
-	public function __construct( $data, $image_args ) {
+	public function __construct( $data ) {
 
 		parent::__construct( $data );
+
+		$image_args = $data['thumbnail_args'];
 
 		if ( '' == $this->name ) {
 			$this->name = 'post-thumbnail';

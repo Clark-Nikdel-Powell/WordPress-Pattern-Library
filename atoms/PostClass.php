@@ -7,9 +7,16 @@ class PostClass extends AtomTemplate {
 
 		parent::__construct( $data );
 
-		$this->name                = 'postclass';
-		$this->tag                 = 'article';
-		$this->tag_type            = 'split';
-		$this->attributes['class'] = get_post_class( '', $data['post']->ID );
+		$this->name     = 'postclass';
+		$this->tag      = 'article';
+		$this->tag_type = 'split';
+
+		$classes = [ ];
+
+		if ( isset( $data['attributes']['class'] ) ) {
+			$classes = $data['attributes']['class'];
+		}
+
+		$this->attributes['class'] = get_post_class( $classes, $data['post']->ID );
 	}
 }
