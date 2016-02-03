@@ -3,7 +3,7 @@
 	"description": "Stack atoms and molecules faster by using named atoms and structure arrays.",
 	"type": "library",
 	"license": "MIT",
-	"version": "0.2.0",
+	"version": "0.4.0",
 	"homepage": "https://github.com/Clark-Nikdel-Powell/Pattern-Library",
 	"authors": [
 		{
