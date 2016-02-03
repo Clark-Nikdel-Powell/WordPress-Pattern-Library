@@ -319,6 +319,9 @@ class OrganismTemplate {
 				/*				if ( ! isset( $markup_arr[ $previous_atom_name ]['children'] ) && ! isset( $markup_arr[ $previous_atom_name ]['sibling'] ) && ! isset( $markup_arr[ $previous_atom_name ]['parts'] ) ) {
 									$markup_arr[ $previous_atom_name ]['sibling'] = $atom_name;
 								}*/
+				if ( 'name-and-content' == $markup_arr[ $previous_atom_name ]['piece_type'] ) {
+					$markup_arr[ $previous_atom_name ]['sibling'] = $atom_name;
+				}
 			}
 
 			$markup_arr[ $atom_name ]['name'] = $atom_name;
