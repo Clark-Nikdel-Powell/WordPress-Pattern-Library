@@ -7,20 +7,6 @@ namespace CNP;
  *
  * @since 0.1.0
  *
- * TODO: formalize the way that we pass in the structure. Here are the types I'm thinking of now:
- * Basic: 'item' ---> <div class="$organism_name-item"></div>
- * Basic with content:  'title' => 'Atom Title' ---> <div class="$organism_name-title">Atom Title</div>
- * ^^ maybe this should be: 'title' => ['content' => 'Atom Title']
- * Named: 'PostTitle'
- * Named with content: 'Button' => 'View the Blog'
- * ^^ maybe this should be: 'Button' => ['content' => 'View the Blog']
- * Basic with children ('children' is for nesting purposes): 'inside' => ['children' => ['image', 'text', 'metatext']]
- * Named with children ('children' is for nesting purposes): 'PostClass' => ['children' => ['image', 'text', 'metatext']]
- * Basic with parts ('parts' is for markup purposes)
- * Named with parts ('parts' is for markup purposes)
- * How can we pass through Atom args for basic and named atoms? E.g., PostThumbnail size. Maybe a special argument is
- * appropriate ---> like 'image_size'. Make it something specific for each named Atom. Basic Atoms wouldn't have
- * special arguments like this.
  */
 class OrganismTemplate {
 
@@ -52,11 +38,11 @@ class OrganismTemplate {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @internal string $before_content  Markup to place before the content
-	 * @internal string $after_content  Markup to place after the content
-	 * @internal array $structure  The array that determines how the atoms are nested and compiled
-	 * @internal array $posts  An array of WP Post Objects to loop through
-	 * @internal array $posts-structure  The structure array for each individual post.
+	 * string $before_content  Markup to place before the content
+	 * string $after_content  Markup to place after the content
+	 * array $structure  The array that determines how the atoms are nested and compiled
+	 * array $posts  An array of WP Post Objects to loop through
+	 * array $posts-structure  The structure array for each individual post.
 	 *
 	 * @return string Markup of the organism
 	 */
@@ -153,7 +139,7 @@ class OrganismTemplate {
 			 * name in the case of simple atoms ('item').
 			 */
 			$piece_type = '';
-			$atom_args  = [];
+			$atom_args  = [ ];
 
 			/*
 			 * Part 1: Determine piece type. If $piece_args_and_content is a string, then it's either the atom content (and should be passed through in
@@ -168,14 +154,14 @@ class OrganismTemplate {
 
 				// 'title' => 'Title Text'
 				if ( is_string( $piece_name ) ) {
-					$piece_type = 'name-and-content';
+					$piece_type = 'self-content-only';
 				}
 			}
 
 			/*
 			 * If $piece_args_and_content is an array, it's a more complex piece. We determine *how* complex by testing
 			 * the array keys of $piece_args_and_content. If 'children' exists, then we know this is a parent item, and
-			 * it resolves to $piece_type = 'split-parent'. If 'parts' exists, it resolves to 'split-container'.
+			 * it resolves to $piece_type = 'split-with-children'. If 'parts' exists, it resolves to 'split-with-parts'.
 			 */
 			if ( is_array( $piece_args_and_content ) ) {
 
@@ -189,13 +175,23 @@ class OrganismTemplate {
 				}
 
 				if ( isset( $piece_args_and_content['children'] ) ) {
-					$piece_type = 'split-parent';
+					$piece_type = 'split-with-children';
 				}
 
 				if ( isset( $piece_args_and_content['parts'] ) ) {
-					$piece_type = 'split-container';
+					$piece_type = 'split-with-parts';
+				}
+
+				if ( isset( $piece_args_and_content['content'] ) ) {
+					$piece_type = 'self-with-content';
 				}
 			}
+
+			// Sanity check: we can't go any further if $piece_type isn't resolved.
+			if ( empty( $piece_type ) ) {
+				continue;
+			}
+
 
 			/*
 			 * Part 2: Switch through $piece_type. Now that we know what type of piece we're dealing with, we can get the
@@ -210,27 +206,32 @@ class OrganismTemplate {
 
 					break;
 
-				case 'name-and-content':
+				case 'self-content-only':
 
 					$atom_name            = $piece_name;
 					$atom_args['content'] = $piece_args_and_content;
 
 					break;
 
-				case 'split-parent':
+				case 'split-with-children':
 
 					$atom_name             = $piece_name;
 					$atom_args['tag_type'] = 'split';
 
 					break;
 
-				case 'split-container':
+				case 'split-with-parts':
 
 					$atom_name             = $piece_name;
 					$atom_args['tag_type'] = 'split';
 
 					break;
 
+				case 'self-with-content':
+
+					$atom_name = $piece_name;
+
+					break;
 			}
 
 			/*
@@ -246,13 +247,13 @@ class OrganismTemplate {
 
 					break;
 
-				case 'name-and-content':
+				case 'self-content-only':
 
 					$markup_arr[ $atom_name ]['parts'][ $atom_name ] = self::getStructurePart( $atom_name, $atom_args, $post );
 
 					break;
 
-				case 'split-parent':
+				case 'split-with-children':
 
 					$markup_arr[ $atom_name ] = self::getStructurePart( $atom_name, $atom_args, $post );
 
@@ -260,19 +261,24 @@ class OrganismTemplate {
 
 					break;
 
-				case 'split-container':
+				case 'split-with-parts':
 
 					$markup_arr[ $atom_name ] = self::getStructurePart( $atom_name, $atom_args, $post );
 
 					foreach ( $piece_args_and_content['parts'] as $subatom_name => $subatom_args ) {
 
+						// TODO: atom name resolution refactor
 						if ( is_array( $subatom_args ) ) {
 							$subatom_valid_name = $subatom_name;
 							$subatom_valid_args = $subatom_args;
 						}
-						if ( is_string( $subatom_args ) ) {
+						if ( is_int( $subatom_name ) ) {
 							$subatom_valid_name = $subatom_args;
 							$subatom_valid_args = [ ];
+						}
+						if ( is_string( $subatom_name ) && is_string( $subatom_args ) ) {
+							$subatom_valid_name            = $subatom_name;
+							$subatom_valid_args['content'] = $subatom_args;
 						}
 
 						$markup_arr[ $atom_name ]['parts'][ $subatom_valid_name ] = self::getStructurePart( $subatom_valid_name, $subatom_valid_args, $post );
@@ -280,26 +286,38 @@ class OrganismTemplate {
 					}
 
 					break;
+
+				case 'self-with-content':
+
+					$markup_arr[ $atom_name ]['content'] = self::getStructurePart( $atom_name, $atom_args, $post );
+
+					break;
 			}
 
 			/*
-			 * name-and-content atoms need a sibling property in order to reference the next piece when compiling the markup.
+			 * self-content-only atoms need a sibling property in order to reference the next piece when compiling the markup.
 			 */
 			if ( ! empty( $previous_atom_name ) ) {
 
-				if ( 'name-and-content' == $markup_arr[ $previous_atom_name ]['piece_type'] ) {
+				if ( 'self-content-only' == $markup_arr[ $previous_atom_name ]['piece_type'] ) {
 					$markup_arr[ $previous_atom_name ]['sibling'] = $atom_name;
 				}
 			}
 
+			$markup_arr[ $atom_name ]['name'] = $atom_name;
+
 			/*
-			 * The piece type is added to the atom information, which is useful in the case of 'name-and-content' parts,
+			 * The piece type is added to the atom information, which is useful in the case of 'self-content-only' parts,
 			 * which need a dynamic 'sibling' setting for the recursive assembly function to work.
 			 */
 			$markup_arr[ $atom_name ]['piece_type'] = $piece_type;
 
+			if ( isset( $piece_args_and_content['sibling'] ) ) {
+				$markup_arr[ $atom_name ]['sibling'] = $piece_args_and_content['sibling'];
+			}
+
 			/*
-			 * Set for the case of 'name-and-content' atoms.
+			 * Set for the case of 'self-content-only' atoms.
 			 */
 			$previous_atom_name = $atom_name;
 
@@ -332,11 +350,21 @@ class OrganismTemplate {
 	protected function getStructurePart( $atom_name, $atom_args, $post ) {
 
 		// First, namespace the atom based on the organism name.
-		$namespaced_atom_name = $this->name . '-' . $atom_name;
+		if ( isset( $atom_args['name'] ) ) {
+			$namespaced_atom_name = $this->name . '-' . $atom_args['name'];
+		}
+		if ( ! isset( $atom_args['name'] ) ) {
+			$namespaced_atom_name = $this->name . '-' . $atom_name;
+		}
+
+		$class_atom_suffix = $atom_name;
+
+		if ( isset( $atom_args['atom'] ) ) {
+			$class_atom_suffix = $atom_args['atom'];
+		}
 
 		// Set up the class to check against
-		$class_atom_name = 'CNP\\' . $atom_name;
-
+		$class_atom_name = 'CNP\\' . $class_atom_suffix;
 
 		// Parse atom arguments
 		if ( ! isset( $atom_args['attributes']['class'] ) ) {
@@ -432,29 +460,25 @@ class OrganismTemplate {
 
 			case 'name-only':
 
-				// Keys: 'open' and 'close'
+				// Markup keys: 'open' and 'close'
 
 				break;
 
-			case 'name-and-content':
+			case 'self-content-only':
 
-				// Keys: 'parts' and 'sibling'
+				// Markup keys: 'parts'
 				if ( isset( $organism_part['parts'] ) ) {
 
 					foreach ( $organism_part['parts'] as $piece ) {
 						$markup .= $piece;
 					}
-
-					if ( isset( $organism_part['sibling'] ) ) {
-						$markup .= self::recursiveAssemblePieces( $markup_array[ $organism_part['sibling'] ], $markup_array_name );
-					}
 				}
 
 				break;
 
-			case 'split-parent':
+			case 'split-with-children':
 
-				// Keys: 'open', 'close' and 'children'
+				// Markup keys: 'open', 'close' and 'children'
 				if ( isset( $organism_part['children'] ) ) {
 
 					$child = $organism_part['children'];
@@ -474,9 +498,9 @@ class OrganismTemplate {
 
 				break;
 
-			case 'split-container':
+			case 'split-with-parts':
 
-				// Keys: 'open', 'close' and 'parts'
+				// Markup keys: 'open', 'close' and 'parts'
 				if ( isset( $organism_part['parts'] ) ) {
 
 					foreach ( $organism_part['parts'] as $piece ) {
@@ -486,10 +510,24 @@ class OrganismTemplate {
 
 				break;
 
+			case 'self-with-content':
+
+				// Markup keys: 'content'
+				if ( isset( $organism_part['content'] ) ) {
+					$markup .= $organism_part['content'];
+				}
+
+				break;
 		}
 
 		if ( isset( $organism_part['close'] ) ) {
-			$markup .= $organism_part['close'];
+			// TODO: refactor by putting the HTML comment in the atom, that way ALL atoms have informational comments. Might be good to have a way to deactivate them though.
+			$markup .= $organism_part['close'] . '<!--' . $organism_part['name'] . '-->';
+		}
+
+		// Siblings are placed after the current item is done.
+		if ( isset( $organism_part['sibling'] ) ) {
+			$markup .= self::recursiveAssemblePieces( $markup_array[ $organism_part['sibling'] ], $markup_array_name );
 		}
 
 		// Return the completed string.

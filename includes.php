@@ -32,3 +32,4 @@ include_once( $atoms_dir . 'PostThumbnail.php' );
 include_once( $atoms_dir . 'PostTitle.php' );
 include_once( $atoms_dir . 'PostTitleLink.php' );
 include_once( $atoms_dir . 'CategoryList.php' );
+include_once( $atoms_dir . 'Loop.php' );
