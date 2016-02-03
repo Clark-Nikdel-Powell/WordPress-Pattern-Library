@@ -12,8 +12,15 @@ class OrganismTemplate {
 
 	public function __construct( $data ) {
 
-		$this->name       = $data['name'];
-		$this->tag        = 'div';
+		$this->name = $data['name'];
+
+		if ( isset( $data['tag'] ) ) {
+			$this->tag = $data['tag'];
+		}
+		else {
+			$this->tag = 'div';
+		}
+
 		$this->tag_type   = 'split';
 		$this->attributes = $data['attributes'];
 
@@ -182,7 +189,8 @@ class OrganismTemplate {
 					$piece_type = 'split-with-parts';
 				}
 
-				if ( isset( $piece_args_and_content['content'] ) ) {
+				//if ( isset( $piece_args_and_content['content'] ) ) {
+				if ( '' == $piece_type ) {
 					$piece_type = 'self-with-content';
 				}
 			}
@@ -267,6 +275,10 @@ class OrganismTemplate {
 
 					foreach ( $piece_args_and_content['parts'] as $subatom_name => $subatom_args ) {
 
+						// Reset subatom valid name and args.
+						$subatom_valid_name = '';
+						$subatom_valid_args = [ ];
+
 						// TODO: atom name resolution refactor
 						if ( is_array( $subatom_args ) ) {
 							$subatom_valid_name = $subatom_name;
@@ -280,6 +292,9 @@ class OrganismTemplate {
 							$subatom_valid_name            = $subatom_name;
 							$subatom_valid_args['content'] = $subatom_args;
 						}
+
+						// TODO: refactor this in better.
+						$subatom_valid_name = $atom_name . '-' . $subatom_valid_name;
 
 						$markup_arr[ $atom_name ]['parts'][ $subatom_valid_name ] = self::getStructurePart( $subatom_valid_name, $subatom_valid_args, $post );
 
@@ -299,9 +314,11 @@ class OrganismTemplate {
 			 */
 			if ( ! empty( $previous_atom_name ) ) {
 
-				if ( 'self-content-only' == $markup_arr[ $previous_atom_name ]['piece_type'] ) {
-					$markup_arr[ $previous_atom_name ]['sibling'] = $atom_name;
-				}
+				// TODO: keep an eye on this risky code, there might be some cases I'm not thinking of
+				// this can go wrong if it's the second item in a 'children' array-- 'sibling' gets set even though it doesn't need to be.
+				/*				if ( ! isset( $markup_arr[ $previous_atom_name ]['children'] ) && ! isset( $markup_arr[ $previous_atom_name ]['sibling'] ) && ! isset( $markup_arr[ $previous_atom_name ]['parts'] ) ) {
+									$markup_arr[ $previous_atom_name ]['sibling'] = $atom_name;
+								}*/
 			}
 
 			$markup_arr[ $atom_name ]['name'] = $atom_name;
@@ -393,8 +410,8 @@ class OrganismTemplate {
 		// run the getMarkup method based on the namespaced atom name.
 		if ( class_exists( $class_atom_name ) ) {
 
+			$atom_args['name'] = $namespaced_atom_name;
 			$atom_object       = new $class_atom_name( $atom_args );
-			$atom_object->name = $namespaced_atom_name;
 			$atom_object->getMarkup();
 
 			return $atom_object->markup;
@@ -521,7 +538,6 @@ class OrganismTemplate {
 		}
 
 		if ( isset( $organism_part['close'] ) ) {
-			// TODO: refactor by putting the HTML comment in the atom, that way ALL atoms have informational comments. Might be good to have a way to deactivate them though.
 			$markup .= $organism_part['close'] . '<!--' . $organism_part['name'] . '-->';
 		}
 
