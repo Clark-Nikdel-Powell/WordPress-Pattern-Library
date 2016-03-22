@@ -1,6 +1,13 @@
 <?php
 namespace CNP;
 
+/**
+ * SiteTitleFrontPageLink.
+ *
+ * Passes the site_title through to FrontPageLink, and then completes the build out with a H2 tag. Useful for logos.
+ *
+ * @since 0.3.0
+ */
 class SiteTitleFrontPageLink extends AtomTemplate {
 
 	private $link;
@@ -22,9 +29,8 @@ class SiteTitleFrontPageLink extends AtomTemplate {
 		$this->link = new FrontPageLink( $this->link_data );
 		$this->link->getMarkup();
 
-		if ( '' == $data['tag'] ) {
-			$this->tag = 'h2';
-		}
+		$this->tag = isset( $data['tag'] ) ? $data['tag'] : 'h2';
+
 		$this->content = $this->link->markup;
 
 	}

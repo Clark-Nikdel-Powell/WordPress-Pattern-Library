@@ -1,6 +1,13 @@
 <?php
 namespace CNP;
 
+/**
+ * PostsPageLink.
+ *
+ * Uses the "page_for_posts" option to return the link to a blog page.
+ *
+ * @since 0.3.0
+ */
 class PostsPageLink extends Link {
 
 	public function __construct( $data ) {

@@ -12,26 +12,26 @@ class OrganismTemplate {
 
 	public function __construct( $data ) {
 
-		$this->name = $data['name'];
+		$this->name = isset( $data['name'] ) ? $data['name'] : '';
 
-		if ( isset( $data['tag'] ) ) {
-			$this->tag = $data['tag'];
-		}
-		else {
-			$this->tag = 'div';
-		}
+		$this->tag = isset( $data['tag'] ) ? $data['tag'] : 'div';
 
-		$this->tag_type   = 'split';
-		$this->attributes = $data['attributes'];
+		// The separator is the character(s) that separate the organism name from an element name.
+		// In BEM methodology, they use "__"
+		$this->separator = isset( $data['separator'] ) ? $data['separator'] : '__';
 
-		$this->before_content = $data['before_content'];
-		$this->after_content  = $data['after_content'];
+		$this->tag_type = 'split';
 
-		$this->structure    = $data['structure'];
+		$this->attributes = isset( $data['attributes'] ) ? $data['attributes'] : '';
+
+		$this->before_content = isset( $data['before_content'] ) ? $data['before_content'] : '';
+		$this->after_content  = isset( $data['after_content'] ) ? $data['after_content'] : '';
+
+		$this->structure    = isset( $data['structure'] ) ? $data['structure'] : '';
 		$this->markup_array = [ ];
 
-		$this->posts           = $data['posts'];
-		$this->posts_structure = $data['posts-structure'];
+		$this->posts           = isset( $data['posts'] ) ? $data['posts'] : '';
+		$this->posts_structure = isset( $data['posts-structure'] ) ? $data['posts-structure'] : '';
 
 		$this->posts_markup_array = [ ];
 		$this->markup             = '';
@@ -73,7 +73,9 @@ class OrganismTemplate {
 			$markup_pieces[] = $this->after_content;
 		}
 
-		$markup_pieces = apply_filters( $this->name . 'markup_pieces_order', $markup_pieces );
+		$organism_name_markup_pieces_order_filter = $this->name . '_markup_pieces_order';
+		$markup_pieces                            = apply_filters( $organism_name_markup_pieces_order_filter, $markup_pieces );
+		Atom::AddDebugEntry( 'Filter', $organism_name_markup_pieces_order_filter );
 
 		$wrapper_args = [
 			'tag'        => $this->tag,
@@ -83,8 +85,11 @@ class OrganismTemplate {
 
 		$wrapper = Atom::Assemble( $this->name, $wrapper_args );
 
-		$this->markup = $wrapper['open'] . implode( '', $markup_pieces ) . $wrapper['close'];
-
+		if ( ! empty( $markup_pieces ) ) {
+			$this->markup = $wrapper['open'] . implode( '', $markup_pieces ) . $wrapper['close'];
+		} else {
+			$this->markup = '';
+		}
 	}
 
 	/**
@@ -106,9 +111,12 @@ class OrganismTemplate {
 
 		while ( $this->posts->have_posts() ) {
 
+			// the_post advances onto the next post and sets the global $post variable.
 			$this->posts->the_post();
 
-			// TODO: figure out how I'm passing the post object in, exactly. Does it work just because we're in the loop?
+			// Access the current $post object.
+			global $post;
+
 			$post_atoms_arr[] = self::setupMarkupArray( $this->posts_structure, $post, 'posts_markup_array' );
 
 		}
@@ -134,7 +142,7 @@ class OrganismTemplate {
 	 *
 	 * @return array $markup_array  The markup array
 	 */
-	protected function setupMarkupArray( $structure_pieces, $post = null, $markup_array_name = 'markup_array' ) {
+	protected function setupMarkupArray( $structure_pieces, $post_obj = null, $markup_array_name = 'markup_array' ) {
 
 		$markup_arr = [ ];
 
@@ -251,19 +259,19 @@ class OrganismTemplate {
 
 				case 'name-only':
 
-					$markup_arr[ $atom_name ] = self::getStructurePart( $atom_name, $atom_args, $post );
+					$markup_arr[ $atom_name ] = self::getStructurePart( $atom_name, $atom_args, $post_obj );
 
 					break;
 
 				case 'self-content-only':
 
-					$markup_arr[ $atom_name ]['parts'][ $atom_name ] = self::getStructurePart( $atom_name, $atom_args, $post );
+					$markup_arr[ $atom_name ]['parts'][ $atom_name ] = self::getStructurePart( $atom_name, $atom_args, $post_obj );
 
 					break;
 
 				case 'split-with-children':
 
-					$markup_arr[ $atom_name ] = self::getStructurePart( $atom_name, $atom_args, $post );
+					$markup_arr[ $atom_name ] = self::getStructurePart( $atom_name, $atom_args, $post_obj );
 
 					$markup_arr[ $atom_name ]['children'] = $piece_args_and_content['children'];
 
@@ -271,7 +279,7 @@ class OrganismTemplate {
 
 				case 'split-with-parts':
 
-					$markup_arr[ $atom_name ] = self::getStructurePart( $atom_name, $atom_args, $post );
+					$markup_arr[ $atom_name ] = self::getStructurePart( $atom_name, $atom_args, $post_obj );
 
 					foreach ( $piece_args_and_content['parts'] as $subatom_name => $subatom_args ) {
 
@@ -293,10 +301,7 @@ class OrganismTemplate {
 							$subatom_valid_args['content'] = $subatom_args;
 						}
 
-						// TODO: refactor this in better.
-						$subatom_valid_name = $atom_name . '-' . $subatom_valid_name;
-
-						$markup_arr[ $atom_name ]['parts'][ $subatom_valid_name ] = self::getStructurePart( $subatom_valid_name, $subatom_valid_args, $post );
+						$markup_arr[ $atom_name ]['parts'][ $subatom_valid_name ] = self::getStructurePart( $subatom_valid_name, $subatom_valid_args, $post_obj );
 
 					}
 
@@ -304,7 +309,7 @@ class OrganismTemplate {
 
 				case 'self-with-content':
 
-					$markup_arr[ $atom_name ]['content'] = self::getStructurePart( $atom_name, $atom_args, $post );
+					$markup_arr[ $atom_name ]['content'] = self::getStructurePart( $atom_name, $atom_args, $post_obj );
 
 					break;
 			}
@@ -319,7 +324,7 @@ class OrganismTemplate {
 				/*				if ( ! isset( $markup_arr[ $previous_atom_name ]['children'] ) && ! isset( $markup_arr[ $previous_atom_name ]['sibling'] ) && ! isset( $markup_arr[ $previous_atom_name ]['parts'] ) ) {
 									$markup_arr[ $previous_atom_name ]['sibling'] = $atom_name;
 								}*/
-				if ( 'name-and-content' == $markup_arr[ $previous_atom_name ]['piece_type'] ) {
+				if ( 'self-content-only' == $markup_arr[ $previous_atom_name ]['piece_type'] ) {
 					$markup_arr[ $previous_atom_name ]['sibling'] = $atom_name;
 				}
 			}
@@ -367,14 +372,14 @@ class OrganismTemplate {
 	 *
 	 * @return mixed
 	 */
-	protected function getStructurePart( $atom_name, $atom_args, $post ) {
+	protected function getStructurePart( $atom_name, $atom_args, $post_obj ) {
 
 		// First, namespace the atom based on the organism name.
 		if ( isset( $atom_args['name'] ) ) {
-			$namespaced_atom_name = $this->name . '-' . $atom_args['name'];
+			$namespaced_atom_name = $this->name . $this->separator . $atom_args['name'];
 		}
 		if ( ! isset( $atom_args['name'] ) ) {
-			$namespaced_atom_name = $this->name . '-' . $atom_name;
+			$namespaced_atom_name = $this->name . $this->separator . $atom_name;
 		}
 
 		$class_atom_suffix = $atom_name;
@@ -404,6 +409,11 @@ class OrganismTemplate {
 					$atom_args['attributes']['class'][] = $class;
 				}
 			}
+		}
+
+		// Add the $post to $atom_args, if it is present.
+		if ( isset( $post_obj ) ) {
+			$atom_args['post'] = $post_obj;
 		}
 
 		// Set up the atom class.

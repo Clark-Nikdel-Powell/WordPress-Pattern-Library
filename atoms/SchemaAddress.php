@@ -1,6 +1,13 @@
 <?php
 namespace CNP;
 
+/**
+ * SchemaAddress.
+ *
+ * Returns an address block that includes Schema tags.
+ *
+ * @since 0.3.0
+ */
 class SchemaAddress extends AtomTemplate {
 
 	public function __construct( $data ) {

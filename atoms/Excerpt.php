@@ -1,6 +1,15 @@
 <?php
 namespace CNP;
 
+/**
+ * Excerpt.
+ *
+ * Returns a post excerpt in a paragraph tag.
+ *
+ * Children: ForceExcerpt
+ *
+ * @since 0.1.0
+ */
 class Excerpt extends AtomTemplate {
 
 	public function __construct( $data ) {
@@ -10,8 +19,8 @@ class Excerpt extends AtomTemplate {
 		if ( '' == $this->name ) {
 			$this->name = 'excerpt';
 		}
-		$this->tag     = 'p';
-		$this->content = $data['post']->post_excerpt;
+		$this->tag     = isset( $data['tag'] ) ? $data['tag'] : 'p';;
+		$this->content = isset( $this->post_object->post_excerpt ) ? $this->post_object->post_excerpt : '';
 
 	}
 }

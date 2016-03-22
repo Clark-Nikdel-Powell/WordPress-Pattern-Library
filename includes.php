@@ -4,7 +4,7 @@
  *
  * A package for defining commonly-used atoms and organisms, which expedites the front-end development process.
  *
- * @version 0.2.0
+ * @version 0.5.0
  */
 
 /*——————————————————————————————————————————————————————————————————————————————
@@ -35,3 +35,19 @@ include_once( $atoms_dir . 'PostTitleLink.php' );
 include_once( $atoms_dir . 'CategoryList.php' );
 include_once( $atoms_dir . 'Loop.php' );
 include_once( $atoms_dir . 'SchemaAddress.php' );
+include_once( $atoms_dir . 'PostDate.php' );
+include_once( $atoms_dir . 'EventDate.php' );
+include_once( $atoms_dir . 'EventBadge.php' );
+include_once( $atoms_dir . 'TaxonomyList.php' );
+include_once( $atoms_dir . 'ListTerms.php' );
+include_once( $atoms_dir . 'ListPages.php' );
+
+/*——————————————————————————————————————————————————————————————————————————————
+/  Organisms
+——————————————————————————————————————————————————————————————————————————————*/
+
+$organisms_dir = 'organisms/';
+
+include_once( $organisms_dir . 'PostList.php' );
+include_once( $organisms_dir . 'EventList.php' );
+include_once( $organisms_dir . 'Subnav.php' );

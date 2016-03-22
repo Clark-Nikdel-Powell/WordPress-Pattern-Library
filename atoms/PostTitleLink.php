@@ -1,6 +1,13 @@
 <?php
 namespace CNP;
 
+/**
+ * PostTitleLink.
+ *
+ * Uses PostLink to build a link to a post, and then depends on PostTitle's arguments to complete the output.
+ *
+ * @since 0.1.0
+ */
 class PostTitleLink extends PostTitle {
 
 	private $link;
@@ -10,8 +17,7 @@ class PostTitleLink extends PostTitle {
 
 		parent::__construct( $data );
 
-		$this->link_data['post']    = $data['post'];
-		$this->link_data['name']    = $this->name . '-link';
+		$this->link_data['name']    = $this->name . 'Anchor';
 		$this->link_data['content'] = $this->content;
 
 		$this->link = new PostLink( $this->link_data );
