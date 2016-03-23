@@ -12,6 +12,9 @@ namespace CNP;
  */
 class PostDate extends AtomTemplate {
 
+	private $prefix;
+	private $suffix;
+
 	public function __construct( $data ) {
 
 		parent::__construct( $data );
@@ -25,8 +28,11 @@ class PostDate extends AtomTemplate {
 			$format = $data['date_format'];
 		}
 
-		$this->tag     = isset( $data['tag'] ) ? $data['tag'] : 'p';;
-		$this->content = get_the_date( $format, $this->post_object );
+		$this->prefix = isset( $data['prefix'] ) ? $data['prefix'] : '<strong>Published:</strong> ';
+		$this->suffix = isset( $data['suffix'] ) ? $data['suffix'] : '';
+
+		$this->tag     = isset( $data['tag'] ) ? $data['tag'] : 'p';
+		$this->content = $this->prefix . get_the_date( $format, $this->post_object ) . $this->suffix;
 
 	}
 }

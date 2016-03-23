@@ -12,7 +12,8 @@ namespace CNP;
  */
 class PostThumbnail extends AtomTemplate {
 
-	private $thumbnail_args;
+	private $size;
+	private $attr;
 
 	public function __construct( $data ) {
 
@@ -22,10 +23,10 @@ class PostThumbnail extends AtomTemplate {
 			$this->name = 'post-thumbnail';
 		}
 
-		$this->thumbnail_args = isset( $data['thumbnail_args'] ) ? $data['thumbnail_args'] : array();
+		$this->size = isset( $data['size'] ) ? $data['size'] : 'post-thumbnail';
+		$this->attr = isset( $data['attr'] ) ? $data['attr'] : array();
 		$this->tag            = isset( $data['tag'] ) ? $data['tag'] : 'div';
 
-		$this->content = call_user_func_array( 'get_the_post_thumbnail', $this->thumbnail_args );
-
+		$this->content = call_user_func( 'get_the_post_thumbnail', $this->post_object, $this->size, $this->attr );
 	}
 }

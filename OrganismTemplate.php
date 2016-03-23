@@ -178,7 +178,7 @@ class OrganismTemplate {
 			 * the array keys of $piece_args_and_content. If 'children' exists, then we know this is a parent item, and
 			 * it resolves to $piece_type = 'split-with-children'. If 'parts' exists, it resolves to 'split-with-parts'.
 			 */
-			if ( is_array( $piece_args_and_content ) ) {
+			if ( '' === $piece_type && is_array( $piece_args_and_content ) ) {
 
 				$atom_args = $piece_args_and_content;
 
@@ -197,8 +197,14 @@ class OrganismTemplate {
 					$piece_type = 'split-with-parts';
 				}
 
-				//if ( isset( $piece_args_and_content['content'] ) ) {
-				if ( '' == $piece_type ) {
+				if ( isset( $piece_args_and_content['content'] ) ) {
+					$piece_type = 'self-with-content';
+				}
+			}
+
+			if ( empty($piece_type) ) {
+
+				if ( is_string($piece_name) && is_array($piece_args_and_content) ) {
 					$piece_type = 'self-with-content';
 				}
 			}
@@ -217,8 +223,7 @@ class OrganismTemplate {
 
 				case 'name-only':
 
-					$atom_name             = $piece_args_and_content;
-					$atom_args['tag_type'] = 'split';
+					$atom_name = $piece_args_and_content;
 
 					break;
 
@@ -259,7 +264,7 @@ class OrganismTemplate {
 
 				case 'name-only':
 
-					$markup_arr[ $atom_name ] = self::getStructurePart( $atom_name, $atom_args, $post_obj );
+					$markup_arr[ $atom_name ]['content'] = self::getStructurePart( $atom_name, $atom_args, $post_obj );
 
 					break;
 
@@ -324,7 +329,7 @@ class OrganismTemplate {
 				/*				if ( ! isset( $markup_arr[ $previous_atom_name ]['children'] ) && ! isset( $markup_arr[ $previous_atom_name ]['sibling'] ) && ! isset( $markup_arr[ $previous_atom_name ]['parts'] ) ) {
 									$markup_arr[ $previous_atom_name ]['sibling'] = $atom_name;
 								}*/
-				if ( 'self-content-only' == $markup_arr[ $previous_atom_name ]['piece_type'] ) {
+				if ( 'self-content-only' == $markup_arr[ $previous_atom_name ]['piece_type'] || 'name-only' == $markup_arr[ $previous_atom_name ]['piece_type'] ) {
 					$markup_arr[ $previous_atom_name ]['sibling'] = $atom_name;
 				}
 			}
@@ -422,11 +427,9 @@ class OrganismTemplate {
 		// If the class exists, then it's a named atom, and we need to
 		// run the getMarkup method based on the namespaced atom name.
 		if ( class_exists( $class_atom_name ) ) {
-
 			$atom_args['name'] = $namespaced_atom_name;
 			$atom_object       = new $class_atom_name( $atom_args );
 			$atom_object->getMarkup();
-
 			return $atom_object->markup;
 
 		}
@@ -490,7 +493,10 @@ class OrganismTemplate {
 
 			case 'name-only':
 
-				// Markup keys: 'open' and 'close'
+				// Markup keys: 'open' and 'close', and 'content'
+				if ( isset( $organism_part['content'] ) ) {
+					$markup .= $organism_part['content'];
+				}
 
 				break;
 

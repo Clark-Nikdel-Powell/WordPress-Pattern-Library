@@ -41,6 +41,7 @@ include_once( $atoms_dir . 'EventBadge.php' );
 include_once( $atoms_dir . 'TaxonomyList.php' );
 include_once( $atoms_dir . 'ListTerms.php' );
 include_once( $atoms_dir . 'ListPages.php' );
+include_once( $atoms_dir . 'PostAuthor.php' );
 
 /*——————————————————————————————————————————————————————————————————————————————
 /  Organisms
@@ -51,3 +52,6 @@ $organisms_dir = 'organisms/';
 include_once( $organisms_dir . 'PostList.php' );
 include_once( $organisms_dir . 'EventList.php' );
 include_once( $organisms_dir . 'Subnav.php' );
+include_once( $organisms_dir . 'PostHeaderSingular.php' );
+include_once( $organisms_dir . 'PostHeaderArchive.php' );
+include_once( $organisms_dir . 'SectionHeader.php' );

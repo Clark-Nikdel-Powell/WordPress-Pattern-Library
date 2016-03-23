@@ -12,6 +12,8 @@ namespace CNP;
  */
 class CategoryList extends AtomTemplate {
 
+	private $prefix;
+	private $suffix;
 	public $separator;
 
 	public function __construct( $data ) {
@@ -25,7 +27,10 @@ class CategoryList extends AtomTemplate {
 		$this->separator = isset( $data['separator'] ) ? $data['separator'] : ', ';
 		$this->tag       = isset( $data['tag'] ) ? $data['tag'] : 'p';
 
-		$this->content = get_the_category_list( $this->separator, '', $this->post_object );
+		$this->prefix = isset( $data['prefix'] ) ? $data['prefix'] : '<strong>Categories:</strong> ';
+		$this->suffix = isset( $data['suffix'] ) ? $data['suffix'] : '';
+
+		$this->content = $this->prefix . get_the_category_list( $this->separator, '', $this->post_object ) . $this->suffix;
 
 	}
 }

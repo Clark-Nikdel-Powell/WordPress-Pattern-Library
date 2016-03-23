@@ -15,7 +15,7 @@ class PostClass extends AtomTemplate {
 		parent::__construct( $data );
 
 		$this->name     = 'postclass';
-		$this->tag      = isset( $data['tag'] ) ? $data['tag'] : 'article';;
+		$this->tag      = isset( $data['tag'] ) ? $data['tag'] : 'article';
 		$this->tag_type = 'split';
 
 		$classes = [ ];
