@@ -41,7 +41,7 @@ class PostList extends OrganismTemplate {
 						'PostTitleLink',
 						'PostDate' => 'm/d/Y',
 						'CategoryList',
-						'ForceExcerpt',
+						'ExcerptForce',
 						'PostLink' => 'Read More'
 					]
 				]

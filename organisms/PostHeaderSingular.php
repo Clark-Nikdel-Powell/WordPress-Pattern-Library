@@ -17,12 +17,20 @@ class PostHeaderSingular extends OrganismTemplate {
 		if ( ! isset( $data['structure'] ) ) {
 
 			$structure = [
+				'title' => [
+					'atom'    => 'PostTitle',
+					'sibling' => 'date'
+				],
 				'date'   => [
 					'atom'    => 'PostDate',
 					'sibling' => 'author'
 				],
 				'author' => [
 					'atom' => 'PostAuthor',
+					'sibling' => 'categories'
+				],
+				'categories' => [
+					'atom' => 'CategoryList',
 					'sibling' => 'image'
 				],
 				'image'  => [
@@ -32,16 +40,9 @@ class PostHeaderSingular extends OrganismTemplate {
 				]
 			];
 
-			$title_args = [
-				'title' => [
-					'atom'    => 'PostTitle',
-					'sibling' => 'date'
-				]
-			];
-
 			// Add the post title to the start of the structure array only if the section title does not match the page title.
-			if ( $ancestor['title'] !== $post->post_title && is_post_type_hierarchical( $post->post_type ) ) {
-				$structure = array_merge( $title_args, $structure );
+			if ( $ancestor['title'] === $post->post_title && is_post_type_hierarchical($post->post_type) ) {
+				unset($structure['title']);
 			}
 
 			$postheader_structure_filter = $this->name . '_singular_structure';

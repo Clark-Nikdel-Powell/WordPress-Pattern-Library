@@ -6,11 +6,20 @@ namespace CNP;
  *
  * Build a context-aware subnav.
  *
+ * You can configure the subnav behavior for all of the site's views by using the "settings_by_content_type" parameter.
+ *
+ * The "behavior" parameter passed in through the settings is used so that we don't have to specify all the atom arguments
+ * for every different view. The current defined behaviors are:
+ *
+ * archive-home: uses ListTerms to build a list of terms for a given taxonomy. Defaults to 'category'.
+ * archive-post_type: uses ListTerms to build a list of terms for a given taxonomy. Defaults to first taxonomy associated with the post type, if one is not supplied.
+ * archive-taxonomy: uses ListTerms to build a list of terms for the current taxonomy page.
+ * single-nonhierarchical: uses TaxonomyList to build a list of taxonomy terms based on terms the post has.
+ * single-hierarchical: uses ListPages to build a list of posts that are children of the current post.
+ *
  * @since 0.5.0
  *
  * Issues:
- * - Need a way to pass in Organism args based on behavior.
- * - Need a way to specify title, better title defaults.
  * - Need a way to add manual items.
  * - Need to add support for the Foundation Drilldown/Accordion navs: probably add an Organism arg for that.
  * X Need to pass along OrganismName as a prefix to the sub-atoms for the list items.
@@ -21,7 +30,8 @@ class Subnav extends OrganismTemplate {
 	public $settings;
 	public $title = 'In this Section';
 	public $list = '';
-	public $settings_by_content;
+	public $settings_by_content_type;
+	public $manual_additions;
 
 	public function __construct( $data = [ ] ) {
 
@@ -41,17 +51,17 @@ class Subnav extends OrganismTemplate {
 				'taxonomy' => 'category',
 				'title'    => 'All Post Categories'
 			],
-			'404' => [
+			'404'              => [
 				'behavior' => 'none'
 			],
-			'search' => [
+			'search'           => [
 				'behavior' => 'none'
 			],
 			'post'             => [
 				'single' => [
-					'behavior' => 'archive-post_type',
+					'behavior' => 'single-nonhierarchical',
 					'taxonomy' => 'category',
-					'title'    => 'All Post Categories'
+					'title'    => 'Post Categories'
 				]
 			],
 			'category'         => [
@@ -81,11 +91,17 @@ class Subnav extends OrganismTemplate {
 			]
 		];
 
-		if ( isset( $data['settings_by_content'] ) ) {
-			$this->settings_by_content = wp_parse_args( $default_behaviors, $data['settings_by_content'] );
+		if ( isset( $data['settings_by_content_type'] ) ) {
+			$this->settings_by_content_type = wp_parse_args( $default_behaviors, $data['settings_by_content_type'] );
 		} else {
-			$this->settings_by_content = $default_behaviors;
+			$this->settings_by_content_type = $default_behaviors;
 		}
+
+		$this->manual_additions = [ ];
+		if ( isset( $data['manual_additions'] ) ) {
+			$this->manual_additions = $data['manual_additions'];
+		}
+
 	}
 
 	public function getMarkup() {
@@ -93,42 +109,62 @@ class Subnav extends OrganismTemplate {
 		// Match up the subnav settings with the current page.
 		self::determineSubnavSettings();
 
-		if ( isset($this->settings['behavior'])) {
+		if ( isset( $this->settings['behavior'] ) ) {
 			$this->behavior = $this->settings['behavior'];
 		} else {
 			self::determineFallbackSubnavType();
 		}
 
+		/* @EXIT: "none" tells us that there isn't supposed to be a subnanv here. */
 		if ( 'none' === $this->behavior ) {
 			return false;
 		}
 
-		if ( isset($this->settings['title']) ) {
+		if ( isset( $this->settings['title'] ) ) {
 			$this->title = $this->settings['title'];
 		}
 
 		// Get the subnav items, based on the type of subnav
 		self::getSubnavItems();
 
-		if ( '' === $this->list ) {
+		// Return false if there is no list AND no manual additions.
+		if ( '' === $this->list && empty( $this->manual_additions ) ) {
 			return false;
 		}
 
+		// Structure setup is left till here so that we don't return an empty list by accident.
 		if ( ! isset( $data['structure'] ) ) {
 
+			// 'List' is initialized here so that manual items can be added after it.
 			$this->structure = [
 				'title' => [
 					'tag'     => 'h4',
 					'content' => $this->title,
 					'sibling' => 'items'
+				],
+				'items' => [
+					'parts' => [
+						'list'
+					]
 				]
 			];
 
+			// Add a separator and the manual items after the main list.
+			if ( ! empty( $this->manual_additions ) ) {
+				$this->structure['items']['parts']['separator'] = '';
+				$this->structure['items']['parts']['manual']    = $this->manual_additions;
+			}
+		} else {
+			$this->structure = $data['structure'];
 		}
 
-		$this->structure['items'] = $this->list;
+		// Add the list in separately, so that different structure can be passed in independent from the list.
+		// It is up to the dev to take care that "items" is listed as a child or sibling.
+		$this->structure['items']['parts']['list'] = $this->list;
 
 		parent::getMarkup();
+
+		return $this;
 
 	}
 
@@ -137,42 +173,49 @@ class Subnav extends OrganismTemplate {
 		$queried_object = get_queried_object();
 
 		$post_type = '';
-		$taxonomy = '';
+		$taxonomy  = '';
+		// Get the post type from a WP_Post object
 		if ( isset( $queried_object->post_type ) ) {
 			$post_type = $queried_object->post_type;
 		}
+		// Get the post type from a WP_Post_Type object.
+		if ( is_post_type_archive() && isset( $queried_object->name ) ) {
+			$post_type = $queried_object->name;
+		}
+		// Get the taxonomy from a WP_Term object
 		if ( isset( $queried_object->taxonomy ) ) {
 			$taxonomy = $queried_object->taxonomy;
 		}
 
 		$settings = '';
 
-		if ( is_front_page() && isset( $this->settings_by_content['front-page'] ) ) {
-			$settings = $this->settings_by_content['front-page'];
+		// There's probably a better way to write these checks...
+		if ( is_front_page() && isset( $this->settings_by_content_type['front-page'] ) ) {
+			$settings = $this->settings_by_content_type['front-page'];
 		}
-		if ( is_home() && isset( $this->settings_by_content['home'] ) ) {
-			$settings = $this->settings_by_content['home'];
+		if ( is_home() && isset( $this->settings_by_content_type['home'] ) ) {
+			$settings = $this->settings_by_content_type['home'];
 		}
-		if ( is_singular() && '' !== $post_type && isset( $this->settings_by_content[ $post_type ]['single'] ) ) {
-			$settings = $this->settings_by_content[ $post_type ]['single'];
+		if ( is_singular() && '' !== $post_type && isset( $this->settings_by_content_type[ $post_type ]['single'] ) ) {
+			$settings = $this->settings_by_content_type[ $post_type ]['single'];
 		}
-		if ( is_post_type_archive() && '' !== $post_type && isset( $this->settings_by_content[ $post_type ]['archive'] ) ) {
-			$settings = $this->settings_by_content[ $post_type ]['archive'];
+		if ( is_post_type_archive() && '' !== $post_type && isset( $this->settings_by_content_type[ $post_type ]['archive'] ) ) {
+			$settings = $this->settings_by_content_type[ $post_type ]['archive'];
 		}
-		if ( is_tax() && '' !== $taxonomy && isset( $this->settings_by_content[ $taxonomy ] ) ) {
-			$settings = $this->settings_by_content[ $taxonomy ];
+		if ( is_tax() && '' !== $taxonomy && isset( $this->settings_by_content_type[ $taxonomy ] ) ) {
+			$settings = $this->settings_by_content_type[ $taxonomy ];
 		}
-		if ( is_category() && isset( $this->settings_by_content['category'] ) ) {
-			$settings = $this->settings_by_content['category'];
+		if ( is_category() && isset( $this->settings_by_content_type['category'] ) ) {
+			$settings = $this->settings_by_content_type['category'];
 		}
-		if ( is_tag() && isset( $this->settings_by_content['tag'] ) ) {
-			$settings = $this->settings_by_content['tag'];
+		if ( is_tag() && isset( $this->settings_by_content_type['tag'] ) ) {
+			$settings = $this->settings_by_content_type['tag'];
 		}
-		if ( is_404() && isset( $this->settings_by_content['404'] ) ) {
-			$settings = $this->settings_by_content['404'];
+		if ( is_404() && isset( $this->settings_by_content_type['404'] ) ) {
+			$settings = $this->settings_by_content_type['404'];
 		}
-		if ( is_search() && isset( $this->settings_by_content['search'] ) ) {
-			$settings = $this->settings_by_content['search'];
+		if ( is_search() && isset( $this->settings_by_content_type['search'] ) ) {
+			$settings = $this->settings_by_content_type['search'];
 		}
 
 		if ( '' !== $settings ) {
@@ -232,9 +275,8 @@ class Subnav extends OrganismTemplate {
 
 			case 'archive-home':
 
-				$list_atom             = 'ListTerms';
-				$list_atom_slug        = 'list-terms';
-				$list_args['taxonomy'] = 'category';
+				$list_atom      = 'ListTerms';
+				$list_atom_slug = 'list-terms';
 
 				break;
 
@@ -243,30 +285,12 @@ class Subnav extends OrganismTemplate {
 				$list_atom      = 'ListTerms';
 				$list_atom_slug = 'list-terms';
 
-				$hierarchical_taxonomies = [ ];
-
-
-				if ( ! empty( $queried_object->taxonomies ) ) {
-
-					foreach ( $queried_object->taxonomies as $taxonomy_name ) {
-
-						if ( is_taxonomy_hierarchical( $taxonomy_name ) ) {
-							$hierarchical_taxonomies[] = $taxonomy_name;
-						}
-					}
-
-					if ( ! empty( $hierarchical_taxonomies ) ) {
-						$list_args['taxonomy'] = $hierarchical_taxonomies[0];
-					}
-				}
-
 				break;
 
 			case 'archive-taxonomy':
 
-				$list_atom             = 'ListTerms';
-				$list_atom_slug        = 'list-terms';
-				$list_args['taxonomy'] = $queried_object->taxonomy;
+				$list_atom      = 'ListTerms';
+				$list_atom_slug = 'list-terms';
 
 				break;
 
@@ -278,7 +302,6 @@ class Subnav extends OrganismTemplate {
 				$list_args['before']    = '<li>';
 				$list_args['separator'] = '</li><li>';
 				$list_args['after']     = '</li>';
-				// TaxonomyList auto-detects the taxonomy based on the post.
 
 				break;
 
@@ -298,6 +321,10 @@ class Subnav extends OrganismTemplate {
 				$list_args['list_args']['child_of'] = $id;
 
 				break;
+		}
+
+		if ( isset( $this->settings['taxonomy'] ) ) {
+			$list_args['taxonomy'] = $this->settings['taxonomy'];
 		}
 
 		$list_atom_class = 'CNP\\' . $list_atom;

@@ -25,7 +25,7 @@ class PostThumbnail extends AtomTemplate {
 
 		$this->size = isset( $data['size'] ) ? $data['size'] : 'post-thumbnail';
 		$this->attr = isset( $data['attr'] ) ? $data['attr'] : array();
-		$this->tag            = isset( $data['tag'] ) ? $data['tag'] : 'div';
+		$this->tag  = isset( $data['tag'] ) ? $data['tag'] : 'div';
 
 		$this->content = call_user_func( 'get_the_post_thumbnail', $this->post_object, $this->size, $this->attr );
 	}

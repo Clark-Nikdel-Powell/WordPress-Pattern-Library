@@ -8,7 +8,7 @@ namespace CNP;
  *
  * @since 0.1.0
  */
-class ForceExcerpt extends Excerpt {
+class ExcerptForce extends Excerpt {
 
 	public function __construct( $data ) {
 		parent::__construct( $data );

@@ -24,14 +24,20 @@ class PostHeaderArchive extends OrganismTemplate {
 				],
 				'author' => [
 					'atom' => 'PostAuthor',
-					'sibling' => 'image'
+					'sibling' => 'categories'
 				],
-				'image'  => [
-					'atom'     => 'PostThumbnail',
-					'size'     => 'medium',
-					'tag_type' => 'false_without_content'
+				'categories' => [
+					'atom' => 'CategoryList',
+					'sibling' => 'excerpt'
+				],
+				'excerpt' => [
+					'atom' => 'ExcerptForce'
 				]
 			];
+
+			if ( is_search() ) {
+				$structure['excerpt']['atom'] = 'ExcerptSearch';
+			}
 
 			$postheader_structure_filter = $this->name . '_archive_structure';
 			$this->structure             = apply_filters( $postheader_structure_filter, $structure );
