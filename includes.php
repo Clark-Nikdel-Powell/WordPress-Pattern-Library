@@ -4,7 +4,7 @@
  *
  * A package for defining commonly-used atoms and organisms, which expedites the front-end development process.
  *
- * @version 0.6.0
+ * @version 0.7.0
  */
 
 /*——————————————————————————————————————————————————————————————————————————————

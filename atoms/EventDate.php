@@ -111,7 +111,14 @@ class EventDate extends AtomTemplate {
 
 	private function setDateType() {
 
-		$now = new \DateTime( current_time( 'mysql' ), new \DateTimeZone( get_option( 'timezone_string' ) ) );
+		$timezone_string = get_option( 'timezone_string' );
+
+		// Temporary fix-- TODO: figure out a bulletproof way of getting the current time
+		if ( '' === $timezone_string ) {
+			$timezone_string = 'America/New_York';
+		}
+
+		$now = new \DateTime( current_time( 'mysql' ), new \DateTimeZone( $timezone_string ) );
 
 		$today    = false;
 		$same_day = false;
@@ -212,7 +219,7 @@ class EventDate extends AtomTemplate {
 		 * @param string $var The formatted event date.
 		 * @param string $this ->event_date_type Include the event date type so that making an intelligent adjustment is easier.
 		 */
-		$event_date_formatted = apply_filters( 'event_date_format', $event_date_formatted, $this->event_date_type );
+		$event_date_formatted = apply_filters( 'event_date_format', $event_date_formatted, $this );
 		Atom::AddDebugEntry( 'Filter', 'event_date_format' );
 
 		/**
@@ -226,7 +233,7 @@ class EventDate extends AtomTemplate {
 		 * @param string $this ->event_date_type Include the event date type so that making an intelligent adjustment is easier.
 		 */
 		$event_date_format_filter   = $this->name . '_event_date_format';
-		$this->event_date_formatted = apply_filters( $event_date_format_filter, $event_date_formatted, $this->event_date_type );
+		$this->event_date_formatted = apply_filters( $event_date_format_filter, $event_date_formatted, $this );
 		Atom::AddDebugEntry( 'Filter', $event_date_format_filter );
 
 	}
