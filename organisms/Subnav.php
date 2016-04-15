@@ -92,7 +92,7 @@ class Subnav extends OrganismTemplate {
 		];
 
 		if ( isset( $data['settings_by_content_type'] ) ) {
-			$this->settings_by_content_type = wp_parse_args( $default_behaviors, $data['settings_by_content_type'] );
+			$this->settings_by_content_type = array_replace_recursive( $default_behaviors, $data['settings_by_content_type'] );
 		} else {
 			$this->settings_by_content_type = $default_behaviors;
 		}

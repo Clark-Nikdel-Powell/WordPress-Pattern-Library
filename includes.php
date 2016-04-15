@@ -43,6 +43,8 @@ include_once( $atoms_dir . 'TaxonomyList.php' );
 include_once( $atoms_dir . 'ListTerms.php' );
 include_once( $atoms_dir . 'ListPages.php' );
 include_once( $atoms_dir . 'PostAuthor.php' );
+include_once( $atoms_dir . 'Menu.php' );
+include_once( $atoms_dir . 'Image.php' );
 
 /*——————————————————————————————————————————————————————————————————————————————
 /  Organisms
