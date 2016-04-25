@@ -5,6 +5,7 @@ namespace CNP;
  * Image.
  *
  * Returns a responsive image.
+ * TODO: replace most of this with the function I used for the CNP Case Study
  *
  * @since 0.6.0
  */
