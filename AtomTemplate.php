@@ -30,8 +30,6 @@ class AtomTemplate {
 	}
 
 	public function getMarkup() {
-
 		$this->markup = Atom::Assemble( $this->name, $this );
-
 	}
 }
