@@ -8,6 +8,14 @@
  */
 
 /*——————————————————————————————————————————————————————————————————————————————
+/  Helpers: Essential functions for different parts of the Pattern Library
+——————————————————————————————————————————————————————————————————————————————*/
+
+$helpers_dir = 'helpers/';
+
+include_once( $helpers_dir . 'helperParseClassesAsArray.php' );
+
+/*——————————————————————————————————————————————————————————————————————————————
 /  Templates: what we base all the other classes on.
 ——————————————————————————————————————————————————————————————————————————————*/
 
