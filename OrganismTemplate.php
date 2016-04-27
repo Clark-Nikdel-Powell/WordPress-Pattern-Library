@@ -24,6 +24,27 @@ class OrganismTemplate {
 
 		$this->attributes = isset( $data['attributes'] ) ? $data['attributes'] : '';
 
+		// Ensures that the 'class' attribute is set if it wasn't passed in with attributes.
+		if ( ! isset( $this->attributes['class'] ) ) {
+			$this->attributes['class'] = [ ];
+		}
+
+		// Now we take the class from $data and add it in to the attributes.
+		// The helper function takes either a string or array, and returns an array.
+		if ( ! empty( $data['class'] ) ) {
+
+			$classes_arr = helperParseClassesAsArray( $data['class'] );
+
+			if ( ! empty( $classes_arr ) ) {
+				$this->attributes['class'] = array_merge( $this->attributes['class'], $classes_arr );
+			}
+		}
+
+		// ID shorthand, sanitized for user-input, in case it's coming from ACF
+		if ( '' !== $data['id'] ) {
+			$this->attributes['id'] = trim( $data['id'] );
+		}
+
 		$this->before_content = isset( $data['before_content'] ) ? $data['before_content'] : '';
 		$this->after_content  = isset( $data['after_content'] ) ? $data['after_content'] : '';
 
@@ -202,9 +223,9 @@ class OrganismTemplate {
 				}
 			}
 
-			if ( empty($piece_type) ) {
+			if ( empty( $piece_type ) ) {
 
-				if ( is_string($piece_name) && is_array($piece_args_and_content) ) {
+				if ( is_string( $piece_name ) && is_array( $piece_args_and_content ) ) {
 					$piece_type = 'self-with-content';
 				}
 			}
@@ -396,7 +417,7 @@ class OrganismTemplate {
 		// Set up the class to check against
 		$class_atom_name = 'CNP\\' . $class_atom_suffix;
 
-		// Parse atom arguments
+		// If class isn't set already, then it defaults to an array.
 		if ( ! isset( $atom_args['attributes']['class'] ) ) {
 			$atom_args['attributes']['class'] = [ ];
 		}
@@ -404,15 +425,12 @@ class OrganismTemplate {
 		// Shorthand for class
 		if ( isset( $atom_args['class'] ) ) {
 
-			if ( is_string( $atom_args['class'] ) ) {
-				$atom_args['attributes']['class'][] = $atom_args['class'];
-			}
+			// The helper function takes either a string or array, and returns an array.
+			$classes_arr = helperParseClassesAsArray( $atom_args['class'] );
 
-			if ( is_array( $atom_args['class'] ) ) {
-
-				foreach ( $atom_args['class'] as $class ) {
-					$atom_args['attributes']['class'][] = $class;
-				}
+			if ( ! empty( $classes_arr ) ) {
+				// $atom_args['attributes']['class'] has been pre-set as an array, so the merge here is safe.
+				$atom_args['attributes']['class'] = array_merge( $atom_args['attributes']['class'], $classes_arr );
 			}
 		}
 
@@ -430,6 +448,7 @@ class OrganismTemplate {
 			$atom_args['name'] = $namespaced_atom_name;
 			$atom_object       = new $class_atom_name( $atom_args );
 			$atom_object->getMarkup();
+
 			return $atom_object->markup;
 
 		}
