@@ -10,9 +10,13 @@ namespace CNP;
  */
 class OrganismTemplate {
 
+	public $name;
+
 	public function __construct( $data ) {
 
-		$this->name = isset( $data['name'] ) ? $data['name'] : '';
+		if ( isset( $data['name'] ) ) {
+			$this->name =  $data['name'];
+		}
 
 		$this->tag = isset( $data['tag'] ) ? $data['tag'] : 'div';
 
@@ -29,11 +33,14 @@ class OrganismTemplate {
 			$this->attributes['class'] = [ ];
 		}
 
+		// Add the Organism name as a class
+		$this->attributes['class'][] = $this->name;
+
 		// Now we take the class from $data and add it in to the attributes.
 		// The helper function takes either a string or array, and returns an array.
 		if ( ! empty( $data['class'] ) ) {
 
-			$classes_arr = helperParseClassesAsArray( $data['class'] );
+			$classes_arr = Utility::parseClassesAsArray( $data['class'] );
 
 			if ( ! empty( $classes_arr ) ) {
 				$this->attributes['class'] = array_merge( $this->attributes['class'], $classes_arr );
@@ -41,14 +48,20 @@ class OrganismTemplate {
 		}
 
 		// ID shorthand, sanitized for user-input, in case it's coming from ACF
-		if ( '' !== $data['id'] ) {
+		if ( !empty( $data['id'] ) ) {
 			$this->attributes['id'] = trim( $data['id'] );
 		}
 
 		$this->before_content = isset( $data['before_content'] ) ? $data['before_content'] : '';
 		$this->after_content  = isset( $data['after_content'] ) ? $data['after_content'] : '';
 
-		$this->structure    = isset( $data['structure'] ) ? $data['structure'] : '';
+		$this->structure = isset( $data['structure'] ) ? $data['structure'] : '';
+
+		// Filter the Organism structure.
+		$organism_name_structure_filter = $this->name . '_structure_filter';
+		$this->structure  = apply_filters( $organism_name_structure_filter, $this->structure );
+		Atom::AddDebugEntry( 'Filter', $organism_name_structure_filter );
+
 		$this->markup_array = [ ];
 
 		$this->posts           = isset( $data['posts'] ) ? $data['posts'] : '';
@@ -425,8 +438,8 @@ class OrganismTemplate {
 		// Shorthand for class
 		if ( isset( $atom_args['class'] ) ) {
 
-			// The helper function takes either a string or array, and returns an array.
-			$classes_arr = helperParseClassesAsArray( $atom_args['class'] );
+			// The utility function takes either a string or array, and returns an array.
+			$classes_arr = Utility::parseClassesAsArray( $atom_args['class'] );
 
 			if ( ! empty( $classes_arr ) ) {
 				// $atom_args['attributes']['class'] has been pre-set as an array, so the merge here is safe.

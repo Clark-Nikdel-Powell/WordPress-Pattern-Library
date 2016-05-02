@@ -41,6 +41,9 @@ class Subnav extends OrganismTemplate {
 			$this->name = 'subnav';
 		}
 
+		// Add the Organism name as a class
+		$this->attributes['class'][] = $this->name;
+
 		// May need to refactor the way the SubnavType is determined in order for settings like this to function properly
 		$default_behaviors = [
 			'front-page'       => [

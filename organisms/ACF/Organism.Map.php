@@ -11,20 +11,11 @@ class ACF_Map extends OrganismTemplate {
 
 		parent::__construct( $data );
 
-		$this->name                  = 'map';
-		$this->attributes['class'][] = 'acf-map';
-
-		if ( ! empty( $data['classes'] ) ) {
-
-			// Create an array
-			$data_classes_arr = explode( ',', $data['classes'] );
-
-			// Trim the input for any whitespace
-			$data_classes_arr = array_map( 'trim', $data_classes_arr );
-
-			// Add each class individually
-			$this->attributes['class'] = array_merge( $this->attributes['class'], $data_classes_arr );
+		if ( '' === $this->name ) {
+			$this->name = 'map';
 		}
+
+		$this->attributes['class'][] = 'acf-map';
 
 		/*——————————————————————————————————————————————————————————
 		/  Markers Setup

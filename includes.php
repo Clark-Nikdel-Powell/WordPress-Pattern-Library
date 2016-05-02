@@ -8,20 +8,11 @@
  */
 
 /*——————————————————————————————————————————————————————————————————————————————
-/  Helpers: Essential functions for different parts of the Pattern Library
-——————————————————————————————————————————————————————————————————————————————*/
-
-$helpers_dir = 'helpers/';
-
-include_once( $helpers_dir . 'helperParseClassesAsArray.php' );
-
-/*——————————————————————————————————————————————————————————————————————————————
 /  Templates: what we base all the other classes on.
 ——————————————————————————————————————————————————————————————————————————————*/
 
-include_once( 'AtomTemplate.php' );
-include_once( 'OrganismTemplate.php' );
-
+include_once( 'Class.AtomTemplate.php' );
+include_once( 'Class.OrganismTemplate.php' );
 
 /*——————————————————————————————————————————————————————————————————————————————
 /  Atoms: order matters. Make sure you include the source class before extending classes.
@@ -71,9 +62,14 @@ include_once( $organisms_dir . 'SectionHeader.php' );
 
 
 /*——————————————————————————————————————————————————————————————————————————————
-/  ACF Organisms
+/  ACF Atoms/Organisms
 ——————————————————————————————————————————————————————————————————————————————*/
 
 $acf_dir = 'organisms/ACF/';
 
-include_once( $acf_dir . 'Map.php' );
+include_once( $acf_dir . 'Atom.OpenRow.php' );
+include_once( $acf_dir . 'Atom.CloseRow.php' );
+include_once( $acf_dir . 'Atom.Content.php' );
+include_once( $acf_dir . 'Organism.Map.php' );
+include_once( $acf_dir . 'Organism.Blurb.php' );
+include_once( $acf_dir . 'Organism.Slideshow.php' );
