@@ -108,7 +108,7 @@ class ACF_Slideshow extends OrganismTemplate {
 
 	public function setSlideClassesAndID($slide_args, $slide_data) {
 
-		$slide_classes = Helpers::parseClassesAsArray( $slide_data['class'] );
+		$slide_classes = Utility::parseClassesAsArray( $slide_data['class'] );
 
 		if ( ! empty( $slide_classes ) ) {
 			$slide_args['attributes']['class'] = $slide_classes;
@@ -163,7 +163,7 @@ class ACF_Slideshow extends OrganismTemplate {
 		];
 
 		// This will return any key that is set to true.
-		$boolean_settings = Helpers::getAcfFieldsAsArray( [ 'slideshow_boolean_options' ], true );
+		$boolean_settings = Utility::getAcfFieldsAsArray( [ 'slideshow_boolean_options' ], true );
 
 		if ( is_array( $boolean_settings ) ) {
 			$boolean_settings = $boolean_settings['slideshow_boolean_options'];
@@ -198,7 +198,7 @@ class ACF_Slideshow extends OrganismTemplate {
 		];
 
 		// Retrieve string settings data
-		$string_vars = Helpers::getAcfFieldsAsArray( $settings_keys, true );
+		$string_vars = Utility::getAcfFieldsAsArray( $settings_keys, true );
 
 		// If both arrays come back empty, something's gone wrong, and we don't need to go through the rest.
 		if ( empty( $boolean_vars ) && empty( $string_vars ) ) {
