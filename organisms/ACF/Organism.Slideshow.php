@@ -56,12 +56,7 @@ class ACF_Slideshow extends OrganismTemplate {
 	 */
 	public function generateSlide( $slide_index, $slide_data ) {
 
-		// Trim any whitespace from slide data.
-		var_dump($slide_data);
-
-		$slide_data_trimmed = mdArrayMap('trim', $slide_data);
-
-		var_dump($slide_data_trimmed);
+		$slide_data_trimmed = Utility::multidimensionalArrayMap('trim', $slide_data);
 
 		$slide_args = [
 			'name'       => $this->name . $this->separator . 'slide',
