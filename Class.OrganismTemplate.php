@@ -27,6 +27,7 @@ class OrganismTemplate {
 		$this->tag_type = 'split';
 
 		$this->attributes = isset( $data['attributes'] ) ? $data['attributes'] : '';
+		$this->attribute_quote_style = isset( $data['attribute_quote_style'] ) ? $data['attribute_quote_style'] : '"';
 
 		// Ensures that the 'class' attribute is set if it wasn't passed in with attributes.
 		if ( ! isset( $this->attributes['class'] ) ) {
@@ -114,7 +115,8 @@ class OrganismTemplate {
 		$wrapper_args = [
 			'tag'        => $this->tag,
 			'tag_type'   => $this->tag_type,
-			'attributes' => $this->attributes
+			'attributes' => $this->attributes,
+			'attribute_quote_style' => $this->attribute_quote_style
 		];
 
 		$wrapper = Atom::Assemble( $this->name, $wrapper_args );
