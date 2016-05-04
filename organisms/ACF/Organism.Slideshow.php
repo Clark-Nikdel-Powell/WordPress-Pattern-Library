@@ -52,19 +52,23 @@ class ACF_Slideshow extends OrganismTemplate {
 				'text'       => [
 					'parts' => [
 						'title'       => [
-							'tag'     => 'h2',
-							'content' => ''
+							'tag'      => 'h2',
+							'tag_type' => 'false_without_content',
+							'content'  => ''
 						],
 						'subtitle'    => [
-							'tag'     => 'h3',
-							'content' => ''
+							'tag'      => 'h3',
+							'tag_type' => 'false_without_content',
+							'content'  => ''
 						],
 						'description' => [
-							'tag'     => 'div',
-							'content' => ''
+							'tag'      => 'div',
+							'tag_type' => 'false_without_content',
+							'content'  => ''
 						],
 						'link'        => [
 							'atom'    => 'Link',
+							'tag_type' => 'false_without_content',
 							'href'    => '',
 							'content' => ''
 						]
@@ -72,7 +76,6 @@ class ACF_Slideshow extends OrganismTemplate {
 				]
 			]
 		];
-
 	}
 
 	/**
@@ -113,6 +116,7 @@ class ACF_Slideshow extends OrganismTemplate {
 	 */
 	public function generateSlide( $slide_args, $slide_data, $slide_index ) {
 
+		// Trim all slide data first, so that an empty space doesn't get used as content by mistake.
 		$slide_data = Utility::multidimensionalArrayMap( 'trim', $slide_data );
 
 		// Put this in a separate method so that it's less to copy/paste when extending the class.
@@ -122,18 +126,19 @@ class ACF_Slideshow extends OrganismTemplate {
 		$slide_args = self::setSlideBackground( 'background', $slide_args, $slide_data );
 
 		// Set Title
-		$slide_args = Utility::setOrUnset( $slide_data['title'], $slide_args, [ 'structure', 'text', 'parts', 'title' ], [ 'structure', 'text', 'parts', 'title', 'content' ] );
+		$slide_args['structure']['text']['parts']['title']['content'] = $slide_data['title'];
 
 		// Set Subtitle
-		$slide_args = Utility::setOrUnset( $slide_data['subtitle'], $slide_args, [ 'structure', 'text', 'parts', 'subtitle' ], [ 'structure', 'text', 'parts', 'subtitle', 'content' ] );
+		$slide_args['structure']['text']['parts']['subtitle']['content'] = $slide_data['subtitle'];
 
 		// Set Description
-		$slide_args = Utility::setOrUnset( $slide_data['description'], $slide_args, [ 'structure', 'text', 'parts', 'description' ], [ 'structure', 'text', 'parts', 'description', 'content' ] );
+		$slide_args['structure']['text']['parts']['description']['content'] = $slide_data['description'];
 
 		// Set Link: set URL first, then set default text
-		$slide_args = Utility::setOrUnset( $slide_data['link'], $slide_args, [ 'structure', 'text', 'parts', 'link' ], [ 'structure', 'text', 'parts', 'link', 'href' ] );
+		$slide_args['structure']['text']['parts']['link']['href'] = $slide_data['link'];
 
-		if ( isset( $slide_args['structure']['text']['parts']['link']['href'] ) ) {
+		if ( ! empty( $slide_args['structure']['text']['parts']['link']['href'] ) ) {
+			// An empty array is used for the unset value because the backup text will be used if content is not present.
 			$slide_args = Utility::setOrUnset( $slide_data['link_text'], $slide_args, [ ], [ 'structure', 'text', 'parts', 'link', 'content' ], 'Click Here' );
 		}
 
