@@ -11,6 +11,7 @@
 /  Templates: what we base all the other classes on.
 ——————————————————————————————————————————————————————————————————————————————*/
 
+include_once( 'Class.Helpers.php' );
 include_once( 'Class.AtomTemplate.php' );
 include_once( 'Class.OrganismTemplate.php' );
 

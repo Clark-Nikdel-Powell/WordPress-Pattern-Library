@@ -4,13 +4,13 @@ namespace CNP;
 class ACF_Slideshow extends OrganismTemplate {
 
 	public $slides;
-	public $slide_args;
+	public $slide_organism_args;
 
 	public function __construct( $data ) {
 
 		// Set the name before the parent construct so that default classes can get added.
 		if ( ! isset( $data['name'] ) ) {
-			$this->name = 'slideshow';
+			$this->name = 'acf-slideshow';
 		}
 
 		parent::__construct( $data );
@@ -42,7 +42,7 @@ class ACF_Slideshow extends OrganismTemplate {
 		/*——————————————————————————————————————————————————————————
 		/  Set Default Slide Structure
 		——————————————————————————————————————————————————————————*/
-		$this->slide_args = [
+		$this->slide_organism_args = [
 			'name'       => $this->name . $this->separator . 'slide',
 			'attributes' => [ ],
 			'structure'  => [
@@ -99,7 +99,7 @@ class ACF_Slideshow extends OrganismTemplate {
 		}
 
 		foreach ( $this->slides as $slide_index => $slide_data ) {
-			$slide_args = $this->slide_args;
+			$slide_args = $this->slide_organism_args;
 			self::generateSlide( $slide_args, $slide_data, $slide_index );
 		}
 
@@ -123,7 +123,7 @@ class ACF_Slideshow extends OrganismTemplate {
 		$slide_args = self::setSlideClassesAndID( $slide_args, $slide_data );
 
 		// Set Background
-		$slide_args = self::setSlideBackground( 'background', $slide_args, $slide_data );
+		$slide_args['structure'] = Helpers::setBackgroundOnStructureArray( $slide_data, 'background', $slide_args['structure'] );
 
 		// Set Title
 		$slide_args['structure']['text']['parts']['title']['content'] = $slide_data['title'];
@@ -163,82 +163,6 @@ class ACF_Slideshow extends OrganismTemplate {
 			if ( '' !== $id ) {
 				$slide_args['attributes']['id'] = $id;
 			}
-		}
-
-		return $slide_args;
-
-	}
-
-	public function setSlideBackground( $background_key, $slide_args, $slide_data ) {
-
-		// Set in local variable so we don't accidentally overwrite it.
-		$background_type = $slide_data['background_type'];
-
-		// If there is no background, get rid of the atom.
-		if ( 'None' === $background_type ) {
-			unset( $slide_args['structure'][ $background_key ] );
-
-			return $slide_args;
-		}
-
-		if ( 'Image' === $background_type ) {
-
-			// If there's no image set, get rid of the atom.
-			if ( empty( $slide_data['image'] ) ) {
-				unset( $slide_args['structure'][ $background_key ] );
-
-				return $slide_args;
-			}
-
-			// Items are handled one-by-one so we don't accidentally overwrite preset array values.
-			$slide_args['structure'][ $background_key ]['atom'] = 'Image';
-
-			// Attachment ID
-			$slide_args['structure'][ $background_key ]['attachment_id'] = $slide_data['image'];
-
-			// Image size: preset to full, TODO: should make sure we have a way to filter if necessary
-			$slide_args['structure'][ $background_key ]['size'] = 'full';
-
-			// Slideshow backgrounds are often 100% of the viewport.
-			$slide_args['structure'][ $background_key ]['attributes'] = [
-				'sizes' => '100vw'
-			];
-
-		}
-
-		if ( 'Video' === $background_type ) {
-
-			// If there's no video or image files, get rid of the atom.
-			if ( empty( $slide_data['mp4'] ) && empty( $slide_data['webm'] ) && empty( $slide_data['jpg'] ) ) {
-				unset( $slide_args['structure'][ $background_key ] );
-
-				return $slide_args;
-			}
-
-			$slide_arg['structure'][ $background_key ]['atom'] = 'BackgroundVideo';
-
-			if ( ! empty( $slide_data['mp4'] ) ) {
-				$slide_args['structure'][ $background_key ]['mp4'] = 'mp4:' . $slide_data['mp4']['url'];
-			}
-			if ( ! empty( $slide_data['webm'] ) ) {
-				$slide_args['structure'][ $background_key ]['webm'] = 'webm:' . $slide_data['webm']['url'];
-			}
-			if ( ! empty( $slide_data['jpg'] ) ) {
-				$slide_args['structure'][ $background_key ]['jpg'] = 'poster:' . $slide_data['jpg']['url'];
-			}
-		}
-
-		if ( 'Color' === $background_type ) {
-
-			// If there's no color set, get rid of the atom.
-			if ( empty( $slide_data['background_color'] ) ) {
-				unset( $slide_args['structure'][ $background_key ] );
-
-				return $slide_args;
-			}
-
-			$slide_args['structure'][ $background_key ]['attributes']['style'] = 'background-color: ' . $slide_data['background_color'] . ';';
-
 		}
 
 		return $slide_args;

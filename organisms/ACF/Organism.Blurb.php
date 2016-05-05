@@ -9,18 +9,32 @@ class ACF_Blurb extends OrganismTemplate {
 
 		$this->structure = [
 			'inside' => [
-				'parts' => [ ]
+				'parts' => [
+					'image' => [
+						'atom' => 'image'
+					],
+					'title' => [
+						'tag'      => 'h3',
+						'tag_type' => 'false_without_content',
+						'content'  => $data['title']
+					],
+					'text'  => [
+						'tag'      => 'p',
+						'tag_type' => 'false_without_content',
+						'content'  => $data['text']
+					],
+					'link'  => [
+						'atom'     => 'Link',
+						'tag_type' => 'false_without_content',
+						'href'     => $data['link'],
+						'content'  => $data['link_text']
+					]
+				]
 			]
 		];
 
-		/*
-		 * Most of the blurb content fields are optional. So, we check that we have data first before setting the structure piece.
-		 * For this reason, all the pieces of the blurb are set up as "parts" of inside, which means we don't have to do advanced
-		 * checking for siblings or children, parts just runs right through it.
-		 */
-
 		/*——————————————————————————————————————————
-		/  Image
+		/  Image- handled separately because it's multiple pieces.
 		——————————————————————————————————————————*/
 		if ( '' !== $data['image'] ) {
 
@@ -38,51 +52,13 @@ class ACF_Blurb extends OrganismTemplate {
 			if ( '' !== $attachment_id ) {
 
 				$this->structure['inside']['parts']['image'] = [
-					'atom'          => 'image',
 					'attachment_id' => $attachment_id,
 					'class'         => [ $image_position_class ]
 				];
-			}
-		}
-
-		/*——————————————————————————————————————————
-		/  Title
-		——————————————————————————————————————————*/
-		if ( '' !== $data['title'] ) {
-
-			$this->structure['inside']['parts']['title'] = [
-				'tag'     => 'h3',
-				'content' => $data['title']
-			];
-		}
-
-		/*——————————————————————————————————————————
-		/  Text
-		——————————————————————————————————————————*/
-		if ( '' !== $data['text'] ) {
-
-			$this->structure['inside']['parts']['text'] = [
-				'tag'     => 'p',
-				'content' => $data['text']
-			];
-		}
-
-		/*——————————————————————————————————————————
-		/  Link
-		——————————————————————————————————————————*/
-		if ( '' !== $data['link'] ) {
-
-			if ( '' !== $data['link_text'] ) {
-				$link_text = $data['link_text'];
 			} else {
-				$link_text = 'Read More';
+				unset( $this->structure['inside']['parts']['image'] );
 			}
-
-			$this->structure['inside']['parts']['link'] = [
-				'atom'    => 'Link',
-				'href'    => $data['link'],
-				'content' => $link_text
-			];
 		}
+
 	}
 }
