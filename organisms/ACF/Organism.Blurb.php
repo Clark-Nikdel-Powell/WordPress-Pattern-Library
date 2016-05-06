@@ -5,8 +5,13 @@ class ACF_Blurb extends OrganismTemplate {
 
 	public function __construct( $data ) {
 
+		// Set the name before the parent construct so that default classes can get added.
+		if ( ! isset( $data['name'] ) ) {
+			$this->name = 'acf-blurb';
+		}
+		
 		parent::__construct( $data );
-
+		
 		$this->structure = [
 			'inside' => [
 				'parts' => [

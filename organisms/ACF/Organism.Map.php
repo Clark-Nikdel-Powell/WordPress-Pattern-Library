@@ -9,13 +9,11 @@ class ACF_Map extends OrganismTemplate {
 
 	public function __construct( $data = [ ] ) {
 
-		parent::__construct( $data );
-
 		if ( '' === $this->name ) {
-			$this->name = 'map';
+			$this->name = 'acf-map';
 		}
-
-		$this->attributes['class'][] = 'acf-map';
+		
+		parent::__construct( $data );
 
 		/*——————————————————————————————————————————————————————————
 		/  Markers Setup

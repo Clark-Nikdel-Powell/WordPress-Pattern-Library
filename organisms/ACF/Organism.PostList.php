@@ -1,35 +1,42 @@
 <?php
 namespace CNP;
 
-class ACF_Post_list extends PostList {
+class ACF_PostList extends PostList {
 
 	public $post_args;
+	public $data_type;
 
 	public function __construct( $data ) {
 
-		if ( !isset( $data['name'] ) ) {
+		if ( ! isset( $data['name'] ) ) {
 			$this->name = 'acf-postlist';
 		}
+
+		parent::__construct( $data );
 
 		if ( 'Automatic' === $data['data_type'] ) {
 
 			$this->post_args = [
-				'post_type' => $data['post_type'],
+				'post_type'   => $data['post_type'],
 				'numberposts' => $data['number_of_posts']
 			];
 
-			$this->posts = new \WP_Query($post_args);
+			$postlist_post_args_filter = $this->name . '_post_args';
+			$this->post_args = apply_filters( $postlist_post_args_filter, $this->post_args );
+			Atom::AddDebugEntry( 'Filter', $postlist_post_args_filter );
+
+			$this->posts = new \WP_Query( $this->post_args );
 		}
 
-		if ( 'Manual' === $data['data_type']) {
+		if ( 'Manual' === $data['data_type'] ) {
 			$this->posts = $data['manual_posts'];
 		}
 
 		$this->structure = [
 			'listtitle' => [
-				'tag' => 'h2',
+				'tag'      => 'h2',
 				'tag_type' => 'false_without_content',
-				'content' => $data['list_title']
+				'content'  => $data['list_title']
 			]
 		];
 
@@ -53,17 +60,17 @@ class ACF_Post_list extends PostList {
 
 		$link_name = $this->name . $this->separator . 'link';
 		$link_args = [
-			'atom' => 'Link',
+			'name'     => $link_name,
 			'tag_type' => 'false_without_content',
-			'content' => $data['link_text'],
-			'attributes' => [
-				'href' => $data['link']
-			]
+			'content'  => $data['link_text'],
+			'href'     => $data['link']
 		];
+		$link_obj  = new Link( $link_args );
+		$link_obj->getMarkup();
 
-		$this->after_content = Atom::Assemble($link_name, $link_args);
-
-		parent::__construct( $data );
+		if ( '' !== $link_obj->markup ) {
+			$this->after_content = $link_obj->markup;
+		}
 
 	}
 }
