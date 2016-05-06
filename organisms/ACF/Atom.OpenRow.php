@@ -12,8 +12,14 @@ class ACF_Open_row extends AtomTemplate {
 
 	public function __construct( $data ) {
 
+		// Set the name before the parent construct so that default classes can get added.
+		if ( ! isset( $data['name'] ) ) {
+			$this->name = 'acf-openrow';
+		}
+
 		parent::__construct( $data );
 
+		$this->tag = 'div';
 		$this->tag_type = 'split';
 
 	}
