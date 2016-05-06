@@ -75,3 +75,6 @@ include_once( $acf_dir . 'Atom.Content.php' );
 include_once( $acf_dir . 'Organism.Map.php' );
 include_once( $acf_dir . 'Organism.Blurb.php' );
 include_once( $acf_dir . 'Organism.Slideshow.php' );
+include_once( $acf_dir . 'Organism.BlurbList.php' );
+include_once( $acf_dir . 'Organism.PostList.php' );
+include_once( $acf_dir . 'Organism.PostList.php' );

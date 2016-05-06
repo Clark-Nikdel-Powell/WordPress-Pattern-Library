@@ -214,8 +214,10 @@ class ACF_Slideshow extends OrganismTemplate {
 
 		// Overwrite the default false value with true for each checked value.
 		$boolean_vars = [ ];
-		foreach ( $boolean_settings as $boolean_setting_key ) {
-			$boolean_vars[ $boolean_setting_key ] = true;
+		if ( ! empty( $boolean_settings ) ) {
+			foreach ( $boolean_settings as $boolean_setting_key ) {
+				$boolean_vars[ $boolean_setting_key ] = true;
+			}
 		}
 
 		// Merge the defaults (everything false) with the true values from our settings.

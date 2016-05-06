@@ -10,8 +10,10 @@ class ACF_Content extends AtomTemplate {
 		$this->tag_type = 'false_without_content';
 
 		if ( '' === $this->name ) {
-			$this->name = 'content';
+			$this->name = 'acf-content';
 		}
+
+		$this->tag = 'div';
 
 		if ( '' !== $data['content'] ) {
 			$this->content = $data['content'];

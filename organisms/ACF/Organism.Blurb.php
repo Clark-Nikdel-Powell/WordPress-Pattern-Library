@@ -36,17 +36,17 @@ class ACF_Blurb extends OrganismTemplate {
 		/*——————————————————————————————————————————
 		/  Image- handled separately because it's multiple pieces.
 		——————————————————————————————————————————*/
-		if ( '' !== $data['image'] ) {
+		if ( '' !== $data['foreground_image'] ) {
 
 			$attachment_id        = '';
 			$image_position_class = $data['media_placement'];
 
-			if ( is_int( $data['image'] ) ) {
-				$attachment_id = $data['image'];
+			if ( is_int( $data['foreground_image'] ) ) {
+				$attachment_id = $data['foreground_image'];
 			}
 
-			if ( is_array( $data['image'] ) ) {
-				$attachment_id = $data['image']['ID'];
+			if ( is_array( $data['foreground_image'] ) ) {
+				$attachment_id = $data['foreground_image']['ID'];
 			}
 
 			if ( '' !== $attachment_id ) {
@@ -59,6 +59,5 @@ class ACF_Blurb extends OrganismTemplate {
 				unset( $this->structure['inside']['parts']['image'] );
 			}
 		}
-
 	}
 }
