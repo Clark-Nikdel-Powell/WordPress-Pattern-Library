@@ -17,13 +17,13 @@ class BackgroundVideo extends AtomTemplate {
 		$this->vide_bg = [ ];
 
 		if ( ! empty( $data['mp4'] ) ) {
-			$this->vide_bg['mp4'] = 'mp4:' . $data['mp4']['url'];
+			$this->vide_bg['mp4'] = $data['mp4'];
 		}
 		if ( ! empty( $data['webm'] ) ) {
-			$this->vide_bg['webm'] = 'webm:' . $data['webm']['url'];
+			$this->vide_bg['webm'] = $data['webm'];
 		}
 		if ( ! empty( $data['jpg'] ) ) {
-			$this->vide_bg['jpg'] = 'poster:' . $data['jpg']['url'];
+			$this->vide_bg['jpg'] = $data['jpg'];
 		}
 
 		// Set the vide bg.

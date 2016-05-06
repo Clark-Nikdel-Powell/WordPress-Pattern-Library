@@ -59,7 +59,7 @@ class Helpers {
 				return $structure_array;
 			}
 
-			$slide_arg['structure'][ $background_key ]['atom'] = 'BackgroundVideo';
+			$structure_array[ $background_key ]['atom'] = 'BackgroundVideo';
 
 			if ( ! empty( $data['mp4'] ) ) {
 				$structure_array[ $background_key ]['mp4'] = 'mp4:' . $data['mp4']['url'];
