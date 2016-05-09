@@ -178,7 +178,7 @@ class ACF_Slideshow extends OrganismTemplate {
 	 * Page for site-wide Slideshow Settings. If options aren't available from the ACF Options page, they could still
 	 * be filtered in or Slick can use the defaults.
 	 */
-	private function parseSlideshowOptionsAsAttribute() {
+	public function parseSlideshowOptionsAsAttribute() {
 
 		/**
 		 * Intialize all the booleans to false-- anything that's checked is set to true.
