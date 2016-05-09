@@ -100,7 +100,7 @@ class ACF_Slideshow extends OrganismTemplate {
 
 		foreach ( $this->slides as $slide_index => $slide_data ) {
 			$slide_args = $this->slide_organism_args;
-			self::generateSlide( $slide_args, $slide_data, $slide_index );
+			$this::generateSlide( $slide_args, $slide_data, $slide_index );
 		}
 
 		parent::getMarkup();
