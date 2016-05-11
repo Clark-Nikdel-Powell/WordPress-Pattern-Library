@@ -47,6 +47,7 @@ include_once( $atoms_dir . 'Menu.php' );
 include_once( $atoms_dir . 'Image.php' );
 include_once( $atoms_dir . 'ContentSourceLink.php' );
 include_once( $atoms_dir . 'BackgroundVideo.php' );
+include_once( $atoms_dir . 'PostTermLinkSingle.php' );
 
 
 /*——————————————————————————————————————————————————————————————————————————————

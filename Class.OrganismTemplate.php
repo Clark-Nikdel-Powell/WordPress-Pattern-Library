@@ -11,11 +11,18 @@ namespace CNP;
 class OrganismTemplate {
 
 	public $name;
+	public $separator;
+	public $tag;
+	public $tag_type;
+	public $attributes;
+	public $attribute_quote_style;
+	public $before_content;
+	public $after_content;
 
 	public function __construct( $data ) {
 
 		if ( isset( $data['name'] ) ) {
-			$this->name =  $data['name'];
+			$this->name = $data['name'];
 		}
 
 		$this->tag = isset( $data['tag'] ) ? $data['tag'] : 'div';
@@ -26,7 +33,7 @@ class OrganismTemplate {
 
 		$this->tag_type = 'split';
 
-		$this->attributes = isset( $data['attributes'] ) ? $data['attributes'] : '';
+		$this->attributes            = isset( $data['attributes'] ) ? $data['attributes'] : '';
 		$this->attribute_quote_style = isset( $data['attribute_quote_style'] ) ? $data['attribute_quote_style'] : '"';
 
 		// Ensures that the 'class' attribute is set if it wasn't passed in with attributes.
@@ -49,24 +56,24 @@ class OrganismTemplate {
 		}
 
 		// ID shorthand, sanitized for user-input, in case it's coming from ACF
-		if ( !empty( $data['id'] ) ) {
+		if ( ! empty( $data['id'] ) ) {
 			$this->attributes['id'] = trim( $data['id'] );
 		}
 
 		$this->before_content = isset( $data['before_content'] ) ? $data['before_content'] : '';
 		$this->after_content  = isset( $data['after_content'] ) ? $data['after_content'] : '';
 
-		$this->structure = isset( $data['structure'] ) ? $data['structure'] : '';
+		$this->structure = isset( $data['structure'] ) ? $data['structure'] : [ ];
 
 		// Filter the Organism structure.
 		$organism_name_structure_filter = $this->name . '_structure_filter';
-		$this->structure  = apply_filters( $organism_name_structure_filter, $this->structure );
+		$this->structure                = apply_filters( $organism_name_structure_filter, $this->structure );
 		Atom::AddDebugEntry( 'Filter', $organism_name_structure_filter );
 
 		$this->markup_array = [ ];
 
-		$this->posts           = isset( $data['posts'] ) ? $data['posts'] : '';
-		$this->posts_structure = isset( $data['posts-structure'] ) ? $data['posts-structure'] : '';
+		$this->posts           = isset( $data['posts'] ) ? $data['posts'] : [ ];
+		$this->posts_structure = isset( $data['posts-structure'] ) ? $data['posts-structure'] : [ ];
 
 		$this->posts_markup_array = [ ];
 		$this->markup             = '';
@@ -100,7 +107,7 @@ class OrganismTemplate {
 			$markup_pieces[] = self::setupMarkupArray( $this->structure );
 		}
 
-		if ( ! empty( $this->posts ) ) {
+		if ( ! empty( $this->posts ) && empty( $this->posts_markup_array ) ) {
 			$markup_pieces[] = self::loopPosts();
 		}
 
@@ -113,9 +120,9 @@ class OrganismTemplate {
 		Atom::AddDebugEntry( 'Filter', $organism_name_markup_pieces_order_filter );
 
 		$wrapper_args = [
-			'tag'        => $this->tag,
-			'tag_type'   => $this->tag_type,
-			'attributes' => $this->attributes,
+			'tag'                   => $this->tag,
+			'tag_type'              => $this->tag_type,
+			'attributes'            => $this->attributes,
 			'attribute_quote_style' => $this->attribute_quote_style
 		];
 
@@ -136,12 +143,12 @@ class OrganismTemplate {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @internal array $posts  An array of WP Post Objects to loop through
-	 * @internal array $posts-structure  The structure array for each individual post.
+	 * array $posts  An array of WP Post Objects to loop through
+	 * array $posts-structure  The structure array for each individual post.
 	 *
 	 * @return array
 	 */
-	protected function loopPosts() {
+	public function loopPosts() {
 
 		$post_atoms_arr = [ ];
 

@@ -67,10 +67,10 @@ class ACF_Slideshow extends OrganismTemplate {
 							'content'  => ''
 						],
 						'link'        => [
-							'atom'    => 'Link',
+							'atom'     => 'Link',
 							'tag_type' => 'false_without_content',
-							'href'    => '',
-							'content' => ''
+							'href'     => '',
+							'content'  => ''
 						]
 					]
 				]
@@ -178,7 +178,7 @@ class ACF_Slideshow extends OrganismTemplate {
 	 * Page for site-wide Slideshow Settings. If options aren't available from the ACF Options page, they could still
 	 * be filtered in or Slick can use the defaults.
 	 */
-	private function parseSlideshowOptionsAsAttribute() {
+	public function parseSlideshowOptionsAsAttribute() {
 
 		/**
 		 * Intialize all the booleans to false-- anything that's checked is set to true.
@@ -207,6 +207,10 @@ class ACF_Slideshow extends OrganismTemplate {
 
 		// This will return any key that is set to true.
 		$boolean_settings = Utility::getAcfFieldsAsArray( [ 'slideshow_boolean_options' ], true );
+
+		if ( is_null( $boolean_settings ) ) {
+			return false;
+		}
 
 		if ( is_array( $boolean_settings ) ) {
 			$boolean_settings = $boolean_settings['slideshow_boolean_options'];

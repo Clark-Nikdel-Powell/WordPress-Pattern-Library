@@ -17,6 +17,8 @@ class AtomTemplate {
 		$this->tag        = isset( $data['tag'] ) ? $data['tag'] : '';
 		$this->tag_type   = isset( $data['tag_type'] ) ? $data['tag_type'] : '';
 		$this->content    = isset( $data['content'] ) ? $data['content'] : '';
+		$this->before     = isset( $data['before'] ) ? $data['before'] : '';
+		$this->after      = isset( $data['after'] ) ? $data['after'] : '';
 		$this->attributes = isset( $data['attributes'] ) ? $data['attributes'] : [ ];
 		$this->markup     = '';
 

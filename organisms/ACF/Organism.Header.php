@@ -14,7 +14,6 @@ class ACF_Header extends OrganismTemplate {
 
 		$this->structure = [
 			'background' => [
-				'tag'     => 'div',
 				'sibling' => 'text'
 			],
 			'text'       => [
@@ -35,16 +34,16 @@ class ACF_Header extends OrganismTemplate {
 						'content'  => $data['description']
 					],
 					'link'        => [
-						'atom'     => 'Link',
+						'atom'    => 'Link',
 						'tag_type' => 'false_without_content',
-						'href'     => $data['link'],
-						'content'  => $data['link_text']
+						'href'    => $data['link'],
+						'content' => $data['link_text']
 					]
 				]
 			]
 		];
 
-		$this->structure = Helpers::setBackgroundOnStructureArray( $data, 'background', $this->structure );
+		$this->structure = Helpers::setBackgroundOnStructureArray($data, 'background', $this->structure);
 
 	}
 }

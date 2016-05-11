@@ -14,6 +14,8 @@ class BackgroundVideo extends AtomTemplate {
 			$this->name = 'backgroundVideo';
 		}
 
+		$this->tag = 'div';
+
 		$this->vide_bg = [ ];
 
 		if ( ! empty( $data['mp4'] ) ) {
