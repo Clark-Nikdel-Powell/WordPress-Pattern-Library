@@ -16,7 +16,6 @@ class ACF_Blurb extends OrganismTemplate {
 			'inside' => [
 				'parts' => [
 					'image' => [
-						'tag_type' => 'false_without_content',
 					],
 					'icon'  => [
 						'tag_type' => 'false_without_content',
@@ -42,12 +41,15 @@ class ACF_Blurb extends OrganismTemplate {
 			]
 		];
 
-		$media_position_class = 'position--' . $data['media_placement'];
+		$media_position_class = '';
+		if ( isset( $data['media_placement'] ) ) {
+			$media_position_class = 'position--' . $data['media_placement'];
+		}
 
 		/*——————————————————————————————————————————
 		/  Image- handled separately because it's multiple pieces.
 		——————————————————————————————————————————*/
-		if ( '' !== $data['foreground_image'] ) {
+		if ( isset($data['foreground_image']) && '' !== $data['foreground_image'] ) {
 
 			$attachment_id = '';
 
@@ -74,7 +76,7 @@ class ACF_Blurb extends OrganismTemplate {
 		/*——————————————————————————————————————————
 		/  Icon generates after check
 		——————————————————————————————————————————*/
-		if ( '' !== $data['icon_name'] ) {
+		if ( isset($data['icon_name']) && '' !== $data['icon_name'] ) {
 			$this->structure['inside']['parts']['icon']['content'] = Utility::getSvgIcon( $data['icon_name'] );
 			$this->structure['inside']['parts']['icon']['class']   = $media_position_class;
 		}
