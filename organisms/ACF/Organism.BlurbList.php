@@ -21,6 +21,7 @@ class ACF_BlurbList extends OrganismTemplate {
 	public $blurb_organism_args;
 
 	public function __construct( $data ) {
+
 		if ( ! isset( $data['name'] ) ) {
 			$data['name'] = 'acf-blurblist';
 			$this->name   = $data['name'];
@@ -43,9 +44,33 @@ class ACF_BlurbList extends OrganismTemplate {
 		$this->id              = $data['id'];
 
 		$this->structure = [
-			'blurbs' => [
+			'listtitle' => [
+				'tag'      => 'h2',
+				'tag_type' => 'false_without_content',
+				'content'  => $this->list_title,
+				'sibling'  => 'listintro'
+			],
+			'listintro' => [
+				'tag'      => 'p',
+				'tag_type' => 'false_without_content',
+				'content'  => $this->list_intro,
+				'sibling'  => 'blurbs'
+			],
+			'blurbs'    => [
 				'tag_type' => 'content-only',
-				'content'  => ''
+				'content'  => '',
+				'sibling'  => 'listlink'
+			],
+			'listlink'  => [
+				'atom'  => '',
+				'parts' => [
+					'link' => [
+						'atom'     => 'Link',
+						'tag_type' => 'false_without_content',
+						'href'     => $this->list_link,
+						'content'  => $this->list_link_text
+					]
+				]
 			]
 		];
 
@@ -235,6 +260,7 @@ class ACF_BlurbList extends OrganismTemplate {
 		}
 
 		return $args;
+
 	}
 
 }
