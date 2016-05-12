@@ -15,6 +15,15 @@ class ACF_Content extends AtomTemplate {
 		$this->tag = 'div';
 		$this->tag_type = 'false_without_content';
 
+		$standard_classes = [ 'acf-content' ];
+		$data_classes     = [ ];
+
+		if ( ! empty( $data['class'] ) ) {
+			$data_classes = Utility::parseClassesAsArray( $data['class'] );
+		}
+
+		$this->attributes['class'] = array_merge( $standard_classes, $data_classes );
+
 		if ( '' !== $data['content'] ) {
 			$this->content = $data['content'];
 		}
