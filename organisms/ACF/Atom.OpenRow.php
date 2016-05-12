@@ -20,9 +20,16 @@ class ACF_OpenRow extends AtomTemplate {
 
 		parent::__construct( $data );
 
-		$this->tag = 'div';
-		$this->tag_type = 'split';
-		$this->attributes['class'] = ['acf-openrow', 'row'];
+		$this->tag        = 'div';
+		$this->tag_type   = 'split';
+		$standard_classes = [ 'acf-openrow', 'row' ];
+		$data_classes     = [ ];
+
+		if ( ! empty( $data['class'] ) ) {
+			$data_classes = Utility::parseClassesAsArray( $data['class'] );
+		}
+
+		$this->attributes['class'] = array_merge( $standard_classes, $data_classes );
 
 	}
 
