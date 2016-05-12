@@ -67,7 +67,7 @@ class OrganismTemplate {
 
 		// Filter the Organism structure.
 		$organism_name_structure_filter = $this->name . '_structure_filter';
-		$this->structure                = apply_filters( $organism_name_structure_filter, $this->structure );
+		$this->structure                = apply_filters( $organism_name_structure_filter, $this->structure, $this );
 		Atom::AddDebugEntry( 'Filter', $organism_name_structure_filter );
 
 		$this->markup_array = [ ];
