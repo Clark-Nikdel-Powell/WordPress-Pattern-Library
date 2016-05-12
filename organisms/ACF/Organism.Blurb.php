@@ -27,7 +27,7 @@ class ACF_Blurb extends OrganismTemplate {
 						'content'  => $data['title']
 					],
 					'text'  => [
-						'tag'      => 'p',
+						'tag'      => 'div',
 						'tag_type' => 'false_without_content',
 						'content'  => $data['text']
 					],
