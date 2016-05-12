@@ -10,7 +10,8 @@ class ACF_Slideshow extends OrganismTemplate {
 
 		// Set the name before the parent construct so that default classes can get added.
 		if ( ! isset( $data['name'] ) ) {
-			$this->name = 'acf-slideshow';
+			$data['name'] = 'acf-slideshow';
+			$this->name   = $data['name'];
 		}
 
 		parent::__construct( $data );

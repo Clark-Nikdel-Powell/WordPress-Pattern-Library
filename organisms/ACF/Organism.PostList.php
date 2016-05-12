@@ -9,8 +9,9 @@ class ACF_PostList extends PostList {
 
 	public function __construct( $data ) {
 
-		if ( ! isset( $this->name ) ) {
-			$this->name = 'acf-postlist';
+		if ( ! isset( $data['name'] ) ) {
+			$data['name'] = 'acf-postlist';
+			$this->name   = $data['name'];
 		}
 
 		parent::__construct( $data );

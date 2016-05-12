@@ -7,7 +7,8 @@ class ACF_Header extends OrganismTemplate {
 
 		// Set the name before the parent construct so that default classes can get added.
 		if ( ! isset( $data['name'] ) ) {
-			$this->name = 'acf-header';
+			$data['name'] = 'acf-header';
+			$this->name   = $data['name'];
 		}
 
 		parent::__construct( $data );

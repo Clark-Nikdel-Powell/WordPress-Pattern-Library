@@ -9,10 +9,11 @@ class ACF_Map extends OrganismTemplate {
 
 	public function __construct( $data = [ ] ) {
 
-		if ( '' === $this->name ) {
-			$this->name = 'acf-map';
+		if ( ! isset( $data['name'] ) ) {
+			$data['name'] = 'acf-map';
+			$this->name   = $data['name'];
 		}
-		
+
 		parent::__construct( $data );
 
 		/*——————————————————————————————————————————————————————————
