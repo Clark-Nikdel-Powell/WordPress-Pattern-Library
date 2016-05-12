@@ -57,9 +57,9 @@ class ACF_BlurbList extends OrganismTemplate {
 				'sibling'  => 'blurbs'
 			],
 			'blurbs'    => [
-				'tag_type' => 'content-only',
-				'content'  => '',
-				'sibling'  => 'listlink'
+				'class'   => [ 'row' ],
+				'content' => '',
+				'sibling' => 'listlink'
 			],
 			'listlink'  => [
 				'atom'  => '',
