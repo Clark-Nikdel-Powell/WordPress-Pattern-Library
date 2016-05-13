@@ -62,15 +62,10 @@ class ACF_BlurbList extends OrganismTemplate {
 				'sibling' => 'listlink'
 			],
 			'listlink'  => [
-				'atom'  => '',
-				'parts' => [
-					'link' => [
-						'atom'     => 'Link',
-						'tag_type' => 'false_without_content',
-						'href'     => $this->list_link,
-						'content'  => $this->list_link_text
-					]
-				]
+				'atom'     => 'Link',
+				'tag_type' => 'false_without_content',
+				'href'     => $this->list_link,
+				'content'  => $this->list_link_text
 			]
 		];
 
@@ -92,7 +87,7 @@ class ACF_BlurbList extends OrganismTemplate {
 							'content'  => ''
 						],
 						'text'  => [
-							'tag_type' => 'content-only',
+							'tag_type' => 'false_without_content',
 							'content'  => ''
 						],
 						'link'  => [
