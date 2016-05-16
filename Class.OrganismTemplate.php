@@ -53,12 +53,15 @@ class OrganismTemplate {
 			if ( ! empty( $classes_arr ) ) {
 				$this->attributes['class'] = array_merge( $this->attributes['class'], $classes_arr );
 			}
+
 		}
+		unset( $this->class );
 
 		// ID shorthand, sanitized for user-input, in case it's coming from ACF
 		if ( ! empty( $data['id'] ) ) {
 			$this->attributes['id'] = trim( $data['id'] );
 		}
+		unset( $this->id );
 
 		$this->before_content = isset( $data['before_content'] ) ? $data['before_content'] : '';
 		$this->after_content  = isset( $data['after_content'] ) ? $data['after_content'] : '';

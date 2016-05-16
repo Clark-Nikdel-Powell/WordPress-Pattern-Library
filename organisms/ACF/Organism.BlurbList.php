@@ -27,8 +27,6 @@ class ACF_BlurbList extends OrganismTemplate {
 			$this->name   = $data['name'];
 		}
 
-		parent::__construct( $data );
-
 		$this->label           = $data['label'];
 		$this->background_type = $data['background_type'];
 		$this->link_type       = $data['link_type'];
@@ -43,7 +41,7 @@ class ACF_BlurbList extends OrganismTemplate {
 		$this->class           = $data['class'];
 		$this->id              = $data['id'];
 
-		$this->structure = [
+		$data['structure'] = [
 			'listtitle' => [
 				'tag'      => 'h2',
 				'tag_type' => 'false_without_content',
@@ -98,6 +96,8 @@ class ACF_BlurbList extends OrganismTemplate {
 				]
 			]
 		];
+
+		parent::__construct( $data );
 
 	}
 
