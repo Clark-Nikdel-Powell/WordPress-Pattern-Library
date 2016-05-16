@@ -24,9 +24,10 @@ class ACF_BlurbList extends OrganismTemplate {
 
 		if ( ! isset( $data['name'] ) || empty( $data['name'] ) ) {
 			$data['name'] = 'acf-blurblist';
-			$this->name   = $data['name'];
 		}
 
+		$this->name            = $data['name'];
+		$this->separator       = '__';
 		$this->label           = $data['label'];
 		$this->background_type = $data['background_type'];
 		$this->link_type       = $data['link_type'];
