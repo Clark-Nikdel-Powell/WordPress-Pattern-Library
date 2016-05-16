@@ -11,9 +11,7 @@ class ACF_Header extends OrganismTemplate {
 			$this->name   = $data['name'];
 		}
 
-		parent::__construct( $data );
-
-		$this->structure = [
+		$data['structure'] = [
 			'background' => [
 				'sibling' => 'text'
 			],
@@ -44,7 +42,9 @@ class ACF_Header extends OrganismTemplate {
 			]
 		];
 
-		$this->structure = Helpers::setBackgroundOnStructureArray($data, 'background', $this->structure);
+		$data['structure'] = Helpers::setBackgroundOnStructureArray($data, 'background', $data['structure']);
+
+		parent::__construct( $data );
 
 	}
 }
