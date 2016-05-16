@@ -257,5 +257,4 @@ class ACF_BlurbList extends OrganismTemplate {
 		return $args;
 
 	}
-
 }
