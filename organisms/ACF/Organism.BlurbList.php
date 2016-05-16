@@ -22,7 +22,7 @@ class ACF_BlurbList extends OrganismTemplate {
 
 	public function __construct( $data ) {
 
-		if ( ! isset( $data['name'] ) ) {
+		if ( ! isset( $data['name'] ) || empty( $data['name'] ) ) {
 			$data['name'] = 'acf-blurblist';
 			$this->name   = $data['name'];
 		}

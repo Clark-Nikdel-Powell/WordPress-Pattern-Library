@@ -5,7 +5,7 @@ class ACF_Content extends AtomTemplate {
 
 	public function __construct( $data ) {
 
-		if ( ! isset( $data['name'] ) ) {
+		if ( ! isset( $data['name'] ) || empty( $data['name'] ) ) {
 			$data['name'] = 'acf-content';
 			$this->name   = $data['name'];
 		}
