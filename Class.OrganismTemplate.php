@@ -22,7 +22,7 @@ class OrganismTemplate {
 	public function __construct( $data ) {
 
 		if ( isset( $data['name'] ) ) {
-			$this->name = $data['name'];
+			$this->name = sanitize_html_class( $data['name'] );
 		}
 
 		$this->tag = isset( $data['tag'] ) ? $data['tag'] : 'div';
