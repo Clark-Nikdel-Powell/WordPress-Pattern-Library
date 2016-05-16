@@ -12,10 +12,10 @@ class ACF_Content extends AtomTemplate {
 
 		parent::__construct( $data );
 
-		$this->tag = 'div';
+		$this->tag      = 'div';
 		$this->tag_type = 'false_without_content';
 
-		$standard_classes = [ 'acf-content' ];
+		$standard_classes = [ $this->name ];
 		$data_classes     = [ ];
 
 		if ( ! empty( $data['class'] ) ) {
