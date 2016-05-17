@@ -22,13 +22,12 @@ class ACF_BlurbList extends OrganismTemplate {
 
 	public function __construct( $data ) {
 
-		if ( ! isset( $data['name'] ) ) {
+		if ( ! isset( $data['name'] ) || empty( $data['name'] ) ) {
 			$data['name'] = 'acf-blurblist';
-			$this->name   = $data['name'];
 		}
 
-		parent::__construct( $data );
-
+		$this->name            = $data['name'];
+		$this->separator       = '__';
 		$this->label           = $data['label'];
 		$this->background_type = $data['background_type'];
 		$this->link_type       = $data['link_type'];
@@ -43,7 +42,7 @@ class ACF_BlurbList extends OrganismTemplate {
 		$this->class           = $data['class'];
 		$this->id              = $data['id'];
 
-		$this->structure = [
+		$data['structure'] = [
 			'listtitle' => [
 				'tag'      => 'h2',
 				'tag_type' => 'false_without_content',
@@ -62,15 +61,10 @@ class ACF_BlurbList extends OrganismTemplate {
 				'sibling' => 'listlink'
 			],
 			'listlink'  => [
-				'atom'  => '',
-				'parts' => [
-					'link' => [
-						'atom'     => 'Link',
-						'tag_type' => 'false_without_content',
-						'href'     => $this->list_link,
-						'content'  => $this->list_link_text
-					]
-				]
+				'atom'     => 'Link',
+				'tag_type' => 'false_without_content',
+				'href'     => $this->list_link,
+				'content'  => $this->list_link_text
 			]
 		];
 
@@ -92,7 +86,7 @@ class ACF_BlurbList extends OrganismTemplate {
 							'content'  => ''
 						],
 						'text'  => [
-							'tag_type' => 'content-only',
+							'tag_type' => 'false_without_content',
 							'content'  => ''
 						],
 						'link'  => [
@@ -103,6 +97,8 @@ class ACF_BlurbList extends OrganismTemplate {
 				]
 			]
 		];
+
+		parent::__construct( $data );
 
 	}
 
@@ -262,5 +258,4 @@ class ACF_BlurbList extends OrganismTemplate {
 		return $args;
 
 	}
-
 }

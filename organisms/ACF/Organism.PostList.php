@@ -9,7 +9,7 @@ class ACF_PostList extends PostList {
 
 	public function __construct( $data ) {
 
-		if ( ! isset( $data['name'] ) ) {
+		if ( ! isset( $data['name'] ) || empty( $data['name'] ) ) {
 			$data['name'] = 'acf-postlist';
 			$this->name   = $data['name'];
 		}

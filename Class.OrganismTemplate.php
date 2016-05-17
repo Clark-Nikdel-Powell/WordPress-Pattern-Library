@@ -22,7 +22,7 @@ class OrganismTemplate {
 	public function __construct( $data ) {
 
 		if ( isset( $data['name'] ) ) {
-			$this->name = $data['name'];
+			$this->name = sanitize_html_class( $data['name'] );
 		}
 
 		$this->tag = isset( $data['tag'] ) ? $data['tag'] : 'div';
@@ -53,12 +53,15 @@ class OrganismTemplate {
 			if ( ! empty( $classes_arr ) ) {
 				$this->attributes['class'] = array_merge( $this->attributes['class'], $classes_arr );
 			}
+
 		}
+		unset( $this->class );
 
 		// ID shorthand, sanitized for user-input, in case it's coming from ACF
 		if ( ! empty( $data['id'] ) ) {
 			$this->attributes['id'] = trim( $data['id'] );
 		}
+		unset( $this->id );
 
 		$this->before_content = isset( $data['before_content'] ) ? $data['before_content'] : '';
 		$this->after_content  = isset( $data['after_content'] ) ? $data['after_content'] : '';
@@ -67,7 +70,7 @@ class OrganismTemplate {
 
 		// Filter the Organism structure.
 		$organism_name_structure_filter = $this->name . '_structure_filter';
-		$this->structure                = apply_filters( $organism_name_structure_filter, $this->structure );
+		$this->structure                = apply_filters( $organism_name_structure_filter, $this->structure, $this );
 		Atom::AddDebugEntry( 'Filter', $organism_name_structure_filter );
 
 		$this->markup_array = [ ];
