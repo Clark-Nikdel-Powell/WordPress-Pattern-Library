@@ -50,7 +50,7 @@ class ACF_Blurb extends OrganismTemplate {
 		/*——————————————————————————————————————————
 		/  Image- handled separately because it's multiple pieces.
 		——————————————————————————————————————————*/
-		if ( isset($data['foreground_image']) && '' !== $data['foreground_image'] ) {
+		if ( isset( $data['foreground_image'] ) && '' !== $data['foreground_image'] ) {
 
 			$attachment_id = '';
 
@@ -77,7 +77,8 @@ class ACF_Blurb extends OrganismTemplate {
 		/*——————————————————————————————————————————
 		/  Icon generates after check
 		——————————————————————————————————————————*/
-		if ( isset($data['icon_name']) && '' !== $data['icon_name'] ) {
+		if ( isset( $data['icon_name'] ) && '' !== $data['icon_name'] ) {
+			$this->attributes['class'][]                           = $this->name . '--has-icon';
 			$this->structure['inside']['parts']['icon']['content'] = Utility::getSvgIcon( $data['icon_name'] );
 			$this->structure['inside']['parts']['icon']['class']   = $media_position_class;
 		}
