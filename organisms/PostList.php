@@ -11,20 +11,6 @@ class PostList extends OrganismTemplate {
 			$this->name = 'postlist';
 		}
 
-		if ( ! isset( $data['posts'] ) && empty( $this->posts ) ) {
-
-			$post_args = [
-				'numberposts' => '5'
-			];
-
-			$postlist_post_args_filter = $this->name . '_post_args';
-			$post_args                 = apply_filters( $postlist_post_args_filter, $post_args );
-			Atom::AddDebugEntry( 'Filter', $postlist_post_args_filter );
-
-			$this->posts = new \WP_Query( $post_args );
-
-		}
-
 		if ( ! isset( $data['posts-structure'] ) && empty( $this->posts_structure ) ) {
 
 			$posts_structure = [

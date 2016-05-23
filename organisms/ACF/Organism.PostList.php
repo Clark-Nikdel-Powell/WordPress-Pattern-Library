@@ -6,6 +6,9 @@ class ACF_PostList extends PostList {
 	public $post_args;
 	public $data_type;
 	public $link_after_content;
+	public $list_title;
+	public $list_link;
+	public $list_link_text;
 
 	public function __construct( $data ) {
 
@@ -13,6 +16,10 @@ class ACF_PostList extends PostList {
 			$data['name'] = 'acf-postlist';
 			$this->name   = $data['name'];
 		}
+
+		$this->list_title     = $data['list_title'];
+		$this->list_link      = $data['link'];
+		$this->list_link_text = $data['link_text'];
 
 		parent::__construct( $data );
 
@@ -77,8 +84,8 @@ class ACF_PostList extends PostList {
 			if ( 'Automatic' === $data['data_type'] ) {
 
 				$this->post_args = [
-					'post_type'   => $data['post_type'],
-					'numberposts' => $data['number_of_posts']
+					'post_type'      => $data['post_type'],
+					'posts_per_page' => $data['number_of_posts']
 				];
 			}
 
@@ -89,11 +96,6 @@ class ACF_PostList extends PostList {
 
 		// It'll still be empty unless we're dealing with a manual post list.
 		if ( empty( $this->posts ) ) {
-
-			$postlist_post_args_filter = $this->name . '_post_args';
-			$this->post_args           = apply_filters( $postlist_post_args_filter, $this->post_args );
-			Atom::AddDebugEntry( 'Filter', $postlist_post_args_filter );
-
 			$this->posts = new \WP_Query( $this->post_args );
 		}
 	}

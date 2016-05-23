@@ -68,19 +68,26 @@ class OrganismTemplate {
 
 		$this->structure = isset( $data['structure'] ) ? $data['structure'] : [ ];
 
-		// Filter the Organism structure.
-		$organism_name_structure_filter = $this->name . '_structure_filter';
-		$this->structure                = apply_filters( $organism_name_structure_filter, $this->structure, $this );
-		Atom::AddDebugEntry( 'Filter', $organism_name_structure_filter );
-
 		$this->markup_array = [ ];
 
+		$this->post_args       = isset( $data['post-args'] ) ? $data['post-args'] : [ ];
 		$this->posts           = isset( $data['posts'] ) ? $data['posts'] : [ ];
 		$this->posts_structure = isset( $data['posts-structure'] ) ? $data['posts-structure'] : [ ];
 
 		$this->posts_markup_array = [ ];
 		$this->markup             = '';
 
+		// Filter the Organism structure.
+		$organism_name_structure_filter = $this->name . '_structure_filter';
+		$this->structure                = apply_filters( $organism_name_structure_filter, $this->structure, $this );
+		Atom::AddDebugEntry( 'Filter', $organism_name_structure_filter );
+
+		// Filter the Post Args
+		if ( ! empty( $this->post_args ) ) {
+			$organism_name_post_args_filter = $this->name . '_post_args_filter';
+			$this->post_args                = apply_filters( $organism_name_post_args_filter, $this->post_args, $this );
+			Atom::AddDebugEntry( 'Filter', $organism_name_post_args_filter );
+		}
 	}
 
 	/**
