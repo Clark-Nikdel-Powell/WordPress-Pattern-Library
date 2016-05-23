@@ -17,9 +17,9 @@ class ACF_PostList extends PostList {
 			$this->name   = $data['name'];
 		}
 
-		$this->list_title     = $data['list_title'];
-		$this->list_link      = $data['link'];
-		$this->list_link_text = $data['link_text'];
+		$this->list_title     = isset( $data['list_title'] ) ? $data['list_title'] : '';
+		$this->list_link      = isset( $data['link'] ) ? $data['link'] : '';
+		$this->list_link_text = isset( $data['link_text'] ) ? $data['link_text'] : '';
 
 		parent::__construct( $data );
 
