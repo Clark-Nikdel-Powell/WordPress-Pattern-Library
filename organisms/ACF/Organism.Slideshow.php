@@ -14,6 +14,21 @@ class ACF_Slideshow extends OrganismTemplate {
 			$this->name   = $data['name'];
 		}
 
+		/*——————————————————————————————————————————————————————————
+		/  Set Default Slideshow Structure
+		————————————————————————————————————————————————————————————
+		The "content-only" part here is super-important. This way, "slides" doesn't get output directly, but its content does.
+		This fits the single-nesting setup that Slick adheres to.
+		*/
+		if ( ! isset( $data['structure'] ) ) {
+			$data['structure'] = [
+				'slides' => [
+					'tag_type' => 'content-only',
+					'content'  => '',
+				]
+			];
+		}
+
 		parent::__construct( $data );
 
 		/*——————————————————————————————————————————————————————————
@@ -26,19 +41,6 @@ class ACF_Slideshow extends OrganismTemplate {
 		——————————————————————————————————————————————————————————*/
 		$this->attribute_quote_style = "'";
 		self::parseSlideshowOptionsAsAttribute();
-
-		/*——————————————————————————————————————————————————————————
-		/  Set Default Slideshow Structure
-		————————————————————————————————————————————————————————————
-		The "content-only" part here is super-important. This way, "slides" doesn't get output directly, but its content does.
-		This fits the single-nesting setup that Slick adheres to.
-		*/
-		$this->structure = [
-			'slides' => [
-				'tag_type' => 'content-only',
-				'content'  => '',
-			]
-		];
 
 		/*——————————————————————————————————————————————————————————
 		/  Set Default Slide Structure
