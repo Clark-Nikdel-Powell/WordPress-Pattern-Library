@@ -21,7 +21,9 @@ class Loop extends AtomTemplate {
 			$this->name = 'loop';
 		}
 
-		$this->tag = 'div';
+		if ( '' == $data['tag'] ) {
+			$this->tag = 'div';
+		}
 
 		if ( isset( $data['array'] ) && isset( $data['format'] ) ) {
 
