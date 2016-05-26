@@ -22,8 +22,10 @@ class Link extends AtomTemplate {
 		if ( '' == $this->name ) {
 			$this->name = 'link';
 		}
-		$this->tag                = 'a';
-		$this->attributes['href'] = isset($data['href']) ? $data['href'] : '';
+		$this->tag = 'a';
+		if ( isset( $data['href'] ) ) {
+			$this->attributes['href'] = $data['href'];
+		}
 
 	}
 }
