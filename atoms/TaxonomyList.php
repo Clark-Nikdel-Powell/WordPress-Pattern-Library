@@ -4,7 +4,7 @@ namespace CNP;
 /**
  * TaxonomyList.
  *
- * Uses get_the_term_list() to return a comma-delimited list of custom taxonomy terms in a paragraph.
+ * Uses get_the_term_list() to return a comma-delimited list of custom taxonomy terms in a paragraph tag.
  *
  * @since 0.1.0
  *
