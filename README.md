@@ -11,15 +11,26 @@ The AtomTemplate class is a way of defining common atom arguments. The method **
 #### Link
 
 A standard link. 
-Parameters:
+
+##### Parameters:
 
 - **href**: the link URL.
+
+##### Uses: 
+
+- None
 
 #### PostLink
 
 A link to a post.
-Uses: `get_permalink()`
-Parameters: none.
+
+##### Uses: 
+
+- `get_permalink()`
+
+##### Parameters: 
+
+- None
 
 #### FrontPageLink 
 
