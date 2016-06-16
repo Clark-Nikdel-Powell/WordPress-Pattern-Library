@@ -19,8 +19,9 @@ class Excerpt extends AtomTemplate {
 		if ( '' == $this->name ) {
 			$this->name = 'excerpt';
 		}
-		$this->tag     = isset( $data['tag'] ) ? $data['tag'] : 'p';
-		$this->content = isset( $this->post_object->post_excerpt ) ? $this->post_object->post_excerpt : '';
+		$this->tag      = isset( $data['tag'] ) ? $data['tag'] : 'p';
+		$this->tag_type = 'false_without_content';
+		$this->content  = isset( $this->post_object->post_excerpt ) ? $this->post_object->post_excerpt : '';
 
 	}
 }
