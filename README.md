@@ -97,6 +97,8 @@ Uses the manual post excerpt from the post object.
 
 - None
 
+___
+
 #### ExcerptForce 
 
 ##### Extends: Excerpt
@@ -445,6 +447,7 @@ Returns a single post term. Useful in situations where the design has room for o
 - `wp_get_post_terms()`
 - `get_term_link()`
 
+___
 
 ## Organisms
 
