@@ -153,8 +153,6 @@ class EventDate extends AtomTemplate {
 
 	private function setDateFormat() {
 
-		$event_date_formatted = '';
-
 		switch ( $this->event_date_type ) {
 
 			case 'now':
