@@ -413,43 +413,37 @@ A link that is output on the front-end to provide quicker editing access for con
 
 - `site_url()`
 
-##### Filters:
-
-- 
-
 ___
 
 #### BackgroundVideo 
 
+Returns a Vide-enabled background video.
+
 ##### Parameters:
 
-- ****:
+- **mp4** (URL): The mp4 file URL.
+- **webm** (URL): The webm file URL.
+- **jpg** (URL): The jpg file URL.
+- **vide-options** (array): Vide options. Defaults are: `autoplay: true, posterType: jpg, loop: true, muted: true, position: left top`.
 
 ##### Uses:
 
 - None
-
-##### Filters:
-
-- 
 
 ___
 
 #### PostTermLinkSingle 
 
+Returns a single post term. Useful in situations where the design has room for one term, but multiple terms are possible due to improper content entry.
+
 ##### Parameters:
 
-- ****:
+- **taxonomy** (string): The taxonomy the post term is pulled from. Default: "". 
 
 ##### Uses:
 
-- None
-
-##### Filters:
-
-- 
-
-___
+- `wp_get_post_terms()`
+- `get_term_link()`
 
 
 ## Organisms
