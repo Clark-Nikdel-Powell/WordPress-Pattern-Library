@@ -20,23 +20,35 @@ A standard link.
 
 - None
 
+___
+
 #### PostLink
 
 A link to a post.
-
-##### Uses: 
-
-- `get_permalink()`
 
 ##### Parameters: 
 
 - None
 
+##### Uses: 
+
+- `get_permalink()`
+
+___
+
 #### FrontPageLink 
 
 A link to the front page.
-Uses: `home_url()`
-Parameters: none.
+
+##### Parameters: 
+
+- None
+
+##### Uses: 
+
+- `home_url()`
+
+___
 
 #### SiteTitleFrontPageLink 
 
