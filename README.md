@@ -6,19 +6,123 @@ A library of pre-made atoms, molecules and organisms intended for rapid front-en
 
 The AtomTemplate class is a way of defining common atom arguments. The method **getMarkup** uses the CNP/Atom class to assemble the markup. Named atoms can also create and use atom-specific arguments if necessary (see PostThumbnail).
 
-The current named atoms are:
+### Atom Documentation
 
-- **Link**: a standard link.
-- **PostLink**: a link to a post.
-- **FrontPageLink**: a link to the front page.
-- **PostsPageLink**: a link to the posts page.
-- **Excerpt**: the post excerpt.
-- **ForceExcerpt**: either the post excerpt, or the beginning of the post.
-- **PostClass**: uses `get_post_class` to return an `<article>` with the post classes.
-- **PostThumbnail**: uses a `thumbnail_args` to pass in arguments for `get_the_post_thumbnail`
-- **PostTitle**: uses `get_the_title` to return an h2 with the title.
-- **PostTitleLink**: extends PostTitle to return a PostTitle with a PostLink.
-- **CategoryList**: uses `get_the_category_list` to return a list of post categories.
+#### Link
+
+A standard link. 
+Parameters:
+
+- **href**: the link URL.
+
+#### PostLink
+
+A link to a post.
+Uses: `get_permalink()`
+Parameters: none.
+
+#### FrontPageLink 
+
+A link to the front page.
+Uses: `home_url()`
+Parameters: none.
+
+#### SiteTitleFrontPageLink 
+
+A link to the front page with the site title as its content.
+
+#### PostsPageLink 
+
+A link to the posts page.
+
+#### Excerpt 
+
+The post excerpt.
+
+#### ForceExcerpt 
+
+Either the post excerpt, or the beginning of the post.
+
+#### ExcerptSearch 
+
+A specialized excerpt for search result pages that highlights the searched-for term.
+
+#### PostClass 
+
+Uses `get_post_class` to return an `<article>` with the post classes.
+
+#### PostThumbnail 
+
+Uses a `thumbnail_args` to pass in arguments for `get_the_post_thumbnail`
+
+#### PostTitle 
+
+Uses `get_the_title` to return an h2 with the title.
+
+#### PostTitleLink 
+
+Extends PostTitle to return a PostTitle with a PostLink.
+
+#### CategoryList 
+
+Uses `get_the_category_list` to return a list of post categories.
+
+#### Loop 
+
+Uses `vsprintf` to run through a simple loop.
+
+#### SchemaAddress 
+
+
+
+#### PostDate 
+
+
+
+#### EventDate 
+
+
+
+#### EventBadge 
+
+
+
+#### TaxonomyList 
+
+
+
+#### ListTerms 
+
+
+
+#### ListPages 
+
+
+
+#### PostAuthor 
+
+
+
+#### Menu 
+
+
+
+#### Image 
+
+
+
+#### ContentSourceLink 
+
+
+
+#### BackgroundVideo 
+
+
+
+#### PostTermLinkSingle 
+
+
+
 
 ## Organisms
 
