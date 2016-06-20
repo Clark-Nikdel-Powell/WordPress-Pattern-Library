@@ -79,7 +79,7 @@ class ACF_Blurb extends OrganismTemplate {
 		——————————————————————————————————————————*/
 		if ( isset( $data['icon_name'] ) && '' !== $data['icon_name'] ) {
 			$this->attributes['class'][]                           = $this->name . '--has-icon';
-			$this->structure['inside']['parts']['icon']['content'] = Utility::getSvgIcon( $data['icon_name'] );
+			$this->structure['inside']['parts']['icon']['content'] = Utility::get_svg_icon( $data['icon_name'] );
 			$this->structure['inside']['parts']['icon']['class']   = $media_position_class;
 		}
 	}

@@ -120,7 +120,7 @@ class ACF_Slideshow extends OrganismTemplate {
 	public function generateSlide( $slide_args, $slide_data, $slide_index ) {
 
 		// Trim all slide data first, so that an empty space doesn't get used as content by mistake.
-		$slide_data = Utility::multidimensionalArrayMap( 'trim', $slide_data );
+		$slide_data = Utility::multidimensional_array_map( 'trim', $slide_data );
 
 		// Put this in a separate method so that it's less to copy/paste when extending the class.
 		$slide_args = self::setSlideClassesAndID( $slide_args, $slide_data );
@@ -142,7 +142,7 @@ class ACF_Slideshow extends OrganismTemplate {
 
 		if ( ! empty( $slide_args['structure']['text']['parts']['link']['href'] ) ) {
 			// An empty array is used for the unset value because the backup text will be used if content is not present.
-			$slide_args = Utility::setOrUnset( $slide_data['link_text'], $slide_args, [ ], [ 'structure', 'text', 'parts', 'link', 'content' ], 'Click Here' );
+			$slide_args = Utility::set_or_unset( $slide_data['link_text'], $slide_args, [ ], [ 'structure', 'text', 'parts', 'link', 'content' ], 'Click Here' );
 		}
 
 		$slide = new OrganismTemplate( $slide_args );
@@ -154,7 +154,7 @@ class ACF_Slideshow extends OrganismTemplate {
 
 	public function setSlideClassesAndID( $slide_args, $slide_data ) {
 
-		$slide_classes = Utility::parseClassesAsArray( $slide_data['class'] );
+		$slide_classes = Utility::parse_classes_as_array( $slide_data['class'] );
 
 		if ( false !== ( $slide_classes ) ) {
 			$slide_args['attributes']['class'] = $slide_classes;
@@ -209,7 +209,7 @@ class ACF_Slideshow extends OrganismTemplate {
 		];
 
 		// This will return any key that is set to true.
-		$boolean_settings = Utility::getAcfFieldsAsArray( [ 'slideshow_boolean_options' ], true );
+		$boolean_settings = Utility::get_acf_fields_as_array( [ 'slideshow_boolean_options' ], true );
 
 		if ( is_null( $boolean_settings ) ) {
 			return false;
@@ -250,7 +250,7 @@ class ACF_Slideshow extends OrganismTemplate {
 		];
 
 		// Retrieve string settings data
-		$string_vars = Utility::getAcfFieldsAsArray( $settings_keys, true );
+		$string_vars = Utility::get_acf_fields_as_array( $settings_keys, true );
 
 		// If both arrays come back empty, something's gone wrong, and we don't need to go through the rest.
 		if ( empty( $boolean_vars ) && empty( $string_vars ) ) {
