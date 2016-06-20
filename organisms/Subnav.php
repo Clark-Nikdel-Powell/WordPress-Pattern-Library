@@ -33,7 +33,7 @@ class Subnav extends OrganismTemplate {
 	public $settings_by_content_type;
 	public $manual_additions;
 
-	public function __construct( $data = [ ] ) {
+	public function __construct( $data = array() ) {
 
 		parent::__construct( $data );
 
@@ -47,51 +47,51 @@ class Subnav extends OrganismTemplate {
 		// May need to refactor the way the SubnavType is determined in order for settings like this to function properly
 		$default_behaviors = [
 			'front-page'       => [
-				'behavior' => 'none'
+				'behavior' => 'none',
 			],
 			'home'             => [
 				'behavior' => 'archive-post_type',
 				'taxonomy' => 'category',
-				'title'    => 'All Post Categories'
+				'title'    => 'All Post Categories',
 			],
 			'404'              => [
-				'behavior' => 'none'
+				'behavior' => 'none',
 			],
 			'search'           => [
-				'behavior' => 'none'
+				'behavior' => 'none',
 			],
 			'post'             => [
 				'single' => [
 					'behavior' => 'single-nonhierarchical',
 					'taxonomy' => 'category',
-					'title'    => 'Post Categories'
-				]
+					'title'    => 'Post Categories',
+				],
 			],
 			'category'         => [
-				'behavior' => 'none'
+				'behavior' => 'none',
 			],
 			'tag'              => [
-				'behavior' => 'none'
+				'behavior' => 'none',
 			],
 			'page'             => [
 				'single' => [
-					'title' => 'Pages in this Section'
-				]
+					'title' => 'Pages in this Section',
+				],
 			],
 			'tribe_events'     => [
 				'single'  => [
 					'behavior' => 'archive-post_type',
 					'taxonomy' => 'tribe_events_cat',
-					'title'    => 'Event Categories'
+					'title'    => 'Event Categories',
 				],
 				'archive' => [
 					'taxonomy' => 'tribe_events_cat',
-					'title'    => 'Event Categories'
-				]
+					'title'    => 'Event Categories',
+				],
 			],
 			'tribe_events_cat' => [
-				'behavior' => 'none'
-			]
+				'behavior' => 'none',
+			],
 		];
 
 		if ( isset( $data['settings_by_content_type'] ) ) {
@@ -100,22 +100,22 @@ class Subnav extends OrganismTemplate {
 			$this->settings_by_content_type = $default_behaviors;
 		}
 
-		$this->manual_additions = [ ];
+		$this->manual_additions = array();
 		if ( isset( $data['manual_additions'] ) ) {
 			$this->manual_additions = $data['manual_additions'];
 		}
 
 	}
 
-	public function getMarkup() {
+	public function get_markup() {
 
 		// Match up the subnav settings with the current page.
-		self::determineSubnavSettings();
+		self::determine_subnav_settings();
 
 		if ( isset( $this->settings['behavior'] ) ) {
 			$this->behavior = $this->settings['behavior'];
 		} else {
-			self::determineFallbackSubnavType();
+			self::determine_fallback_subnav_type();
 		}
 
 		/* @EXIT: "none" tells us that there isn't supposed to be a subnanv here. */
@@ -128,7 +128,7 @@ class Subnav extends OrganismTemplate {
 		}
 
 		// Get the subnav items, based on the type of subnav
-		self::getSubnavItems();
+		self::get_subnav_items();
 
 		// Return false if there is no list AND no manual additions.
 		if ( '' === $this->list && empty( $this->manual_additions ) ) {
@@ -143,13 +143,13 @@ class Subnav extends OrganismTemplate {
 				'title' => [
 					'tag'     => 'h4',
 					'content' => $this->title,
-					'sibling' => 'items'
+					'sibling' => 'items',
 				],
 				'items' => [
 					'parts' => [
-						'list'
-					]
-				]
+						'list',
+					],
+				],
 			];
 
 			// Add a separator and the manual items after the main list.
@@ -165,13 +165,13 @@ class Subnav extends OrganismTemplate {
 		// It is up to the dev to take care that "items" is listed as a child or sibling.
 		$this->structure['items']['parts']['list'] = $this->list;
 
-		parent::getMarkup();
+		parent::get_markup();
 
 		return $this;
 
 	}
 
-	private function determineSubnavSettings() {
+	private function determine_subnav_settings() {
 
 		$queried_object = get_queried_object();
 
@@ -226,7 +226,7 @@ class Subnav extends OrganismTemplate {
 		}
 	}
 
-	private function determineFallbackSubnavType() {
+	private function determine_fallback_subnav_type() {
 
 		global $post;
 
@@ -251,11 +251,11 @@ class Subnav extends OrganismTemplate {
 		}
 
 		$behavior = apply_filters( 'subnav_location', $behavior );
-		Atom::AddDebugEntry( 'Filter,', 'subnav_location' );
+		Atom::add_debug_entry( 'Filter,', 'subnav_location' );
 
 		$subnav_location_filter = $this->name . '_subnav_location';
 		$behavior               = apply_filters( $subnav_location_filter, $behavior );
-		Atom::AddDebugEntry( 'Filter,', $subnav_location_filter );
+		Atom::add_debug_entry( 'Filter,', $subnav_location_filter );
 
 		if ( '' === $behavior ) {
 			return false;
@@ -265,13 +265,13 @@ class Subnav extends OrganismTemplate {
 
 	}
 
-	private function getSubnavItems() {
+	private function get_subnav_items() {
 
 		$queried_object = get_queried_object();
 
 		$list_atom = '';
 		$list_args = [
-			'tag_type' => 'false_without_content'
+			'tag_type' => 'false_without_content',
 		];
 
 		switch ( $this->behavior ) {
@@ -336,7 +336,7 @@ class Subnav extends OrganismTemplate {
 		$list_args['name']         = $list_atom_slug;
 
 		$list = new $list_atom_class( $list_args );
-		$list->getMarkup();
+		$list->get_markup();
 
 		$this->list = trim( $list->markup );
 

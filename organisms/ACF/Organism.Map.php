@@ -7,7 +7,7 @@ class ACF_Map extends OrganismTemplate {
 	public $map_attributes;
 	public $markers;
 
-	public function __construct( $data = [ ] ) {
+	public function __construct( $data = array() ) {
 
 		if ( ! isset( $data['name'] ) || empty( $data['name'] ) ) {
 			$data['name'] = 'acf-map';
@@ -29,7 +29,7 @@ class ACF_Map extends OrganismTemplate {
 			'disable_controls',
 			'allow_panning',
 			'allow_dragging',
-			'allow_zooming'
+			'allow_zooming',
 		);
 
 		// Initializes all options to false.
@@ -65,9 +65,9 @@ class ACF_Map extends OrganismTemplate {
 		$this->structure = [
 			$markers_key => [
 				'attributes' => $this->map_attributes,
-				// The content is set by a markers loop in the getMarkup method below.
-				'content'    => ''
-			]
+				// The content is set by a markers loop in the get_markup method below.
+				'content'    => '',
+			],
 		];
 
 		if ( isset( $this->title ) ) {
@@ -76,8 +76,8 @@ class ACF_Map extends OrganismTemplate {
 				'title' => [
 					'tag'     => 'h2',
 					'content' => $this->title,
-					'sibling' => $markers_key
-				]
+					'sibling' => $markers_key,
+				],
 			];
 
 			$this->structure = array_merge( $title_structure_array, $this->structure );
@@ -86,7 +86,7 @@ class ACF_Map extends OrganismTemplate {
 
 	}
 
-	public function getMarkup() {
+	public function get_markup() {
 
 		// Every map has markers. You can choose not to show them, however.
 		if ( empty( $this->markers ) ) {
@@ -100,15 +100,15 @@ class ACF_Map extends OrganismTemplate {
 			$marker_atom_args = [
 				'attributes' => [
 					'data-lat' => $marker['lat'],
-					'data-lng' => $marker['lng']
+					'data-lng' => $marker['lng'],
 				],
-				'content'    => '<p>' . $marker['address'] . '</p>'
+				'content'    => '<p>' . $marker['address'] . '</p>',
 			];
 
-			$this->structure['markers']['content'] .= Atom::Assemble( 'marker', $marker_atom_args );
+			$this->structure['markers']['content'] .= Atom::assemble( 'marker', $marker_atom_args );
 
 		}
 
-		parent::getMarkup();
+		parent::get_markup();
 	}
 }
