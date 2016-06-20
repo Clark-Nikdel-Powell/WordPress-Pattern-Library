@@ -37,9 +37,9 @@ class EventBadge extends EventDate {
 
 		$badge_pieces_arr_filter = $this->name . '_badge_pieces_arr';
 		$badge_pieces_arr        = apply_filters( $badge_pieces_arr_filter, $badge_pieces_arr );
-		Atom::AddDebugEntry( 'Filter', $badge_pieces_arr_filter );
+		Atom::add_debug_entry( 'Filter', $badge_pieces_arr_filter );
 
-		$badge_pieces_markup_arr = [ ];
+		$badge_pieces_markup_arr = array();
 
 		foreach ( $badge_pieces_arr as $badge_label => $badge_piece ) {
 
@@ -50,7 +50,7 @@ class EventBadge extends EventDate {
 
 		$this->badge_pieces = $badge_pieces_markup_arr;
 
-		$this->content = implode( "", $this->badge_pieces );
+		$this->content = implode( '', $this->badge_pieces );
 
 	}
 }

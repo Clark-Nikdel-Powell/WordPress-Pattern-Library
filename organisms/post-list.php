@@ -19,8 +19,8 @@ class PostList extends OrganismTemplate {
 				],
 				'image'     => [
 					'parts' => [
-						'PostThumbnail'
-					]
+						'PostThumbnail',
+					],
 				],
 				'text'      => [
 					'parts' => [
@@ -28,14 +28,14 @@ class PostList extends OrganismTemplate {
 						'PostDate' => 'm/d/Y',
 						'CategoryList',
 						'ExcerptForce',
-						'PostLink' => 'Read More'
-					]
-				]
+						'PostLink' => 'Read More',
+					],
+				],
 			];
 
 			$postlist_posts_structure_filter = $this->name . '_posts_structure';
 			$this->posts_structure           = apply_filters( $postlist_posts_structure_filter, $posts_structure );
-			Atom::AddDebugEntry( 'Filter', $postlist_posts_structure_filter );
+			Atom::add_debug_entry( 'Filter', $postlist_posts_structure_filter );
 		}
 	}
 }

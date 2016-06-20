@@ -29,8 +29,8 @@ class ACF_PostList extends PostList {
 				'listtitle' => [
 					'tag'      => 'h2',
 					'tag_type' => 'false_without_content',
-					'content'  => $data['list_title']
-				]
+					'content'  => $data['list_title'],
+				],
 			];
 		}
 
@@ -42,16 +42,16 @@ class ACF_PostList extends PostList {
 				],
 				'image'     => [
 					'parts' => [
-						'PostThumbnail'
-					]
+						'PostThumbnail',
+					],
 				],
 				'text'      => [
 					'parts' => [
 						'PostTitleLink',
 						'ExcerptForce',
-						'PostLink' => 'Read More'
-					]
-				]
+						'PostLink' => 'Read More',
+					],
+				],
 			];
 		}
 
@@ -63,21 +63,21 @@ class ACF_PostList extends PostList {
 				'name'     => $link_name,
 				'tag_type' => 'false_without_content',
 				'content'  => $data['link_text'],
-				'href'     => $data['link']
+				'href'     => $data['link'],
 			];
 			$link_obj  = new Link( $link_args );
-			$link_obj->getMarkup();
+			$link_obj->get_markup();
 
 			if ( '' !== $link_obj->markup ) {
 				$this->after_content = $link_obj->markup;
 			}
 		}
 
-		self::getPosts( $data );
+		self::get_posts( $data );
 
 	}
 
-	public function getPosts( $data ) {
+	public function get_posts( $data ) {
 
 		if ( isset( $data['data_type'] ) ) {
 
@@ -85,7 +85,7 @@ class ACF_PostList extends PostList {
 
 				$this->post_args = [
 					'post_type'      => $data['post_type'],
-					'posts_per_page' => $data['number_of_posts']
+					'posts_per_page' => $data['number_of_posts'],
 				];
 			}
 

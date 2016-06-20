@@ -23,7 +23,7 @@ class ACF_OpenRow extends AtomTemplate {
 		$this->tag        = 'div';
 		$this->tag_type   = 'split';
 		$standard_classes = [ 'acf-openrow', 'row' ];
-		$data_classes     = [ ];
+		$data_classes     = array();
 
 		if ( ! empty( $data['class'] ) ) {
 			$data_classes = Utility::parse_classes_as_array( $data['class'] );
@@ -33,9 +33,9 @@ class ACF_OpenRow extends AtomTemplate {
 
 	}
 
-	public function getMarkup() {
+	public function get_markup() {
 
-		parent::getMarkup();
+		parent::get_markup();
 
 		// Reset the markup with just the open tag.
 		$this->markup = $this->markup['open'];

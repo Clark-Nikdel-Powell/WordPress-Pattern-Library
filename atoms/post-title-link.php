@@ -21,7 +21,7 @@ class PostTitleLink extends PostTitle {
 		$this->link_data['content'] = $this->content;
 
 		$this->link = new PostLink( $this->link_data );
-		$this->link->getMarkup();
+		$this->link->get_markup();
 
 		$this->content = $this->link->markup;
 

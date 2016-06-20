@@ -3,7 +3,7 @@ namespace CNP;
 
 class EventList extends OrganismTemplate {
 
-	public function __construct( $data = [] ) {
+	public function __construct( $data = array() ) {
 
 		parent::__construct( $data );
 
@@ -13,7 +13,7 @@ class EventList extends OrganismTemplate {
 
 		if ( ! isset( $data['posts'] ) ) {
 
-			$event_args = [];
+			$event_args = array();
 
 			// Get the active plugins.
 			$active_plugins = get_option( 'active_plugins' );
@@ -40,7 +40,7 @@ class EventList extends OrganismTemplate {
 
 			$eventlist_event_args_filter = $this->name . '_event_args';
 			$event_args                  = apply_filters( $eventlist_event_args_filter, $event_args );
-			Atom::AddDebugEntry( 'Filter', $eventlist_event_args_filter );
+			Atom::add_debug_entry( 'Filter', $eventlist_event_args_filter );
 
 			$this->posts = new \WP_Query( $event_args );
 
@@ -73,7 +73,7 @@ class EventList extends OrganismTemplate {
 
 			$postlist_posts_structure_filter = $this->name . '_posts_structure';
 			$this->posts_structure           = apply_filters( $postlist_posts_structure_filter, $posts_structure );
-			Atom::AddDebugEntry( 'Filter', $postlist_posts_structure_filter );
+			Atom::add_debug_entry( 'Filter', $postlist_posts_structure_filter );
 		}
 	}
 }

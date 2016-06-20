@@ -16,7 +16,7 @@ class BackgroundVideo extends AtomTemplate {
 
 		$this->tag = 'div';
 
-		$this->vide_bg = [];
+		$this->vide_bg = array();
 
 		if ( ! empty( $data['mp4'] ) ) {
 			$this->vide_bg['mp4'] = $data['mp4'];

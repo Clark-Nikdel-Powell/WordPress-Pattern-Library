@@ -30,7 +30,7 @@ class Menu extends AtomTemplate {
 		$menu_args = [
 			'menu'      => $this->menu,
 			'echo'      => false,
-			'container' => ''
+			'container' => '',
 		];
 
 		if ( isset( $data['menu_args'] ) ) {

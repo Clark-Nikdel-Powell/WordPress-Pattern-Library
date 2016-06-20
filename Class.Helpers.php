@@ -4,7 +4,7 @@ namespace CNP;
 class Helpers {
 
 	/**
-	 * setBackgroundOnStructureArray.
+	 * set_background_on_structure_array.
 	 *
 	 * Set a background, no matter what kind of organism you're dealing with! Interchangeable between slides, headers, blurbs, whatever!
 	 *
@@ -16,7 +16,7 @@ class Helpers {
 	 *
 	 * @return mixed
 	 */
-	public static function setBackgroundOnStructureArray( $data, $background_key, $structure_array ) {
+	public static function set_background_on_structure_array( $data, $background_key, $structure_array ) {
 
 		$background_type = $data['background_type'];
 
@@ -45,7 +45,7 @@ class Helpers {
 
 			// Background images are often 100% of the viewport.
 			$structure_array[ $background_key ]['attributes'] = [
-				'sizes' => '100vw'
+				'sizes' => '100vw',
 			];
 
 		}

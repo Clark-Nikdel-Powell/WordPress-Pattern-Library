@@ -3,7 +3,7 @@ namespace CNP;
 
 class PostHeaderSingular extends OrganismTemplate {
 
-	public function __construct( $data = [ ] ) {
+	public function __construct( $data = array() ) {
 
 		parent::__construct( $data );
 
@@ -17,37 +17,37 @@ class PostHeaderSingular extends OrganismTemplate {
 		if ( ! isset( $data['structure'] ) ) {
 
 			$structure = [
-				'title' => [
+				'title'      => [
 					'atom'    => 'PostTitle',
-					'sibling' => 'date'
+					'sibling' => 'date',
 				],
-				'date'   => [
+				'date'       => [
 					'atom'    => 'PostDate',
-					'sibling' => 'author'
+					'sibling' => 'author',
 				],
-				'author' => [
-					'atom' => 'PostAuthor',
-					'sibling' => 'categories'
+				'author'     => [
+					'atom'    => 'PostAuthor',
+					'sibling' => 'categories',
 				],
 				'categories' => [
-					'atom' => 'CategoryList',
-					'sibling' => 'image'
+					'atom'    => 'CategoryList',
+					'sibling' => 'image',
 				],
-				'image'  => [
+				'image'      => [
 					'atom'     => 'PostThumbnail',
 					'size'     => 'medium',
-					'tag_type' => 'false_without_content'
-				]
+					'tag_type' => 'false_without_content',
+				],
 			];
 
 			// Add the post title to the start of the structure array only if the section title does not match the page title.
-			if ( $ancestor['title'] === $post->post_title && is_post_type_hierarchical($post->post_type) ) {
-				unset($structure['title']);
+			if ( $ancestor['title'] === $post->post_title && is_post_type_hierarchical( $post->post_type ) ) {
+				unset( $structure['title'] );
 			}
 
 			$postheader_structure_filter = $this->name . '_singular_structure';
 			$this->structure             = apply_filters( $postheader_structure_filter, $structure );
-			Atom::AddDebugEntry( 'Filter', $postheader_structure_filter );
+			Atom::add_debug_entry( 'Filter', $postheader_structure_filter );
 		}
 	}
 }

@@ -25,21 +25,19 @@ class PostTermLinkSingle extends AtomTemplate {
 		$this->tag_type = 'false_without_content';
 		$this->taxonomy = $data['taxonomy'];
 
-		$this->getTerm();
+		$this->get_term();
 	}
 
-	public function getTerm() {
+	public function get_term() {
 
 		// Variables initialized.
-		$post_terms     = [ ];
-		$post_term_id   = '';
 		$post_term_link = '';
 
 		// Get the post terms
 		$post_terms = wp_get_post_terms( $this->post_object->ID, $this->taxonomy );
 
 		if ( is_wp_error( $post_terms ) ) {
-			return false;
+			$this->content = '';
 		}
 
 		// Get the ID of the first term.
@@ -61,3 +59,4 @@ class PostTermLinkSingle extends AtomTemplate {
 		}
 	}
 }
+

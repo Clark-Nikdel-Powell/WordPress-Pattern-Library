@@ -41,7 +41,6 @@ class ContentSourceLink extends AtomTemplate {
 				$this->flag_type             = 'Editable';
 				$this->attributes['class'][] = 'editable';
 			}
-
 		}
 
 		if ( isset( $data['parent'] ) ) {

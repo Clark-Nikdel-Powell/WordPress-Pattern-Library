@@ -19,7 +19,7 @@ class AtomTemplate {
 		$this->content    = isset( $data['content'] ) ? $data['content'] : '';
 		$this->before     = isset( $data['before'] ) ? $data['before'] : '';
 		$this->after      = isset( $data['after'] ) ? $data['after'] : '';
-		$this->attributes = isset( $data['attributes'] ) ? $data['attributes'] : [];
+		$this->attributes = isset( $data['attributes'] ) ? $data['attributes'] : array();
 		$this->markup     = '';
 
 		if ( isset( $data['post'] ) ) {

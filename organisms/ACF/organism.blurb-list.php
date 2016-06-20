@@ -36,7 +36,7 @@ class ACF_BlurbList extends OrganismTemplate {
 		$this->list_title      = $data['list_title'];
 		$this->list_intro      = $data['list_intro'];
 		$this->blurb_classes   = $data['blurb_classes'];
-		$this->blurbs          = ! empty( $data['blurbs'] ) ? $data['blurbs'] : [ ];
+		$this->blurbs          = ! empty( $data['blurbs'] ) ? $data['blurbs'] : array();
 		$this->list_link       = $data['list_link'];
 		$this->list_link_text  = $data['list_link_text'];
 		$this->class           = $data['class'];
@@ -47,30 +47,30 @@ class ACF_BlurbList extends OrganismTemplate {
 				'tag'      => 'h2',
 				'tag_type' => 'false_without_content',
 				'content'  => $this->list_title,
-				'sibling'  => 'listintro'
+				'sibling'  => 'listintro',
 			],
 			'listintro' => [
 				'tag'      => 'p',
 				'tag_type' => 'false_without_content',
 				'content'  => $this->list_intro,
-				'sibling'  => 'blurbs'
+				'sibling'  => 'blurbs',
 			],
 			'blurbs'    => [
 				'class'   => [ 'row' ],
 				'content' => '',
-				'sibling' => 'listlink'
+				'sibling' => 'listlink',
 			],
 			'listlink'  => [
 				'atom'     => 'Link',
 				'tag_type' => 'false_without_content',
 				'href'     => $this->list_link,
-				'content'  => $this->list_link_text
-			]
+				'content'  => $this->list_link_text,
+			],
 		];
 
 		$this->blurb_organism_args = [
 			'name'       => $this->name . $this->separator . 'blurb',
-			'attributes' => [ ],
+			'attributes' => array(),
 			'structure'  => [
 				'inside' => [
 					'atom'  => '',
@@ -78,31 +78,31 @@ class ACF_BlurbList extends OrganismTemplate {
 						'image' => [
 							'atom'     => 'Image',
 							'tag_type' => 'false_without_content',
-							'sibling'  => 'text'
+							'sibling'  => 'text',
 						],
 						'title' => [
 							'tag'      => 'h2',
 							'tag_type' => 'false_without_content',
-							'content'  => ''
+							'content'  => '',
 						],
 						'text'  => [
 							'tag_type' => 'false_without_content',
-							'content'  => ''
+							'content'  => '',
 						],
 						'link'  => [
 							'atom'     => 'Link',
-							'tag_type' => 'false_without_content'
-						]
-					]
-				]
-			]
+							'tag_type' => 'false_without_content',
+						],
+					],
+				],
+			],
 		];
 
 		parent::__construct( $data );
 
 	}
 
-	public function getMarkup() {
+	public function get_markup() {
 
 		try {
 
@@ -114,7 +114,7 @@ class ACF_BlurbList extends OrganismTemplate {
 				$this->generate_blurb( $blurb_data );
 			}
 
-			parent::getMarkup();
+			parent::get_markup();
 
 		} catch ( \Exception $e ) {
 
@@ -142,37 +142,37 @@ class ACF_BlurbList extends OrganismTemplate {
 		$blurb_args = $this->do_id( $blurb_args, $blurb_data );
 
 		$blurb = new OrganismTemplate( $blurb_args );
-		$blurb->getMarkup();
+		$blurb->get_markup();
 		$this->structure['blurbs']['content'] .= $blurb->markup;
 
 	}
 
 	private function has_background() {
-		return $this->background_type !== 'None';
+		return 'None' !== $this->background_type;
 	}
 
 	private function is_color_background() {
-		return $this->background_type === 'Color';
+		return 'Color' === $this->background_type;
 	}
 
 	private function is_image_background() {
-		return $this->background_type === 'Image';
+		return 'Image' === $this->background_type;
 	}
 
 	private function is_background_link() {
-		return $this->link_type === 'Background';
+		return 'Background' === $this->link_type;
 	}
 
 	private function is_button_link() {
-		return $this->link_type === 'Button';
+		return 'Button' === $this->link_type;
 	}
 
 	private function is_internal_links() {
-		return $this->link_location === 'Internal';
+		return 'Internal' === $this->link_location;
 	}
 
 	private function is_external_links() {
-		return $this->link_location === 'External';
+		return 'External' === $this->link_location;
 	}
 
 	private function get_link( $data ) {
@@ -243,8 +243,8 @@ class ACF_BlurbList extends OrganismTemplate {
 				$background = [
 					'background' => [
 						'atom'          => 'Image',
-						'attachment_id' => $data['background_image']
-					]
+						'attachment_id' => $data['background_image'],
+					],
 				];
 
 				// This prepends the background atom array into inside parts

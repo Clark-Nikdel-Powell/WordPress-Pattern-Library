@@ -23,5 +23,4 @@ class FrontPageLink extends Link {
 		$this->attributes['href'] = home_url();
 
 	}
-
 }

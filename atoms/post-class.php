@@ -18,7 +18,7 @@ class PostClass extends AtomTemplate {
 		$this->tag      = isset( $data['tag'] ) ? $data['tag'] : 'article';
 		$this->tag_type = 'split';
 
-		$classes = [ ];
+		$classes = array();
 
 		if ( isset( $data['attributes']['class'] ) ) {
 			$classes = $data['attributes']['class'];

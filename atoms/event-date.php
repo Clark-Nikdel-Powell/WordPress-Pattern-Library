@@ -28,7 +28,7 @@ class EventDate extends AtomTemplate {
 
 		parent::__construct( $data );
 
-		$this->tag  = isset( $data['tag'] ) ? $data['tag'] : 'p';
+		$this->tag = isset( $data['tag'] ) ? $data['tag'] : 'p';
 
 		$post_id = $this->post_object->ID;
 
@@ -48,7 +48,7 @@ class EventDate extends AtomTemplate {
 	private function setEventFunctions( $data ) {
 
 		// Developers pass in functions to get the event start/end date, so that the Atom can be plugin-agnostic.
-		$event_functions_arr = [ ];
+		$event_functions_arr = array();
 
 		if ( isset( $data['start_date_function'] ) ) {
 			$event_functions_arr['start_date_function'] = $data['start_date_function'];
@@ -92,7 +92,7 @@ class EventDate extends AtomTemplate {
 		 * @param array $event_functions_arr An array of event functions for start date, end date, and all day checks.
 		 */
 		$event_functions_arr = apply_filters( 'event_date_functions', $event_functions_arr );
-		Atom::AddDebugEntry( 'Filter', 'event_date_functions' );
+		Atom::add_debug_entry( 'Filter', 'event_date_functions' );
 
 		/**
 		 * $this->name_event_date_functions.
@@ -105,7 +105,7 @@ class EventDate extends AtomTemplate {
 		 */
 		$event_date_functions_filter = $this->name . '_event_date_functions';
 		$this->event_functions       = apply_filters( $event_date_functions_filter, $event_functions_arr );
-		Atom::AddDebugEntry( 'Filter', $event_date_functions_filter );
+		Atom::add_debug_entry( 'Filter', $event_date_functions_filter );
 
 	}
 
@@ -218,7 +218,7 @@ class EventDate extends AtomTemplate {
 		 * @param string $this ->event_date_type Include the event date type so that making an intelligent adjustment is easier.
 		 */
 		$event_date_formatted = apply_filters( 'event_date_format', $event_date_formatted, $this );
-		Atom::AddDebugEntry( 'Filter', 'event_date_format' );
+		Atom::add_debug_entry( 'Filter', 'event_date_format' );
 
 		/**
 		 * $this->name_event_date_format.
@@ -232,7 +232,7 @@ class EventDate extends AtomTemplate {
 		 */
 		$event_date_format_filter   = $this->name . '_event_date_format';
 		$this->event_date_formatted = apply_filters( $event_date_format_filter, $event_date_formatted, $this );
-		Atom::AddDebugEntry( 'Filter', $event_date_format_filter );
+		Atom::add_debug_entry( 'Filter', $event_date_format_filter );
 
 	}
 }

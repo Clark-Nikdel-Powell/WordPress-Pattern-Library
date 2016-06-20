@@ -27,7 +27,7 @@ class SiteTitleFrontPageLink extends AtomTemplate {
 		$this->link_data['content'] = get_bloginfo( 'site_title' );
 
 		$this->link = new FrontPageLink( $this->link_data );
-		$this->link->getMarkup();
+		$this->link->get_markup();
 
 		$this->tag = isset( $data['tag'] ) ? $data['tag'] : 'h2';
 

@@ -13,36 +13,36 @@ class ACF_Header extends OrganismTemplate {
 
 		$data['structure'] = [
 			'background' => [
-				'sibling' => 'text'
+				'sibling' => 'text',
 			],
 			'text'       => [
 				'parts' => [
 					'title'       => [
 						'tag'      => 'h2',
 						'tag_type' => 'false_without_content',
-						'content'  => $data['title']
+						'content'  => $data['title'],
 					],
 					'subtitle'    => [
 						'tag'      => 'h3',
 						'tag_type' => 'false_without_content',
-						'content'  => $data['subtitle']
+						'content'  => $data['subtitle'],
 					],
 					'description' => [
 						'tag'      => 'div',
 						'tag_type' => 'false_without_content',
-						'content'  => $data['description']
+						'content'  => $data['description'],
 					],
 					'link'        => [
-						'atom'    => 'Link',
+						'atom'     => 'Link',
 						'tag_type' => 'false_without_content',
-						'href'    => $data['link'],
-						'content' => $data['link_text']
-					]
-				]
-			]
+						'href'     => $data['link'],
+						'content'  => $data['link_text'],
+					],
+				],
+			],
 		];
 
-		$data['structure'] = Helpers::setBackgroundOnStructureArray($data, 'background', $data['structure']);
+		$data['structure'] = Helpers::set_background_on_structure_array( $data, 'background', $data['structure'] );
 
 		parent::__construct( $data );
 

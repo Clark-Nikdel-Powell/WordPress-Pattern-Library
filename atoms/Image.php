@@ -10,6 +10,7 @@ namespace CNP;
  */
 class Image extends AtomTemplate {
 
+	private $attachment_id;
 	private $image_size;
 	private $icon;
 
@@ -25,8 +26,8 @@ class Image extends AtomTemplate {
 
 		// Convert any classes to a string. We do this because the $attr variable of wp_get_attachment_image is set
 		// to take a single-dimensional array, not a multi-dimensional array.
-		if ( is_array($this->attributes['class']) && !empty($this->attributes['class'])) {
-			$this->attributes['class'] = implode(' ', $this->attributes['class']);
+		if ( is_array( $this->attributes['class'] ) && ! empty( $this->attributes['class'] ) ) {
+			$this->attributes['class'] = implode( ' ', $this->attributes['class'] );
 		}
 
 		// Set up attachment ID
@@ -56,10 +57,10 @@ class Image extends AtomTemplate {
 		// Attributes will have already been handled in the main AtomTemplate class.
 	}
 
-	public function getMarkup() {
+	public function get_markup() {
 
 		if ( empty( $this->attachment_id ) ) {
-			return false;
+			$this->markup = '';
 		}
 
 		$this->markup = wp_get_attachment_image( $this->attachment_id, $this->image_size, $this->icon, $this->attributes );

@@ -26,10 +26,10 @@ class ExcerptSearch extends Excerpt {
 		$key = esc_html( $search_term, 1 );
 
 		// Number of characters before the highlighted text.
-		$this->chars_before = isset($data['chars_before'] ) ? $data['chars_before'] : 100;
+		$this->chars_before = isset( $data['chars_before'] ) ? $data['chars_before'] : 100;
 
 		// Excerpt total characters
-		$this->chars_total = isset($data['chars_total']) ? $data['chars_total'] : 250;
+		$this->chars_total = isset( $data['chars_total'] ) ? $data['chars_total'] : 250;
 
 		// Retrieve content and strip out all HTML
 		$content = strip_shortcodes( strip_tags( get_the_content() ) );
@@ -40,22 +40,22 @@ class ExcerptSearch extends Excerpt {
 		$key_position = stripos( $content, $key );
 		$start        = 0;
 		$length       = $this->chars_total;
-		$before       = "";
-		$after        = " &hellip;";
+		$before       = '';
+		$after        = ' &hellip;';
 
 		// If the key position is somewhere inside the content,
 		// the starting position is calculated based on the charsBefore value,
 		// and the SearchExcerpt needs a ellipsis prepended to it.
 		if ( $key_position >= $this->chars_before ) {
 			$start  = $key_position - $this->chars_before;
-			$before = "&hellip; ";
+			$before = '&hellip; ';
 		}
 
 		// If our projected length is longer than the content string, then we don't need an ellipsis afterward,
 		// and the length of the substr needs to be adjusted.
 		if ( ( $start + $this->chars_total ) > strlen( $content ) ) {
 			$length = strlen( $content ) - $key_position;
-			$after  = "";
+			$after  = '';
 		}
 
 		// Get the part of the content that we'll use for the SearchExcerpt

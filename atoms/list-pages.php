@@ -29,7 +29,7 @@ class ListPages extends AtomTemplate {
 		$list_args_defaults_arr = [
 			'post_type' => 'page',
 			'echo'     => 0,
-			'title_li' => ''
+			'title_li' => '',
 		];
 
 		// Parse supplied args from the organism setup.
@@ -49,7 +49,7 @@ class ListPages extends AtomTemplate {
 		 * @param array $list_args_arr An array of list arguments.
 		 */
 		$list_args_arr = apply_filters( 'list_pages_list_args', $list_args_arr );
-		Atom::AddDebugEntry( 'Filter', 'list_pages_list_args' );
+		Atom::add_debug_entry( 'Filter', 'list_pages_list_args' );
 
 		/**
 		 * $this->name_list_pages_list_args.
@@ -62,7 +62,7 @@ class ListPages extends AtomTemplate {
 		 */
 		$list_args_arr_filter = $this->name . '_list_pages_list_args';
 		$list_args_arr        = apply_filters( $list_args_arr_filter, $list_args_arr );
-		Atom::AddDebugEntry( 'Filter', $list_args_arr_filter );
+		Atom::add_debug_entry( 'Filter', $list_args_arr_filter );
 
 		// Assign the resolved args to the object.
 		$this->list_args = $list_args_arr;

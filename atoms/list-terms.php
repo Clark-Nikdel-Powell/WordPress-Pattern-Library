@@ -44,7 +44,7 @@ class ListTerms extends AtomTemplate {
 		$list_args_defaults_arr = [
 			'taxonomy' => $this->taxonomy,
 			'echo'     => 0,
-			'title_li' => ''
+			'title_li' => '',
 		];
 
 		// Parse supplied args from the organism setup.
@@ -64,7 +64,7 @@ class ListTerms extends AtomTemplate {
 		 * @param array $list_args_arr An array of list arguments.
 		 */
 		$list_args_arr = apply_filters( 'list_terms_list_args', $list_args_arr );
-		Atom::AddDebugEntry( 'Filter', 'list_terms_list_args' );
+		Atom::add_debug_entry( 'Filter', 'list_terms_list_args' );
 
 		/**
 		 * $this->name_list_terms_list_args.
@@ -77,7 +77,7 @@ class ListTerms extends AtomTemplate {
 		 */
 		$list_args_arr_filter = $this->name . '_list_terms_list_args';
 		$list_args_arr        = apply_filters( $list_args_arr_filter, $list_args_arr );
-		Atom::AddDebugEntry( 'Filter', $list_args_arr_filter );
+		Atom::add_debug_entry( 'Filter', $list_args_arr_filter );
 
 		// Assign the resolved args to the object.
 		$this->list_args = $list_args_arr;

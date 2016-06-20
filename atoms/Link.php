@@ -26,6 +26,5 @@ class Link extends AtomTemplate {
 		if ( isset( $data['href'] ) ) {
 			$this->attributes['href'] = $data['href'];
 		}
-
 	}
 }

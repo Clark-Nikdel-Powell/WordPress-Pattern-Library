@@ -16,30 +16,29 @@ class ACF_Blurb extends OrganismTemplate {
 		$this->structure = [
 			'inside' => [
 				'parts' => [
-					'image' => [
-					],
+					'image' => array(),
 					'icon'  => [
 						'tag_type' => 'false_without_content',
-						'content'  => ''
+						'content'  => '',
 					],
 					'title' => [
 						'tag'      => 'h3',
 						'tag_type' => 'false_without_content',
-						'content'  => $data['title']
+						'content'  => $data['title'],
 					],
 					'text'  => [
 						'tag'      => 'div',
 						'tag_type' => 'false_without_content',
-						'content'  => $data['text']
+						'content'  => $data['text'],
 					],
 					'link'  => [
 						'atom'     => 'Link',
 						'tag_type' => 'false_without_content',
 						'href'     => $data['link'],
-						'content'  => $data['link_text']
-					]
-				]
-			]
+						'content'  => $data['link_text'],
+					],
+				],
+			],
 		];
 
 		$media_position_class = '';
@@ -67,7 +66,7 @@ class ACF_Blurb extends OrganismTemplate {
 				$this->structure['inside']['parts']['image'] = [
 					'atom'          => 'Image',
 					'attachment_id' => $attachment_id,
-					'class'         => [ $media_position_class ]
+					'class'         => [ $media_position_class ],
 				];
 			} else {
 				unset( $this->structure['inside']['parts']['image'] );

@@ -38,7 +38,7 @@ class OrganismTemplate {
 
 		// Ensures that the 'class' attribute is set if it wasn't passed in with attributes.
 		if ( ! isset( $this->attributes['class'] ) ) {
-			$this->attributes['class'] = [];
+			$this->attributes['class'] = array();
 		}
 
 		// Add the Organism name as a class
@@ -65,32 +65,32 @@ class OrganismTemplate {
 		$this->before_content = isset( $data['before_content'] ) ? $data['before_content'] : '';
 		$this->after_content  = isset( $data['after_content'] ) ? $data['after_content'] : '';
 
-		$this->structure = isset( $data['structure'] ) ? $data['structure'] : [];
+		$this->structure = isset( $data['structure'] ) ? $data['structure'] : array();
 
-		$this->markup_array = [];
+		$this->markup_array = array();
 
-		$this->post_args       = isset( $data['post-args'] ) ? $data['post-args'] : [];
-		$this->posts           = isset( $data['posts'] ) ? $data['posts'] : [];
-		$this->posts_structure = isset( $data['posts-structure'] ) ? $data['posts-structure'] : [];
+		$this->post_args       = isset( $data['post-args'] ) ? $data['post-args'] : array();
+		$this->posts           = isset( $data['posts'] ) ? $data['posts'] : array();
+		$this->posts_structure = isset( $data['posts-structure'] ) ? $data['posts-structure'] : array();
 
-		$this->posts_markup_array = [];
+		$this->posts_markup_array = array();
 		$this->markup             = '';
 
 		// Filter the Organism structure.
 		$organism_name_structure_filter = $this->name . '_structure_filter';
 		$this->structure                = apply_filters( $organism_name_structure_filter, $this->structure, $this );
-		Atom::AddDebugEntry( 'Filter', $organism_name_structure_filter );
+		Atom::add_debug_entry( 'Filter', $organism_name_structure_filter );
 
 		// Filter the Post Args
 		if ( ! empty( $this->post_args ) ) {
 			$organism_name_post_args_filter = $this->name . '_post_args_filter';
 			$this->post_args                = apply_filters( $organism_name_post_args_filter, $this->post_args, $this );
-			Atom::AddDebugEntry( 'Filter', $organism_name_post_args_filter );
+			Atom::add_debug_entry( 'Filter', $organism_name_post_args_filter );
 		}
 	}
 
 	/**
-	 * getMarkup
+	 * get_markup
 	 *
 	 * Assembles the organism based on the structure and posts_structure, as well as before_content and after_content.
 	 *
@@ -104,20 +104,20 @@ class OrganismTemplate {
 	 *
 	 * @return string Markup of the organism
 	 */
-	public function getMarkup() {
+	public function get_markup() {
 
-		$markup_pieces = [];
+		$markup_pieces = array();
 
 		if ( '' !== $this->before_content ) {
 			$markup_pieces[] = $this->before_content;
 		}
 
 		if ( ! empty( $this->structure ) ) {
-			$markup_pieces[] = self::setupMarkupArray( $this->structure );
+			$markup_pieces[] = self::setup_markup_array( $this->structure );
 		}
 
 		if ( ! empty( $this->posts ) && empty( $this->posts_markup_array ) ) {
-			$markup_pieces[] = self::loopPosts();
+			$markup_pieces[] = self::loop_posts();
 		}
 
 		if ( '' !== $this->after_content ) {
@@ -126,16 +126,16 @@ class OrganismTemplate {
 
 		$organism_name_markup_pieces_order_filter = $this->name . '_markup_pieces_order';
 		$markup_pieces                            = apply_filters( $organism_name_markup_pieces_order_filter, $markup_pieces );
-		Atom::AddDebugEntry( 'Filter', $organism_name_markup_pieces_order_filter );
+		Atom::add_debug_entry( 'Filter', $organism_name_markup_pieces_order_filter );
 
 		$wrapper_args = [
 			'tag'                   => $this->tag,
 			'tag_type'              => $this->tag_type,
 			'attributes'            => $this->attributes,
-			'attribute_quote_style' => $this->attribute_quote_style
+			'attribute_quote_style' => $this->attribute_quote_style,
 		];
 
-		$wrapper = Atom::Assemble( $this->name, $wrapper_args );
+		$wrapper = Atom::assemble( $this->name, $wrapper_args );
 
 		if ( ! empty( $markup_pieces ) ) {
 			$this->markup = $wrapper['open'] . implode( '', $markup_pieces ) . $wrapper['close'];
@@ -145,7 +145,7 @@ class OrganismTemplate {
 	}
 
 	/**
-	 * loopPosts
+	 * loop_posts
 	 *
 	 * Given an array of posts, it loops through them and builds the markup for each post based on the posts_structure
 	 * property.
@@ -157,9 +157,9 @@ class OrganismTemplate {
 	 *
 	 * @return array
 	 */
-	public function loopPosts() {
+	public function loop_posts() {
 
-		$post_atoms_arr = [];
+		$post_atoms_arr = array();
 
 		while ( $this->posts->have_posts() ) {
 
@@ -169,7 +169,7 @@ class OrganismTemplate {
 			// Access the current $post object.
 			global $post;
 
-			$post_atoms_arr[] = self::setupMarkupArray( $this->posts_structure, $post, 'posts_markup_array' );
+			$post_atoms_arr[] = self::setup_markup_array( $this->posts_structure, $post, 'posts_markup_array' );
 
 		}
 		wp_reset_postdata();
@@ -180,23 +180,23 @@ class OrganismTemplate {
 	}
 
 	/**
-	 * setupMarkupArray
+	 * setup_markup_array
 	 *
 	 * The markup array holds the markup for each individual atom from the structure array in keys based on the atom's
-	 * name. The markup array is then sent off for assembly in the compileMarkupArray method.
+	 * name. The markup array is then sent off for assembly in the compile_markup_array method.
 	 *
 	 * @since 0.1.0
 	 *
 	 * @param array $structure_pieces Either the structure property or posts_structure property
-	 * @param object $post A WP Post Object
+	 * @param object $post_obj A WP Post Object
 	 * @param string $markup_array_name The posts markup array is kept separate from the main markup array.
 	 *                                   Either 'markup_array' or 'posts_markup_array' is acceptable. $this->$markup_array_name = $markup_arr;
 	 *
 	 * @return array $markup_array  The markup array
 	 */
-	protected function setupMarkupArray( $structure_pieces, $post_obj = null, $markup_array_name = 'markup_array' ) {
+	protected function setup_markup_array( $structure_pieces, $post_obj = null, $markup_array_name = 'markup_array' ) {
 
-		$markup_arr = [];
+		$markup_arr = array();
 
 		foreach ( $structure_pieces as $piece_name => $piece_args_and_content ) {
 
@@ -206,7 +206,7 @@ class OrganismTemplate {
 			 * name in the case of simple atoms ('item').
 			 */
 			$piece_type = '';
-			$atom_args  = [];
+			$atom_args  = array();
 
 			/*
 			 * Part 1: Determine piece type. If $piece_args_and_content is a string, then it's either the atom content (and should be passed through in
@@ -310,25 +310,25 @@ class OrganismTemplate {
 			/*
 			 * Part 3: Get markup and add it to markup_array.
 			 */
-			$markup_arr[ $atom_name ] = [];
+			$markup_arr[ $atom_name ] = array();
 
 			switch ( $piece_type ) {
 
 				case 'name-only':
 
-					$markup_arr[ $atom_name ]['content'] = self::getStructurePart( $atom_name, $atom_args, $post_obj );
+					$markup_arr[ $atom_name ]['content'] = self::get_structure_part( $atom_name, $atom_args, $post_obj );
 
 					break;
 
 				case 'self-content-only':
 
-					$markup_arr[ $atom_name ]['parts'][ $atom_name ] = self::getStructurePart( $atom_name, $atom_args, $post_obj );
+					$markup_arr[ $atom_name ]['parts'][ $atom_name ] = self::get_structure_part( $atom_name, $atom_args, $post_obj );
 
 					break;
 
 				case 'split-with-children':
 
-					$markup_arr[ $atom_name ] = self::getStructurePart( $atom_name, $atom_args, $post_obj );
+					$markup_arr[ $atom_name ] = self::get_structure_part( $atom_name, $atom_args, $post_obj );
 
 					$markup_arr[ $atom_name ]['children'] = $piece_args_and_content['children'];
 
@@ -336,13 +336,13 @@ class OrganismTemplate {
 
 				case 'split-with-parts':
 
-					$markup_arr[ $atom_name ] = self::getStructurePart( $atom_name, $atom_args, $post_obj );
+					$markup_arr[ $atom_name ] = self::get_structure_part( $atom_name, $atom_args, $post_obj );
 
 					foreach ( $piece_args_and_content['parts'] as $subatom_name => $subatom_args ) {
 
 						// Reset subatom valid name and args.
 						$subatom_valid_name = '';
-						$subatom_valid_args = [];
+						$subatom_valid_args = array();
 
 						// TODO: atom name resolution refactor
 						if ( is_array( $subatom_args ) ) {
@@ -351,14 +351,14 @@ class OrganismTemplate {
 						}
 						if ( is_int( $subatom_name ) ) {
 							$subatom_valid_name = $subatom_args;
-							$subatom_valid_args = [];
+							$subatom_valid_args = array();
 						}
 						if ( is_string( $subatom_name ) && is_string( $subatom_args ) ) {
 							$subatom_valid_name            = $subatom_name;
 							$subatom_valid_args['content'] = $subatom_args;
 						}
 
-						$markup_arr[ $atom_name ]['parts'][ $subatom_valid_name ] = self::getStructurePart( $subatom_valid_name, $subatom_valid_args, $post_obj );
+						$markup_arr[ $atom_name ]['parts'][ $subatom_valid_name ] = self::get_structure_part( $subatom_valid_name, $subatom_valid_args, $post_obj );
 
 					}
 
@@ -366,7 +366,7 @@ class OrganismTemplate {
 
 				case 'self-with-content':
 
-					$markup_arr[ $atom_name ]['content'] = self::getStructurePart( $atom_name, $atom_args, $post_obj );
+					$markup_arr[ $atom_name ]['content'] = self::get_structure_part( $atom_name, $atom_args, $post_obj );
 
 					break;
 			}
@@ -411,12 +411,12 @@ class OrganismTemplate {
 		 */
 		$this->$markup_array_name = $markup_arr;
 
-		return self::compileMarkupArray( $markup_array_name );
+		return self::compile_markup_array( $markup_array_name );
 
 	}
 
 	/**
-	 * getStructurePart
+	 * get_structure_part
 	 *
 	 * Get a part of the structure: returns either a plain atom or a named atom based on the args.
 	 *
@@ -425,11 +425,11 @@ class OrganismTemplate {
 	 *
 	 * @param string $atom_name The base atom name, modified to be namespaced by the organism name.
 	 * @param array $atom_args The atom args
-	 * @param WP_Post $post Post object
+	 * @param WP_Post $post_obj Post object
 	 *
 	 * @return mixed
 	 */
-	protected function getStructurePart( $atom_name, $atom_args, $post_obj ) {
+	protected function get_structure_part( $atom_name, $atom_args, $post_obj ) {
 
 		// First, namespace the atom based on the organism name.
 		if ( isset( $atom_args['name'] ) ) {
@@ -450,7 +450,7 @@ class OrganismTemplate {
 
 		// If class isn't set already, then it defaults to an array.
 		if ( ! isset( $atom_args['attributes']['class'] ) ) {
-			$atom_args['attributes']['class'] = [];
+			$atom_args['attributes']['class'] = array();
 		}
 
 		// Shorthand for class
@@ -474,11 +474,11 @@ class OrganismTemplate {
 		$atom_args['attributes']['class'][] = $namespaced_atom_name;
 
 		// If the class exists, then it's a named atom, and we need to
-		// run the getMarkup method based on the namespaced atom name.
+		// run the get_markup method based on the namespaced atom name.
 		if ( class_exists( $class_atom_name ) ) {
 			$atom_args['name'] = $namespaced_atom_name;
 			$atom_object       = new $class_atom_name( $atom_args );
-			$atom_object->getMarkup();
+			$atom_object->get_markup();
 
 			return $atom_object->markup;
 
@@ -488,14 +488,14 @@ class OrganismTemplate {
 		// Run it through the Atom class to assemble it
 		if ( ! class_exists( $class_atom_name ) ) {
 
-			$atom = Atom::Assemble( $namespaced_atom_name, $atom_args );
+			$atom = Atom::assemble( $namespaced_atom_name, $atom_args );
 
 			return $atom;
 		}
 	}
 
 	/**
-	 * compileMarkupArray
+	 * compile_markup_array
 	 *
 	 * Compiles the markup array by passing off the first piece to a recursive function, and returns the compiled markup string.
 	 *
@@ -505,13 +505,13 @@ class OrganismTemplate {
 	 *
 	 * @return string $compiled_markup  The compiled markup.
 	 */
-	protected function compileMarkupArray( $markup_array_name ) {
+	protected function compile_markup_array( $markup_array_name ) {
 
 		$markup_array = $this->$markup_array_name;
 
 		$first_piece = array_shift( $markup_array );
 
-		$compiled_markup = self::recursiveAssemblePieces( $first_piece, $markup_array_name );
+		$compiled_markup = self::recursive_assemble_pieces( $first_piece, $markup_array_name );
 
 		return $compiled_markup;
 
@@ -519,7 +519,7 @@ class OrganismTemplate {
 
 
 	/**
-	 * recursiveAssemblePieces
+	 * recursive_assemble_pieces
 	 *
 	 * Put a whole markup_array together by recursively calling the function for children and siblings.
 	 *
@@ -531,7 +531,7 @@ class OrganismTemplate {
 	 *
 	 * @return string $markup  Returns the completed markup.
 	 */
-	protected function recursiveAssemblePieces( $organism_part, $markup_array_name, $markup = '' ) {
+	protected function recursive_assemble_pieces( $organism_part, $markup_array_name, $markup = '' ) {
 
 		$markup_array = $this->$markup_array_name;
 
@@ -570,14 +570,14 @@ class OrganismTemplate {
 					$child = $organism_part['children'];
 
 					if ( is_string( $child ) ) {
-						$markup .= self::recursiveAssemblePieces( $markup_array[ $child ], $markup_array_name );
+						$markup .= self::recursive_assemble_pieces( $markup_array[ $child ], $markup_array_name );
 					}
 
 					if ( is_array( $child ) ) {
 
 						foreach ( $child as $piece ) {
 
-							$markup .= self::recursiveAssemblePieces( $markup_array[ $piece ], $markup_array_name );
+							$markup .= self::recursive_assemble_pieces( $markup_array[ $piece ], $markup_array_name );
 						}
 					}
 				}
@@ -612,7 +612,7 @@ class OrganismTemplate {
 
 		// Siblings are placed after the current item is done.
 		if ( isset( $organism_part['sibling'] ) ) {
-			$markup .= self::recursiveAssemblePieces( $markup_array[ $organism_part['sibling'] ], $markup_array_name );
+			$markup .= self::recursive_assemble_pieces( $markup_array[ $organism_part['sibling'] ], $markup_array_name );
 		}
 
 		// Return the completed string.

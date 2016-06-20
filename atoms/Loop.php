@@ -28,7 +28,7 @@ class Loop extends AtomTemplate {
 		if ( isset( $data['array'] ) && isset( $data['format'] ) ) {
 
 			foreach ( $data['array'] as $loop_item ) {
-				$this->content .= vsprintf($data['format'], $loop_item );
+				$this->content .= vsprintf( $data['format'], $loop_item );
 			}
 		}
 	}

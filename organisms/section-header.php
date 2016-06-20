@@ -3,7 +3,7 @@ namespace CNP;
 
 class SectionHeader extends OrganismTemplate {
 
-	public function __construct( $data = [ ] ) {
+	public function __construct( $data = array() ) {
 
 		parent::__construct( $data );
 
@@ -14,26 +14,26 @@ class SectionHeader extends OrganismTemplate {
 			$this->name = 'header';
 		}
 
-		if ( ! isset ( $data['structure'] ) ) {
+		if ( ! isset( $data['structure'] ) ) {
 
 			$ancestor = cnp_get_highest_ancestor();
 
 			$section_title_filter = $this->name . '_title';
 			$title                = apply_filters( $section_title_filter, $ancestor['title'] );
-			Atom::AddDebugEntry( 'Filter,', $section_title_filter );
+			Atom::add_debug_entry( 'Filter,', $section_title_filter );
 
 			$this->structure = [
 				'row'    => [
-					'children' => [ 'column' ]
+					'children' => [ 'column' ],
 				],
 				'column' => [
 					'parts' => [
 						'title' => [
-							'tag' => 'h2',
-							'content' => $title
-						]
-					]
-				]
+							'tag'     => 'h2',
+							'content' => $title,
+						],
+					],
+				],
 			];
 		}
 	}

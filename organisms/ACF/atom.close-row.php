@@ -20,14 +20,14 @@ class ACF_CloseRow extends AtomTemplate {
 
 		parent::__construct( $data );
 
-		$this->tag = 'div';
+		$this->tag      = 'div';
 		$this->tag_type = 'split';
 
 	}
 
-	public function getMarkup() {
+	public function get_markup() {
 
-		parent::getMarkup();
+		parent::get_markup();
 
 		// Reset the markup with the closing tag.
 		$this->markup = $this->markup['close'];

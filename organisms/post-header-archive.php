@@ -3,7 +3,7 @@ namespace CNP;
 
 class PostHeaderArchive extends OrganismTemplate {
 
-	public function __construct( $data = [ ] ) {
+	public function __construct( $data = array() ) {
 
 		parent::__construct( $data );
 
@@ -14,25 +14,25 @@ class PostHeaderArchive extends OrganismTemplate {
 		if ( ! isset( $data['structure'] ) ) {
 
 			$structure = [
-				'title' => [
-					'atom' => 'PostTitleLink',
-					'sibling' => 'date'
+				'title'      => [
+					'atom'    => 'PostTitleLink',
+					'sibling' => 'date',
 				],
-				'date'   => [
+				'date'       => [
 					'atom'    => 'PostDate',
-					'sibling' => 'author'
+					'sibling' => 'author',
 				],
-				'author' => [
-					'atom' => 'PostAuthor',
-					'sibling' => 'categories'
+				'author'     => [
+					'atom'    => 'PostAuthor',
+					'sibling' => 'categories',
 				],
 				'categories' => [
-					'atom' => 'CategoryList',
-					'sibling' => 'excerpt'
+					'atom'    => 'CategoryList',
+					'sibling' => 'excerpt',
 				],
-				'excerpt' => [
-					'atom' => 'ExcerptForce'
-				]
+				'excerpt'    => [
+					'atom' => 'ExcerptForce',
+				],
 			];
 
 			if ( is_search() ) {
@@ -41,7 +41,7 @@ class PostHeaderArchive extends OrganismTemplate {
 
 			$postheader_structure_filter = $this->name . '_archive_structure';
 			$this->structure             = apply_filters( $postheader_structure_filter, $structure );
-			Atom::AddDebugEntry( 'Filter', $postheader_structure_filter );
+			Atom::add_debug_entry( 'Filter', $postheader_structure_filter );
 		}
 	}
 }
