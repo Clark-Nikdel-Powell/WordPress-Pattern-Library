@@ -19,7 +19,7 @@ class AtomTemplate {
 		$this->content    = isset( $data['content'] ) ? $data['content'] : '';
 		$this->before     = isset( $data['before'] ) ? $data['before'] : '';
 		$this->after      = isset( $data['after'] ) ? $data['after'] : '';
-		$this->attributes = isset( $data['attributes'] ) ? $data['attributes'] : [ ];
+		$this->attributes = isset( $data['attributes'] ) ? $data['attributes'] : [];
 		$this->markup     = '';
 
 		if ( isset( $data['post'] ) ) {
@@ -31,7 +31,7 @@ class AtomTemplate {
 
 	}
 
-	public function getMarkup() {
-		$this->markup = Atom::Assemble( $this->name, $this );
+	public function get_markup() {
+		$this->markup = Atom::assemble( $this->name, $this );
 	}
 }

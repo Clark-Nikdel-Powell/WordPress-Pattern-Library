@@ -127,7 +127,7 @@ class ACF_BlurbList extends OrganismTemplate {
 	private function generate_blurb( $blurb_data ) {
 
 		// Trim all slide data first, so that an empty space doesn't get used as content by mistake.
-		$blurb_data = Utility::multidimensionalArrayMap( 'trim', $blurb_data );
+		$blurb_data = Utility::multidimensional_array_map( 'trim', $blurb_data );
 
 		$blurb_args = $this->blurb_organism_args;
 
@@ -192,7 +192,7 @@ class ACF_BlurbList extends OrganismTemplate {
 	private function do_classes( $args, $data ) {
 
 		$classes       = $this->blurb_classes . ',' . $data['class'];
-		$args['class'] = Utility::parseClassesAsArray( $classes );
+		$args['class'] = Utility::parse_classes_as_array( $classes );
 
 		return $args;
 
@@ -251,7 +251,7 @@ class ACF_BlurbList extends OrganismTemplate {
 				$args['structure']['inside']['parts'] = $background + $args['structure']['inside']['parts'];
 			}
 			if ( $this->is_color_background() && isset( $data['background_color'] ) && ! empty( $data['background_color'] ) ) {
-				Utility::arraySetPath( 'background-color:' . $data['background_color'], $args, 'structure/inside/attributes/style', '/' );
+				Utility::array_set_path( 'background-color:' . $data['background_color'], $args, 'structure/inside/attributes/style', '/' );
 			}
 		}
 

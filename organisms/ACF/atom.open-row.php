@@ -26,7 +26,7 @@ class ACF_OpenRow extends AtomTemplate {
 		$data_classes     = [ ];
 
 		if ( ! empty( $data['class'] ) ) {
-			$data_classes = Utility::parseClassesAsArray( $data['class'] );
+			$data_classes = Utility::parse_classes_as_array( $data['class'] );
 		}
 
 		$this->attributes['class'] = array_merge( $standard_classes, $data_classes );

@@ -38,7 +38,7 @@ class OrganismTemplate {
 
 		// Ensures that the 'class' attribute is set if it wasn't passed in with attributes.
 		if ( ! isset( $this->attributes['class'] ) ) {
-			$this->attributes['class'] = [ ];
+			$this->attributes['class'] = [];
 		}
 
 		// Add the Organism name as a class
@@ -48,12 +48,11 @@ class OrganismTemplate {
 		// The helper function takes either a string or array, and returns an array.
 		if ( ! empty( $data['class'] ) ) {
 
-			$classes_arr = Utility::parseClassesAsArray( $data['class'] );
+			$classes_arr = Utility::parse_classes_as_array( $data['class'] );
 
 			if ( ! empty( $classes_arr ) ) {
 				$this->attributes['class'] = array_merge( $this->attributes['class'], $classes_arr );
 			}
-
 		}
 		unset( $this->class );
 
@@ -66,15 +65,15 @@ class OrganismTemplate {
 		$this->before_content = isset( $data['before_content'] ) ? $data['before_content'] : '';
 		$this->after_content  = isset( $data['after_content'] ) ? $data['after_content'] : '';
 
-		$this->structure = isset( $data['structure'] ) ? $data['structure'] : [ ];
+		$this->structure = isset( $data['structure'] ) ? $data['structure'] : [];
 
-		$this->markup_array = [ ];
+		$this->markup_array = [];
 
-		$this->post_args       = isset( $data['post-args'] ) ? $data['post-args'] : [ ];
-		$this->posts           = isset( $data['posts'] ) ? $data['posts'] : [ ];
-		$this->posts_structure = isset( $data['posts-structure'] ) ? $data['posts-structure'] : [ ];
+		$this->post_args       = isset( $data['post-args'] ) ? $data['post-args'] : [];
+		$this->posts           = isset( $data['posts'] ) ? $data['posts'] : [];
+		$this->posts_structure = isset( $data['posts-structure'] ) ? $data['posts-structure'] : [];
 
-		$this->posts_markup_array = [ ];
+		$this->posts_markup_array = [];
 		$this->markup             = '';
 
 		// Filter the Organism structure.
@@ -107,7 +106,7 @@ class OrganismTemplate {
 	 */
 	public function getMarkup() {
 
-		$markup_pieces = [ ];
+		$markup_pieces = [];
 
 		if ( '' !== $this->before_content ) {
 			$markup_pieces[] = $this->before_content;
@@ -160,7 +159,7 @@ class OrganismTemplate {
 	 */
 	public function loopPosts() {
 
-		$post_atoms_arr = [ ];
+		$post_atoms_arr = [];
 
 		while ( $this->posts->have_posts() ) {
 
@@ -197,7 +196,7 @@ class OrganismTemplate {
 	 */
 	protected function setupMarkupArray( $structure_pieces, $post_obj = null, $markup_array_name = 'markup_array' ) {
 
-		$markup_arr = [ ];
+		$markup_arr = [];
 
 		foreach ( $structure_pieces as $piece_name => $piece_args_and_content ) {
 
@@ -207,7 +206,7 @@ class OrganismTemplate {
 			 * name in the case of simple atoms ('item').
 			 */
 			$piece_type = '';
-			$atom_args  = [ ];
+			$atom_args  = [];
 
 			/*
 			 * Part 1: Determine piece type. If $piece_args_and_content is a string, then it's either the atom content (and should be passed through in
@@ -311,7 +310,7 @@ class OrganismTemplate {
 			/*
 			 * Part 3: Get markup and add it to markup_array.
 			 */
-			$markup_arr[ $atom_name ] = [ ];
+			$markup_arr[ $atom_name ] = [];
 
 			switch ( $piece_type ) {
 
@@ -343,7 +342,7 @@ class OrganismTemplate {
 
 						// Reset subatom valid name and args.
 						$subatom_valid_name = '';
-						$subatom_valid_args = [ ];
+						$subatom_valid_args = [];
 
 						// TODO: atom name resolution refactor
 						if ( is_array( $subatom_args ) ) {
@@ -352,7 +351,7 @@ class OrganismTemplate {
 						}
 						if ( is_int( $subatom_name ) ) {
 							$subatom_valid_name = $subatom_args;
-							$subatom_valid_args = [ ];
+							$subatom_valid_args = [];
 						}
 						if ( is_string( $subatom_name ) && is_string( $subatom_args ) ) {
 							$subatom_valid_name            = $subatom_name;
@@ -451,14 +450,14 @@ class OrganismTemplate {
 
 		// If class isn't set already, then it defaults to an array.
 		if ( ! isset( $atom_args['attributes']['class'] ) ) {
-			$atom_args['attributes']['class'] = [ ];
+			$atom_args['attributes']['class'] = [];
 		}
 
 		// Shorthand for class
 		if ( isset( $atom_args['class'] ) ) {
 
 			// The utility function takes either a string or array, and returns an array.
-			$classes_arr = Utility::parseClassesAsArray( $atom_args['class'] );
+			$classes_arr = Utility::parse_classes_as_array( $atom_args['class'] );
 
 			if ( ! empty( $classes_arr ) ) {
 				// $atom_args['attributes']['class'] has been pre-set as an array, so the merge here is safe.

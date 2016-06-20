@@ -16,7 +16,7 @@ class BackgroundVideo extends AtomTemplate {
 
 		$this->tag = 'div';
 
-		$this->vide_bg = [ ];
+		$this->vide_bg = [];
 
 		if ( ! empty( $data['mp4'] ) ) {
 			$this->vide_bg['mp4'] = $data['mp4'];
@@ -36,7 +36,7 @@ class BackgroundVideo extends AtomTemplate {
 
 		// Set the vide options.
 		if ( ! empty( $data['vide-options'] ) ) {
-			$this->vide_options = implode(', ', $data['vide-options']);
+			$this->vide_options = implode( ', ', $data['vide-options'] );
 		} else {
 			$this->vide_options = 'autoplay: true, posterType: jpg, loop: true, muted: true, position: left top';
 		}

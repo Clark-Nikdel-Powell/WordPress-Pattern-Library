@@ -11,9 +11,9 @@
 /  Templates: what we base all the other classes on.
 ——————————————————————————————————————————————————————————————————————————————*/
 
-include_once( 'Class.Helpers.php' );
-include_once( 'Class.AtomTemplate.php' );
-include_once( 'Class.OrganismTemplate.php' );
+include_once( 'class.helpers.php' );
+include_once( 'class.atom-template.php' );
+include_once( 'class.organism-template.php' );
 
 /*——————————————————————————————————————————————————————————————————————————————
 /  Atoms: order matters. Make sure you include the source class before extending classes.
@@ -21,33 +21,33 @@ include_once( 'Class.OrganismTemplate.php' );
 
 $atoms_dir = 'atoms/';
 
-include_once( $atoms_dir . 'Link.php' );
-include_once( $atoms_dir . 'PostLink.php' );
-include_once( $atoms_dir . 'FrontPageLink.php' );
-include_once( $atoms_dir . 'SiteTitleFrontPageLink.php' );
-include_once( $atoms_dir . 'PostsPageLink.php' );
-include_once( $atoms_dir . 'Excerpt.php' );
+include_once( $atoms_dir . 'link.php' );
+include_once( $atoms_dir . 'post-link.php' );
+include_once( $atoms_dir . 'front-page-link.php' );
+include_once( $atoms_dir . 'site-title-front-page-link.php' );
+include_once( $atoms_dir . 'posts-page-link.php' );
+include_once( $atoms_dir . 'excerpt.php' );
 include_once( $atoms_dir . 'ExcerptForce.php' );
-include_once( $atoms_dir . 'ExcerptSearch.php' );
-include_once( $atoms_dir . 'PostClass.php' );
-include_once( $atoms_dir . 'PostThumbnail.php' );
-include_once( $atoms_dir . 'PostTitle.php' );
-include_once( $atoms_dir . 'PostTitleLink.php' );
-include_once( $atoms_dir . 'CategoryList.php' );
-include_once( $atoms_dir . 'Loop.php' );
-include_once( $atoms_dir . 'SchemaAddress.php' );
-include_once( $atoms_dir . 'PostDate.php' );
-include_once( $atoms_dir . 'EventDate.php' );
+include_once( $atoms_dir . 'excerpt-search.php' );
+include_once( $atoms_dir . 'post-class.php' );
+include_once( $atoms_dir . 'post-thumbnail.php' );
+include_once( $atoms_dir . 'post-title.php' );
+include_once( $atoms_dir . 'post-title-link.php' );
+include_once( $atoms_dir . 'category-list.php' );
+include_once( $atoms_dir . 'loop.php' );
+include_once( $atoms_dir . 'schema-address.php' );
+include_once( $atoms_dir . 'post-date.php' );
+include_once( $atoms_dir . 'event-date.php' );
 include_once( $atoms_dir . 'EventBadge.php' );
-include_once( $atoms_dir . 'TaxonomyList.php' );
-include_once( $atoms_dir . 'ListTerms.php' );
-include_once( $atoms_dir . 'ListPages.php' );
-include_once( $atoms_dir . 'PostAuthor.php' );
-include_once( $atoms_dir . 'Menu.php' );
-include_once( $atoms_dir . 'Image.php' );
-include_once( $atoms_dir . 'ContentSourceLink.php' );
-include_once( $atoms_dir . 'BackgroundVideo.php' );
-include_once( $atoms_dir . 'PostTermLinkSingle.php' );
+include_once( $atoms_dir . 'taxonomy-list.php' );
+include_once( $atoms_dir . 'list-terms.php' );
+include_once( $atoms_dir . 'list-pages.php' );
+include_once( $atoms_dir . 'post-author.php' );
+include_once( $atoms_dir . 'menu.php' );
+include_once( $atoms_dir . 'image.php' );
+include_once( $atoms_dir . 'content-source-link.php' );
+include_once( $atoms_dir . 'background-video.php' );
+include_once( $atoms_dir . 'post-term-link-single.php' );
 
 
 /*——————————————————————————————————————————————————————————————————————————————
@@ -56,12 +56,12 @@ include_once( $atoms_dir . 'PostTermLinkSingle.php' );
 
 $organisms_dir = 'organisms/';
 
-include_once( $organisms_dir . 'PostList.php' );
-include_once( $organisms_dir . 'EventList.php' );
-include_once( $organisms_dir . 'Subnav.php' );
-include_once( $organisms_dir . 'PostHeaderSingular.php' );
-include_once( $organisms_dir . 'PostHeaderArchive.php' );
-include_once( $organisms_dir . 'SectionHeader.php' );
+include_once( $organisms_dir . 'post-list.php' );
+include_once( $organisms_dir . 'event-list.php' );
+include_once( $organisms_dir . 'subnav.php' );
+include_once( $organisms_dir . 'post-header-singular.php' );
+include_once( $organisms_dir . 'post-header-archive.php' );
+include_once( $organisms_dir . 'section-header.php' );
 
 
 /*——————————————————————————————————————————————————————————————————————————————
@@ -70,12 +70,12 @@ include_once( $organisms_dir . 'SectionHeader.php' );
 
 $acf_dir = 'organisms/ACF/';
 
-include_once( $acf_dir . 'Atom.OpenRow.php' );
-include_once( $acf_dir . 'Atom.CloseRow.php' );
-include_once( $acf_dir . 'Atom.Content.php' );
-include_once( $acf_dir . 'Organism.Map.php' );
-include_once( $acf_dir . 'Organism.Blurb.php' );
-include_once( $acf_dir . 'Organism.Slideshow.php' );
-include_once( $acf_dir . 'Organism.BlurbList.php' );
-include_once( $acf_dir . 'Organism.PostList.php' );
-include_once( $acf_dir . 'Organism.Header.php' );
+include_once( $acf_dir . 'atom.open-row.php' );
+include_once( $acf_dir . 'atom.close-row.php' );
+include_once( $acf_dir . 'atom.content.php' );
+include_once( $acf_dir . 'organism.map.php' );
+include_once( $acf_dir . 'organism.blurb.php' );
+include_once( $acf_dir . 'organism.slideshow.php' );
+include_once( $acf_dir . 'organism.blurb-list.php' );
+include_once( $acf_dir . 'organism.post-list.php' );
+include_once( $acf_dir . 'organism.header.php' );
