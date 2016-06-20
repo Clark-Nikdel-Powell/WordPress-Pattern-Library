@@ -11,7 +11,7 @@
 /  Templates: what we base all the other classes on.
 ——————————————————————————————————————————————————————————————————————————————*/
 
-include_once( 'class.helper.php' );
+include_once( 'class.helpers.php' );
 include_once( 'class.atom-template.php' );
 include_once( 'class.organism-template.php' );
 
