@@ -41,10 +41,12 @@ class ACF_Gallery extends OrganismTemplate {
 				'parts' => [
 					'prev' => [
 						'tag'     => 'button',
+						'class' => [ $data['name'] . '__nav-item' ],
 						'content' => '<',
 					],
 					'next' => [
 						'tag'     => 'button',
+						'class' => [ $data['name'] . '__nav-item' ],
 						'content' => '>',
 					],
 				],
@@ -100,13 +102,19 @@ class ACF_Gallery extends OrganismTemplate {
 				'class'      => [ $this->name . '__image' ],
 			],
 		];
+
+		$caption_classes = [ $this->name . '__caption' ];
+
+		if ( 0 === $image_index ) {
+			$caption_classes[] = $this->name . '__caption--isActive';
+		}
+
 		$this->structure['captions']['parts'][ 'caption-' . $image_index ] = [
 			'attributes' => [
 				'data-image' => $image_number,
-				'class'      => [ $this->name . '__caption' ],
+				'class'      => $caption_classes,
 			],
 			'content'    => $image_data['caption'],
 		];
-
 	}
 }
