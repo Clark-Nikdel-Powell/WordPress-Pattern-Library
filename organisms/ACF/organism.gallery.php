@@ -53,9 +53,10 @@ class ACF_Gallery extends OrganismTemplate {
 			],
 		];
 
+		$this->images = $data['images'];
+		
 		parent::__construct( $data );
 
-		$this->images = $data['images'];
 	}
 
 	public function get_markup() {
