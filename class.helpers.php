@@ -29,23 +29,20 @@ class Helpers {
 		if ( 'Image' === $background_type ) {
 
 			// @EXIT: If there's no image set, get rid of the atom.
-			if ( empty( $data['image'] ) ) {
+			if ( empty( $data['background_image'] ) ) {
 				unset( $structure_array[ $background_key ] );
+
 				return $structure_array;
 			}
 
 			// Items are handled one-by-one so we don't accidentally overwrite preset array values.
-			$structure_array[ $background_key ]['atom'] = 'Image';
-
-			// Attachment ID
-			$structure_array[ $background_key ]['attachment_id'] = $data['image'];
-
-			// Image size: preset to full, TODO: should make sure we have a way to filter if necessary
-			$structure_array[ $background_key ]['size'] = 'full';
-
-			// Background images are often 100% of the viewport.
-			$structure_array[ $background_key ]['attributes'] = [
-				'sizes' => '100vw',
+			$structure_array[ $background_key ]['parts']['image'] = [
+				'atom'          => 'Image',
+				'attachment_id' => $data['background_image'],
+				'size'          => 'full',
+				'attributes'    => [
+					'sizes' => '100vw',
+				],
 			];
 
 		}
