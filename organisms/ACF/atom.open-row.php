@@ -22,7 +22,7 @@ class ACF_OpenRow extends AtomTemplate {
 
 		$this->tag        = 'div';
 		$this->tag_type   = 'split';
-		$standard_classes = [ 'acf-openrow', 'row' ];
+		$standard_classes = [ $this->name, 'row' ];
 		$data_classes     = array();
 
 		if ( ! empty( $data['class'] ) ) {
