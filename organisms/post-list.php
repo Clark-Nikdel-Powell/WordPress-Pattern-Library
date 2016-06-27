@@ -5,15 +5,13 @@ class PostList extends OrganismTemplate {
 
 	public function __construct( $data ) {
 
-		parent::__construct( $data );
-
 		if ( ! isset( $data['name'] ) && '' === $this->name ) {
 			$this->name = 'postlist';
 		}
 
-		if ( ! isset( $data['posts-structure'] ) && empty( $this->posts_structure ) ) {
+		if ( ! isset( $data['posts-structure'] ) || empty( $data['posts-structure'] ) ) {
 
-			$posts_structure = [
+			$data['posts-structure'] = [
 				'PostClass' => [
 					'children' => [ 'image', 'text' ],
 				],
@@ -32,10 +30,8 @@ class PostList extends OrganismTemplate {
 					],
 				],
 			];
-
-			$postlist_posts_structure_filter = $this->name . '_posts_structure';
-			$this->posts_structure           = apply_filters( $postlist_posts_structure_filter, $posts_structure );
-			Atom::add_debug_entry( 'Filter', $postlist_posts_structure_filter );
 		}
+
+		parent::__construct( $data );
 	}
 }

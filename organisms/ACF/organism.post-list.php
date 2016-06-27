@@ -21,11 +21,9 @@ class ACF_PostList extends PostList {
 		$this->list_link      = isset( $data['link'] ) ? $data['link'] : '';
 		$this->list_link_text = isset( $data['link_text'] ) ? $data['link_text'] : '';
 
-		parent::__construct( $data );
+		if ( empty( $data['structure'] ) ) {
 
-		if ( empty( $this->structure ) ) {
-
-			$this->structure = [
+			$data['structure'] = [
 				'listtitle' => [
 					'tag'      => 'h2',
 					'tag_type' => 'false_without_content',
@@ -34,9 +32,9 @@ class ACF_PostList extends PostList {
 			];
 		}
 
-		if ( empty( $this->posts_structure ) ) {
+		if ( empty( $data['posts-structure'] ) ) {
 
-			$this->posts_structure = [
+			$data['posts-structure'] = [
 				'PostClass' => [
 					'children' => [ 'image', 'text' ],
 				],
@@ -56,9 +54,9 @@ class ACF_PostList extends PostList {
 		}
 
 		// This isn't the greatest check we could make here, but I think it'll do.
-		if ( true === $this->link_after_content ) {
+		if ( '' !== $data['link_text'] && '' !== $data['link'] ) {
 
-			$link_name = $this->name . $this->separator . 'link';
+			$link_name = $data['name'] . '__' . 'listlink';
 			$link_args = [
 				'name'     => $link_name,
 				'tag_type' => 'false_without_content',
@@ -69,11 +67,15 @@ class ACF_PostList extends PostList {
 			$link_obj->get_markup();
 
 			if ( '' !== $link_obj->markup ) {
-				$this->after_content = $link_obj->markup;
+				$data['after_content'] = $link_obj->markup;
 			}
 		}
 
 		self::get_posts( $data );
+
+		$data['posts'] = $this->posts;
+
+		parent::__construct( $data );
 
 	}
 
