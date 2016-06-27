@@ -70,6 +70,7 @@ class ACF_BlurbList extends OrganismTemplate {
 
 		$this->blurb_organism_args = [
 			'name'       => $this->name . $this->separator . 'blurb',
+			'separator'  => '-',
 			'attributes' => array(),
 			'structure'  => [
 				'inside' => [
