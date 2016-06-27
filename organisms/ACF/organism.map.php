@@ -46,14 +46,16 @@ class ACF_Map extends OrganismTemplate {
 		}
 
 		// Sets the zoom level
-		if ( '' !== $data['zoom_level'] ) {
+		if ( isset( $data['zoom_level'] ) && '' !== $data['zoom_level'] ) {
 			$this->map_attributes['data-zoom_level'] = $data['zoom_level'];
+		} else {
+			$this->map_attributes['data-zoom_level'] = 12;
 		}
 
 		/*——————————————————————————————————————————————————————————
 		/  Title Setup
 		——————————————————————————————————————————————————————————*/
-		if ( '' !== trim( $data['title'] ) ) {
+		if ( isset( $data['title'] ) && '' !== trim( $data['title'] ) ) {
 			$this->title = $data['title'];
 		}
 
@@ -61,6 +63,8 @@ class ACF_Map extends OrganismTemplate {
 		/  Structure Setup
 		——————————————————————————————————————————————————————————*/
 		$markers_key = 'markers';
+
+		$this->map_attributes['class'] = [ $this->name . $this->separator . 'markers' ];
 
 		$this->structure = [
 			$markers_key => [
