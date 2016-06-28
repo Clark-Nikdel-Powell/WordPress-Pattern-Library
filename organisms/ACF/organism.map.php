@@ -109,7 +109,7 @@ class ACF_Map extends OrganismTemplate {
 				'content'    => '<p>' . $marker['address'] . '</p>',
 			];
 
-			$this->structure['markers']['content'] .= Atom::assemble( 'marker', $marker_atom_args );
+			$this->structure['markers']['content'] .= Atom::assemble( $this->name . $this->separator . 'marker', $marker_atom_args );
 
 		}
 
