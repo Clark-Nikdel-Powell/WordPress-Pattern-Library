@@ -64,7 +64,8 @@ class ACF_Map extends OrganismTemplate {
 		——————————————————————————————————————————————————————————*/
 		$markers_key = 'markers';
 
-		$this->map_attributes['class'] = [ $this->name . $this->separator . 'markers' ];
+		// Standard class for standard JavaScript, namespaced class for good measure
+		$this->map_attributes['class'] = [ 'acf-map__markers', $this->name . $this->separator . 'markers' ];
 
 		$this->structure = [
 			$markers_key => [
