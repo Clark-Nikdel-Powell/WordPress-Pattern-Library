@@ -109,23 +109,6 @@
                                 "maxlength": "",
                                 "readonly": 0,
                                 "disabled": 0
-                            },
-                            {
-                                "key": "field_576e887d0fafc",
-                                "label": "Special Classes",
-                                "name": "special_classes",
-                                "type": "message",
-                                "instructions": "",
-                                "required": 0,
-                                "conditional_logic": 0,
-                                "wrapper": {
-                                    "width": "",
-                                    "class": "",
-                                    "id": ""
-                                },
-                                "message": "Use the class \"row--isBeige\" for a light beige background texture effect. Includes dashed borders on top and bottom.\r\n\r\nUse the class \"row--isGray\" for a light gray background.\r\n\r\nUse the class \"row--hasSeal\" to include the Keswick seal in the background.",
-                                "new_lines": "wpautop",
-                                "esc_html": 0
                             }
                         ],
                         "min": "",
