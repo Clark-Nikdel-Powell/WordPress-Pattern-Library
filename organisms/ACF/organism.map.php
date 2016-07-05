@@ -106,6 +106,7 @@ class ACF_Map extends OrganismTemplate {
 				'attributes' => [
 					'data-lat' => $marker['lat'],
 					'data-lng' => $marker['lng'],
+					'class'    => [ 'acf-map__marker', $this->name . $this->separator . 'marker' ],
 				],
 				'content'    => '<p>' . $marker['address'] . '</p>',
 			];
