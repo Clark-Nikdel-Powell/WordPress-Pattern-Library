@@ -26,6 +26,8 @@ namespace CNP;
  */
 class Subnav extends OrganismTemplate {
 
+	private $default_list_args;
+
 	public $behavior;
 	public $settings;
 	public $title = 'In this Section';
@@ -95,6 +97,13 @@ class Subnav extends OrganismTemplate {
 		];
 
 		if ( isset( $data['settings_by_content_type'] ) ) {
+			// If specific settings for content types have been defined, get the global list_args that may have been set
+			if ( isset( $this->settings_by_content_type['list_args'] ) ) {
+				$this->default_list_args = $this->settings_by_content_type['list_args'];
+				// Remove the global list_args as we no longer need them
+				unset( $this->settings_by_content_type['list_args'] );
+			}
+
 			$this->settings_by_content_type = array_replace_recursive( $default_behaviors, $data['settings_by_content_type'] );
 		} else {
 			$this->settings_by_content_type = $default_behaviors;
@@ -269,42 +278,41 @@ class Subnav extends OrganismTemplate {
 
 		$queried_object = get_queried_object();
 
-		$list_atom = '';
-		$list_args = [
-			'tag_type' => 'false_without_content',
+		$list_atom      = '';
+		$list_atom_slug = 'list-terms';
+		$list_atom_args = [
+			'tag_type'  => 'false_without_content',
+			'list_args' => '',
 		];
 
 		switch ( $this->behavior ) {
 
 			case 'archive-home':
 
-				$list_atom      = 'ListTerms';
-				$list_atom_slug = 'list-terms';
+				$list_atom = 'ListTerms';
 
 				break;
 
 			case 'archive-post_type':
 
-				$list_atom      = 'ListTerms';
-				$list_atom_slug = 'list-terms';
+				$list_atom = 'ListTerms';
 
 				break;
 
 			case 'archive-taxonomy':
 
-				$list_atom      = 'ListTerms';
-				$list_atom_slug = 'list-terms';
+				$list_atom = 'ListTerms';
 
 				break;
 
 			case 'single-nonhierarchical':
 
-				$list_atom              = 'TaxonomyList';
-				$list_atom_slug         = 'taxonomy-list';
-				$list_args['tag']       = 'ul';
-				$list_args['before']    = '<li>';
-				$list_args['separator'] = '</li><li>';
-				$list_args['after']     = '</li>';
+				$list_atom                   = 'TaxonomyList';
+				$list_atom_slug              = 'taxonomy-list';
+				$list_atom_args['tag']       = 'ul';
+				$list_atom_args['before']    = '<li>';
+				$list_atom_args['separator'] = '</li><li>';
+				$list_atom_args['after']     = '</li>';
 
 				break;
 
@@ -321,21 +329,28 @@ class Subnav extends OrganismTemplate {
 					$id = $queried_object->ID;
 				}
 
-				$list_args['list_args']['child_of'] = $id;
+				$list_atom_args['list_args']['child_of'] = $id;
 
 				break;
 		}
 
 		if ( isset( $this->settings['taxonomy'] ) ) {
-			$list_args['taxonomy'] = $this->settings['taxonomy'];
+			$list_atom_args['taxonomy'] = $this->settings['taxonomy'];
 		}
 
 		$list_atom_class = 'CNP\\' . $list_atom;
 
 		$namespaced_list_atom_slug = $this->name . $this->separator . $list_atom_slug;
-		$list_args['name']         = $list_atom_slug;
+		$list_atom_args['name']    = $namespaced_list_atom_slug;
 
-		$list = new $list_atom_class( $list_args );
+		// Parse the content specific list_args with the defaults
+		$list_args = wp_parse_args( $this->default_list_args, $this->settings['list_args'] );
+		// Remove the content specific list args as we don't need them
+		unset( $this->settings['list_args'] );
+		// Pass the parsed list_args into the org args
+		$list_atom_args['list_args'] = $list_args;
+
+		$list = new $list_atom_class( $list_atom_args );
 		$list->get_markup();
 
 		$this->list = trim( $list->markup );
