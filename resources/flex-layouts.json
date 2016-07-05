@@ -126,8 +126,8 @@
                                 "name": "label",
                                 "type": "text",
                                 "instructions": "For admin purposes only.",
-                                "required": 1,
-                                "conditional_logic": 0,
+                                "required": "",
+                                "conditional_logic": "",
                                 "wrapper": {
                                     "width": 60,
                                     "class": "",
@@ -143,6 +143,100 @@
                             },
                             {
                                 "key": "field_5739bed8f92cb",
+                                "label": "Name",
+                                "name": "name",
+                                "type": "text",
+                                "instructions": "(Optional) If you set it, don't change it.",
+                                "required": "",
+                                "conditional_logic": "",
+                                "wrapper": {
+                                    "width": 40,
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": "",
+                                "readonly": 0,
+                                "disabled": 0
+                            },
+                            {
+                                "key": "field_563a4fb1153be",
+                                "label": "Classes",
+                                "name": "class",
+                                "type": "text",
+                                "instructions": "Comma-separated list. Default is \"row,\" can modify with a filter.",
+                                "required": "",
+                                "conditional_logic": "",
+                                "wrapper": {
+                                    "width": 50,
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": "",
+                                "readonly": 0,
+                                "disabled": 0
+                            },
+                            {
+                                "key": "field_563a4fbd153bf",
+                                "label": "ID",
+                                "name": "id",
+                                "type": "text",
+                                "instructions": "One word only. No default.",
+                                "required": "",
+                                "conditional_logic": "",
+                                "wrapper": {
+                                    "width": 50,
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": "",
+                                "readonly": 0,
+                                "disabled": 0
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
+                    {
+                        "key": "5776c1bd32209",
+                        "name": "layout_open_column",
+                        "label": "Open Column",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_5776c1f13220a",
+                                "label": "Label",
+                                "name": "label",
+                                "type": "text",
+                                "instructions": "For admin purposes only.",
+                                "required": "",
+                                "conditional_logic": "",
+                                "wrapper": {
+                                    "width": 60,
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": "",
+                                "readonly": 0,
+                                "disabled": 0
+                            },
+                            {
+                                "key": "field_5776c1fd3220b",
                                 "label": "Name",
                                 "name": "name",
                                 "type": "text",
@@ -163,15 +257,15 @@
                                 "disabled": 0
                             },
                             {
-                                "key": "field_563a4fb1153be",
+                                "key": "field_5776c2043220c",
                                 "label": "Classes",
                                 "name": "class",
                                 "type": "text",
-                                "instructions": "Comma-separated list. Default is \"row,\" can modify with a filter.",
+                                "instructions": "Comma-separated list. Default is \"column,\" can modify with a filter.",
                                 "required": 0,
                                 "conditional_logic": 0,
                                 "wrapper": {
-                                    "width": 50,
+                                    "width": 40,
                                     "class": "",
                                     "id": ""
                                 },
@@ -184,7 +278,28 @@
                                 "disabled": 0
                             },
                             {
-                                "key": "field_563a4fbd153bf",
+                                "key": "field_577bb5d294a03",
+                                "label": "Inside Classes",
+                                "name": "inside_class",
+                                "type": "text",
+                                "instructions": "Comma-separated list. No default. Can modified with a filter.",
+                                "required": "",
+                                "conditional_logic": "",
+                                "wrapper": {
+                                    "width": 40,
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": "",
+                                "readonly": 0,
+                                "disabled": 0
+                            },
+                            {
+                                "key": "field_5776c20c3220d",
                                 "label": "ID",
                                 "name": "id",
                                 "type": "text",
@@ -192,7 +307,59 @@
                                 "required": 0,
                                 "conditional_logic": 0,
                                 "wrapper": {
-                                    "width": 50,
+                                    "width": 20,
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": "",
+                                "readonly": 0,
+                                "disabled": 0
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
+                    {
+                        "key": "5776c29a3220e",
+                        "name": "layout_close_column",
+                        "label": "Close Column",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_5776c2ab3220f",
+                                "label": "Label",
+                                "name": "label",
+                                "type": "text",
+                                "instructions": "For admin purposes only.",
+                                "required": 1,
+                                "conditional_logic": "",
+                                "wrapper": {
+                                    "width": 60,
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": "",
+                                "readonly": 0,
+                                "disabled": 0
+                            },
+                            {
+                                "key": "field_5776c2c432210",
+                                "label": "Name",
+                                "name": "name",
+                                "type": "text",
+                                "instructions": "(Optional) If you set it, don't change it.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
                                     "class": "",
                                     "id": ""
                                 },
