@@ -70,6 +70,8 @@ include_once( $organisms_dir . 'section-header.php' );
 
 $acf_dir = 'organisms/ACF/';
 
+include_once( $acf_dir . 'atom.open-column.php' );
+include_once( $acf_dir . 'atom.close-column.php' );
 include_once( $acf_dir . 'atom.open-row.php' );
 include_once( $acf_dir . 'atom.close-row.php' );
 include_once( $acf_dir . 'atom.content.php' );
