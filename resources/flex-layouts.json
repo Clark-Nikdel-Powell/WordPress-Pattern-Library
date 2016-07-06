@@ -3499,6 +3499,34 @@
                                 "insert": "append"
                             },
                             {
+                                "key": "field_577d56e09645b",
+                                "label": "Image Size",
+                                "name": "image_size",
+                                "type": "select",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "choices": {
+                                    "large": "Large",
+                                    "medium": "Medium"
+                                },
+                                "default_value": {
+                                    "Large": "Large"
+                                },
+                                "allow_null": 0,
+                                "multiple": 0,
+                                "ui": 0,
+                                "ajax": 0,
+                                "placeholder": "",
+                                "disabled": 0,
+                                "readonly": 0
+                            },
+                            {
                                 "key": "field_5638c3d2fa434",
                                 "label": "Classes",
                                 "name": "class",

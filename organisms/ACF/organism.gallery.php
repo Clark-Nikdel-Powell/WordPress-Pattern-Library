@@ -4,6 +4,7 @@ namespace CNP;
 class ACF_Gallery extends OrganismTemplate {
 
 	public $images;
+	public $image_size;
 
 	public function __construct( $data ) {
 
@@ -54,7 +55,8 @@ class ACF_Gallery extends OrganismTemplate {
 		];
 
 		$this->images = $data['images'];
-		
+		$this->image_size = $data['image_size'];
+
 		parent::__construct( $data );
 
 	}
@@ -97,7 +99,7 @@ class ACF_Gallery extends OrganismTemplate {
 		$this->structure['images']['parts'][ 'image-' . $image_index ]   = [
 			'atom'          => 'Image',
 			'attachment_id' => $image_data['id'],
-			'size'          => 'large',
+			'size'          => $this->image_size,
 			'attributes'    => [
 				'data-image' => $image_number,
 				'class'      => [ $this->name . '__image' ],
