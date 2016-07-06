@@ -16,7 +16,7 @@ class SectionHeader extends OrganismTemplate {
 
 		if ( ! isset( $data['structure'] ) ) {
 
-			$ancestor = cnp_get_highest_ancestor();
+			$ancestor = get_highest_ancestor();
 
 			$section_title_filter = $this->name . '_title';
 			$title                = apply_filters( $section_title_filter, $ancestor['title'] );

@@ -44,13 +44,11 @@ class ACF_BlurbList extends OrganismTemplate {
 
 		$data['structure'] = [
 			'listtitle' => [
-				'tag'      => 'h2',
 				'tag_type' => 'false_without_content',
 				'content'  => $this->list_title,
 				'sibling'  => 'listintro',
 			],
 			'listintro' => [
-				'tag'      => 'p',
 				'tag_type' => 'false_without_content',
 				'content'  => $this->list_intro,
 				'sibling'  => 'blurbs',
@@ -82,7 +80,6 @@ class ACF_BlurbList extends OrganismTemplate {
 							'sibling'  => 'text',
 						],
 						'title' => [
-							'tag'      => 'h2',
 							'tag_type' => 'false_without_content',
 							'content'  => '',
 						],

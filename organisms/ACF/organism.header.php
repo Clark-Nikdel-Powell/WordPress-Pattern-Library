@@ -18,17 +18,14 @@ class ACF_Header extends OrganismTemplate {
 			'text'       => [
 				'parts' => [
 					'title'       => [
-						'tag'      => 'h2',
 						'tag_type' => 'false_without_content',
 						'content'  => $data['title'],
 					],
 					'subtitle'    => [
-						'tag'      => 'h3',
 						'tag_type' => 'false_without_content',
 						'content'  => $data['subtitle'],
 					],
 					'description' => [
-						'tag'      => 'div',
 						'tag_type' => 'false_without_content',
 						'content'  => $data['description'],
 					],

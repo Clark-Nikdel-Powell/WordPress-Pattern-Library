@@ -79,7 +79,6 @@ class ACF_Map extends OrganismTemplate {
 
 			$title_structure_array = [
 				'title' => [
-					'tag'     => 'h2',
 					'content' => $this->title,
 					'sibling' => $markers_key,
 				],

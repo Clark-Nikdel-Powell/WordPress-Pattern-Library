@@ -8,7 +8,7 @@ class PostHeaderSingular extends OrganismTemplate {
 		parent::__construct( $data );
 
 		global $post;
-		$ancestor = cnp_get_highest_ancestor();
+		$ancestor = get_highest_ancestor();
 
 		if ( ! isset( $data['name'] ) ) {
 			$this->name = 'postheader';

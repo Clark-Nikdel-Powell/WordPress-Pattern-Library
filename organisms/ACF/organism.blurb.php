@@ -22,12 +22,10 @@ class ACF_Blurb extends OrganismTemplate {
 						'content'  => '',
 					],
 					'title' => [
-						'tag'      => 'h3',
 						'tag_type' => 'false_without_content',
 						'content'  => $data['title'],
 					],
 					'text'  => [
-						'tag'      => 'div',
 						'tag_type' => 'false_without_content',
 						'content'  => $data['text'],
 					],

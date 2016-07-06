@@ -55,17 +55,14 @@ class ACF_Slideshow extends OrganismTemplate {
 				'text'       => [
 					'parts' => [
 						'title'       => [
-							'tag'      => 'h2',
 							'tag_type' => 'false_without_content',
 							'content'  => '',
 						],
 						'subtitle'    => [
-							'tag'      => 'h3',
 							'tag_type' => 'false_without_content',
 							'content'  => '',
 						],
 						'description' => [
-							'tag'      => 'div',
 							'tag_type' => 'false_without_content',
 							'content'  => '',
 						],

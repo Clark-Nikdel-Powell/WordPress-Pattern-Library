@@ -25,7 +25,6 @@ class ACF_PostList extends PostList {
 
 			$data['structure'] = [
 				'listtitle' => [
-					'tag'      => 'h2',
 					'tag_type' => 'false_without_content',
 					'content'  => $data['list_title'],
 				],
