@@ -97,14 +97,14 @@ class Subnav extends OrganismTemplate {
 		];
 
 		if ( isset( $data['settings_by_content_type'] ) ) {
+			$this->settings_by_content_type = array_replace_recursive( $default_behaviors, $data['settings_by_content_type'] );
+
 			// If specific settings for content types have been defined, get the global list_args that may have been set
 			if ( isset( $this->settings_by_content_type['list_args'] ) ) {
 				$this->default_list_args = $this->settings_by_content_type['list_args'];
 				// Remove the global list_args as we no longer need them
 				unset( $this->settings_by_content_type['list_args'] );
 			}
-
-			$this->settings_by_content_type = array_replace_recursive( $default_behaviors, $data['settings_by_content_type'] );
 		} else {
 			$this->settings_by_content_type = $default_behaviors;
 		}
@@ -113,10 +113,6 @@ class Subnav extends OrganismTemplate {
 		if ( isset( $data['manual_additions'] ) ) {
 			$this->manual_additions = $data['manual_additions'];
 		}
-
-	}
-
-	public function get_markup() {
 
 		// Match up the subnav settings with the current page.
 		self::determine_subnav_settings();
@@ -174,6 +170,12 @@ class Subnav extends OrganismTemplate {
 		// It is up to the dev to take care that "items" is listed as a child or sibling.
 		$this->structure['items']['parts']['list'] = $this->list;
 
+		return true;
+
+	}
+
+	public function get_markup() {
+
 		parent::get_markup();
 
 		return $this;
@@ -199,7 +201,9 @@ class Subnav extends OrganismTemplate {
 			$taxonomy = $queried_object->taxonomy;
 		}
 
-		$settings = '';
+		$settings = [
+			'list_args' => array(),
+		];
 
 		// There's probably a better way to write these checks...
 		if ( is_front_page() && isset( $this->settings_by_content_type['front-page'] ) ) {
@@ -344,11 +348,11 @@ class Subnav extends OrganismTemplate {
 		$list_atom_args['name']    = $namespaced_list_atom_slug;
 
 		// Parse the content specific list_args with the defaults
-		$list_args = wp_parse_args( $this->default_list_args, $this->settings['list_args'] );
+		$list_args = wp_parse_args( $this->settings['list_args'], $this->default_list_args );
 		// Remove the content specific list args as we don't need them
 		unset( $this->settings['list_args'] );
 		// Pass the parsed list_args into the org args
-		$list_atom_args['list_args'] = $list_args;
+		$list_atom_args['list_args'] = array_merge( $list_atom_args['list_args'], $list_args );
 
 		$list = new $list_atom_class( $list_atom_args );
 		$list->get_markup();
