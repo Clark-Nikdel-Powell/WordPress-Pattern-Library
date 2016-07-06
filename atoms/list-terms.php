@@ -49,7 +49,7 @@ class ListTerms extends AtomTemplate {
 
 		// Parse supplied args from the organism setup.
 		if ( isset( $data['list_args'] ) ) {
-			$list_args_arr = wp_parse_args( $list_args_defaults_arr, $data['list_args'] );
+			$list_args_arr = wp_parse_args( $data['list_args'], $list_args_defaults_arr );
 		} else {
 			$list_args_arr = $list_args_defaults_arr;
 		}
