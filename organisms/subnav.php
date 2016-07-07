@@ -26,7 +26,7 @@ namespace CNP;
  */
 class Subnav extends OrganismTemplate {
 
-	private $default_list_args;
+	private $list_args;
 
 	public $behavior;
 	public $settings;
@@ -96,26 +96,24 @@ class Subnav extends OrganismTemplate {
 			],
 		];
 
+		// Parse custom content settings.
 		if ( isset( $data['settings_by_content_type'] ) ) {
 			$this->settings_by_content_type = array_replace_recursive( $default_behaviors, $data['settings_by_content_type'] );
-
-			// If specific settings for content types have been defined, get the global list_args that may have been set
-			if ( isset( $this->settings_by_content_type['list_args'] ) ) {
-				$this->default_list_args = $this->settings_by_content_type['list_args'];
-				// Remove the global list_args as we no longer need them
-				unset( $this->settings_by_content_type['list_args'] );
-			}
 		} else {
 			$this->settings_by_content_type = $default_behaviors;
 		}
 
-		$this->manual_additions = array();
-		if ( isset( $data['manual_additions'] ) ) {
-			$this->manual_additions = $data['manual_additions'];
-		}
-
-		// Match up the subnav settings with the current page.
+		// Figure out which page we're dealing with here.
 		self::determine_subnav_settings();
+
+		// Parse global list args.
+		if ( isset( $data['list_args'] ) ) {
+			$this->list_args = $data['list_args'];
+		}
+		// Merge any post-type view-specific list args into the defaults.
+		if ( isset( $this->settings['list_args'] ) ) {
+			$this->list_args = array_merge( $this->list_args, $this->settings['list_args'] );
+		}
 
 		if ( isset( $this->settings['behavior'] ) ) {
 			$this->behavior = $this->settings['behavior'];
@@ -130,6 +128,11 @@ class Subnav extends OrganismTemplate {
 
 		if ( isset( $this->settings['title'] ) ) {
 			$this->title = $this->settings['title'];
+		}
+
+		$this->manual_additions = array();
+		if ( isset( $data['manual_additions'] ) ) {
+			$this->manual_additions = $data['manual_additions'];
 		}
 
 		// Get the subnav items, based on the type of subnav
@@ -174,14 +177,6 @@ class Subnav extends OrganismTemplate {
 
 	}
 
-	public function get_markup() {
-
-		parent::get_markup();
-
-		return $this;
-
-	}
-
 	private function determine_subnav_settings() {
 
 		$queried_object = get_queried_object();
@@ -201,9 +196,7 @@ class Subnav extends OrganismTemplate {
 			$taxonomy = $queried_object->taxonomy;
 		}
 
-		$settings = [
-			'list_args' => array(),
-		];
+		$settings = array();
 
 		// There's probably a better way to write these checks...
 		if ( is_front_page() && isset( $this->settings_by_content_type['front-page'] ) ) {
@@ -347,12 +340,8 @@ class Subnav extends OrganismTemplate {
 		$namespaced_list_atom_slug = $this->name . $this->separator . $list_atom_slug;
 		$list_atom_args['name']    = $namespaced_list_atom_slug;
 
-		// Parse the content specific list_args with the defaults
-		$list_args = wp_parse_args( $this->settings['list_args'], $this->default_list_args );
-		// Remove the content specific list args as we don't need them
-		unset( $this->settings['list_args'] );
 		// Pass the parsed list_args into the org args
-		$list_atom_args['list_args'] = array_merge( $list_atom_args['list_args'], $list_args );
+		$list_atom_args['list_args'] = $this->list_args;
 
 		$list = new $list_atom_class( $list_atom_args );
 		$list->get_markup();
