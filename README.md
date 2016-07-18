@@ -85,6 +85,62 @@ A link to the posts page.
 
 ___
 
+#### FacebookShare
+
+##### Extends: Link
+
+A Facebook sharing link.
+
+##### Parameters:
+
+- **share**: the URL to share.
+- **target**: the link target window. defaults to "_blank".
+
+##### Uses:
+
+- `get_site_url()` when `share` is not provided and `$post` is null
+- `get_the_permalink()` when `share` is not provided and `$post` is defined
+
+___
+
+#### TwitterShare
+
+##### Extends: Link
+
+A Twitter sharing link.
+
+##### Parameters:
+
+- **share**: the URL to share.
+- **status**: the predefined Twitter status.
+- **target**: the link target window. defaults to "_blank".
+
+##### Uses:
+
+- `get_site_url()` when `share` is not provided and `$post` is null
+- `get_the_permalink()` when `share` is not provided and `$post` is defined
+
+___
+
+#### EmailShare
+
+##### Extends: Link
+
+An Email sharing link.
+
+##### Parameters:
+
+- **share**: the URL to share.
+- **body**: the predefined email message body.
+- **target**: the link target window. defaults to "_blank".
+
+##### Uses:
+
+- `get_site_url()` when `share` is not provided and `$post` is null
+- `get_the_permalink()` when `share` is not provided and `$post` is defined
+
+___
+
 #### Excerpt 
 
 Uses the manual post excerpt from the post object.

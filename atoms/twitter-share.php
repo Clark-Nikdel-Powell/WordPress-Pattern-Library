@@ -29,6 +29,17 @@ class TwitterShare extends AtomTemplate {
 		$this->attributes['target'] = $this->link_target( $data );
 	}
 
+	/**
+	 * share_href
+	 *
+	 * Get the href attribute value for the link. If not defined, check the WordPress post object.
+	 *
+	 * @since 0.15.6
+	 *
+	 * @param $data
+	 *
+	 * @return string
+	 */
 	private function share_href( $data ) {
 
 		global $post;
@@ -49,6 +60,17 @@ class TwitterShare extends AtomTemplate {
 		return $this->encode_status( $status_arr );
 	}
 
+	/**
+	 * link_target
+	 *
+	 * Get the target attribute value for the link. Defaults to "_blank".
+	 *
+	 * @since 0.15.6
+	 *
+	 * @param $data
+	 *
+	 * @return string
+	 */
 	private function link_target( $data ) {
 
 		if ( ! isset( $data['target'] ) ) {
@@ -58,6 +80,17 @@ class TwitterShare extends AtomTemplate {
 		return $data['target'];
 	}
 
+	/**
+	 * encode_status
+	 *
+	 * Encode the share status/body message for use in the share url.
+	 *
+	 * @since 0.15.6
+	 *
+	 * @param $status_arr
+	 *
+	 * @return mixed
+	 */
 	private function encode_status( $status_arr ) {
 
 		$status_share = implode( ' ', $status_arr );

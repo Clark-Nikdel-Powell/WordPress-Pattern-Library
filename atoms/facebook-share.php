@@ -8,8 +8,8 @@ namespace CNP;
  *
  * @since 0.15.6
  *
- * @param string    $share  The url to share.
- * @param string    $target The link target window. Defaults to "_blank".
+ * @param string $share  The url to share.
+ * @param string $target The link target window. Defaults to "_blank".
  */
 class FacebookShare extends AtomTemplate {
 
@@ -28,6 +28,17 @@ class FacebookShare extends AtomTemplate {
 		$this->attributes['target'] = $this->link_target( $data );
 	}
 
+	/**
+	 * share_href
+	 *
+	 * Get the href attribute value for the link. If not defined, check the WordPress post object.
+	 *
+	 * @since 0.15.6
+	 *
+	 * @param $data
+	 *
+	 * @return string
+	 */
 	private function share_href( $data ) {
 
 		if ( isset( $data['share'] ) ) {
@@ -45,6 +56,17 @@ class FacebookShare extends AtomTemplate {
 		return $this->href;
 	}
 
+	/**
+	 * link_target
+	 *
+	 * Get the target attribute value for the link. Defaults to "_blank".
+	 *
+	 * @since 0.15.6
+	 *
+	 * @param $data
+	 *
+	 * @return string
+	 */
 	private function link_target( $data ) {
 
 		if ( ! isset( $data['target'] ) ) {
