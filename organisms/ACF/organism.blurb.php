@@ -11,9 +11,7 @@ class ACF_Blurb extends OrganismTemplate {
 			$this->name   = $data['name'];
 		}
 
-		parent::__construct( $data );
-
-		$this->structure = [
+		$data['structure'] = [
 			'inside' => [
 				'parts' => [
 					'image' => array(),
@@ -32,8 +30,8 @@ class ACF_Blurb extends OrganismTemplate {
 					'link'  => [
 						'atom'     => 'Link',
 						'tag_type' => 'false_without_content',
-						'href'     => $data['link'],
-						'content'  => $data['link_text'],
+						'href'     => isset( $data['link'] ) ? $data['link'] : '',
+						'content'  => isset( $data['link_text'] ) ? $data['link_text'] : '',
 					],
 				],
 			],
@@ -61,13 +59,13 @@ class ACF_Blurb extends OrganismTemplate {
 
 			if ( '' !== $attachment_id ) {
 
-				$this->structure['inside']['parts']['image'] = [
+				$data['structure']['inside']['parts']['image'] = [
 					'atom'          => 'Image',
 					'attachment_id' => $attachment_id,
 					'class'         => [ $media_position_class ],
 				];
 			} else {
-				unset( $this->structure['inside']['parts']['image'] );
+				unset( $data['structure']['inside']['parts']['image'] );
 			}
 		}
 
@@ -75,9 +73,11 @@ class ACF_Blurb extends OrganismTemplate {
 		/  Icon generates after check
 		——————————————————————————————————————————*/
 		if ( isset( $data['icon_name'] ) && '' !== $data['icon_name'] ) {
-			$this->attributes['class'][]                           = $this->name . '--has-icon';
-			$this->structure['inside']['parts']['icon']['content'] = Utility::get_svg_icon( $data['icon_name'] );
-			$this->structure['inside']['parts']['icon']['class']   = $media_position_class;
+			$data['attributes']['class'][]                           = $this->name . '--has-icon';
+			$data['structure']['inside']['parts']['icon']['content'] = Utility::get_svg_icon( $data['icon_name'] );
+			$data['structure']['inside']['parts']['icon']['class']   = $media_position_class;
 		}
+
+		parent::__construct( $data );
 	}
 }
