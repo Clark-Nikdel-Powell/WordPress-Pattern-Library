@@ -48,6 +48,7 @@ class ACF_Slideshow extends OrganismTemplate {
 		$this->slide_organism_args = [
 			'name'       => $this->name . $this->separator . 'slide',
 			'attributes' => array(),
+			'separator'  => '-',
 			'structure'  => [
 				'background' => [
 					'sibling' => 'text',
