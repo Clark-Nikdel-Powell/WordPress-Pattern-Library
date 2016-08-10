@@ -78,7 +78,7 @@ class OrganismTemplate {
 
 		// Filter the Organism structure.
 		$organism_name_structure_filter = $this->name . '_structure_filter';
-		$this->structure                = apply_filters( $organism_name_structure_filter, $this->structure, $this );
+		$this->structure                = apply_filters( $organism_name_structure_filter, $this->structure, $this, $data );
 		Atom::add_debug_entry( 'Filter', $organism_name_structure_filter );
 
 		// Filter the Post Args
