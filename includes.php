@@ -84,4 +84,5 @@ include_once( $acf_dir . 'organism.slideshow.php' );
 include_once( $acf_dir . 'organism.blurb-list.php' );
 include_once( $acf_dir . 'organism.post-list.php' );
 include_once( $acf_dir . 'organism.header.php' );
+include_once( $acf_dir . 'organism.tabs.php' );
 include_once( $acf_dir . 'organism.gallery.php' );
