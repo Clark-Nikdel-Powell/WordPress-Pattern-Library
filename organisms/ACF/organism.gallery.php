@@ -12,49 +12,51 @@ class ACF_Gallery extends OrganismTemplate {
 			$data['name'] = 'acf-gallery';
 		}
 
-		$data['structure'] = [
-			'inside'     => [
-				'children' => [ 'images', 'footer' ],
-			],
-			'images'     => [
-				'parts' => array(),
-			],
-			'footer'     => [
-				'children' => [ 'pagination', 'captions', 'nav' ],
-			],
-			'pagination' => [
-				'parts' => [
-					'current'   => [
-						'content' => '1',
-					],
-					'separator' => [
-						'content' => '/',
-					],
-					'total'     => [
-						'content' => '1',
+		if ( ! isset( $data['structure'] ) ) {
+			$data['structure'] = [
+				'inside'     => [
+					'children' => [ 'images', 'footer' ],
+				],
+				'images'     => [
+					'parts' => array(),
+				],
+				'footer'     => [
+					'children' => [ 'pagination', 'captions', 'nav' ],
+				],
+				'pagination' => [
+					'parts' => [
+						'current'   => [
+							'content' => '1',
+						],
+						'separator' => [
+							'content' => '/',
+						],
+						'total'     => [
+							'content' => '1',
+						],
 					],
 				],
-			],
-			'captions'   => [
-				'parts' => array(),
-			],
-			'nav'        => [
-				'parts' => [
-					'prev' => [
-						'tag'     => 'button',
-						'class' => [ $data['name'] . '__nav-item' ],
-						'content' => '<',
-					],
-					'next' => [
-						'tag'     => 'button',
-						'class' => [ $data['name'] . '__nav-item' ],
-						'content' => '>',
+				'captions'   => [
+					'parts' => array(),
+				],
+				'nav'        => [
+					'parts' => [
+						'prev' => [
+							'tag'     => 'button',
+							'class'   => [ $data['name'] . '__nav-item' ],
+							'content' => '<',
+						],
+						'next' => [
+							'tag'     => 'button',
+							'class'   => [ $data['name'] . '__nav-item' ],
+							'content' => '>',
+						],
 					],
 				],
-			],
-		];
+			];
+		}
 
-		$this->images = $data['images'];
+		$this->images     = $data['images'];
 		$this->image_size = $data['image_size'];
 
 		parent::__construct( $data );
@@ -96,7 +98,7 @@ class ACF_Gallery extends OrganismTemplate {
 
 		$image_number = (string) ( $image_index + 1 );
 
-		$this->structure['images']['parts'][ 'image-' . $image_index ]   = [
+		$this->structure['images']['parts'][ 'image-' . $image_index ] = [
 			'atom'          => 'Image',
 			'attachment_id' => $image_data['id'],
 			'size'          => $this->image_size,
@@ -112,12 +114,15 @@ class ACF_Gallery extends OrganismTemplate {
 			$caption_classes[] = $this->name . '__caption--isActive';
 		}
 
-		$this->structure['captions']['parts'][ 'caption-' . $image_index ] = [
-			'attributes' => [
-				'data-image' => $image_number,
-				'class'      => $caption_classes,
-			],
-			'content'    => $image_data['caption'],
-		];
+		if ( isset( $this->structure['captions'] ) ) {
+
+			$this->structure['captions']['parts'][ 'caption-' . $image_index ] = [
+				'attributes' => [
+					'data-image' => $image_number,
+					'class'      => $caption_classes,
+				],
+				'content'    => $image_data['caption'],
+			];
+		}
 	}
 }
