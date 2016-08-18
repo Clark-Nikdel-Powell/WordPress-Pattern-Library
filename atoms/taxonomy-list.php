@@ -52,7 +52,7 @@ class TaxonomyList extends AtomTemplate {
 			$term_names_arr = array();
 
 			foreach ( $terms_arr as $term_obj ) {
-				$term_names_arr[] = $term_obj->name;
+				$term_names_arr[] = '<span class="name">' . $term_obj->name . '</span>';
 			}
 
 			$terms_list = implode( $this->separator, $term_names_arr );
