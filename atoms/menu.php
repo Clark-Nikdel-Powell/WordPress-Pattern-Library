@@ -23,8 +23,8 @@ class Menu extends AtomTemplate {
 
 		if ( isset( $data['menu'] ) ) {
 			$this->menu = $data['menu'];
-		} elseif ( isset( $data['menu_args']['menu'] ) ) {
-			$this->menu = $data['menu_args']['menu'];
+		} elseif ( isset( $data['menu-args']['menu'] ) ) {
+			$this->menu = $data['menu-args']['menu'];
 		}
 
 		$menu_args = [
@@ -33,8 +33,8 @@ class Menu extends AtomTemplate {
 			'container' => '',
 		];
 
-		if ( isset( $data['menu_args'] ) ) {
-			$menu_args = wp_parse_args( $menu_args, $data['menu_args'] );
+		if ( isset( $data['menu-args'] ) ) {
+			$menu_args = wp_parse_args( $menu_args, $data['menu-args'] );
 		}
 
 		$this->content = wp_nav_menu( $menu_args );
