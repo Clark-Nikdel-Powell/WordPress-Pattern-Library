@@ -326,7 +326,7 @@ class Subnav extends OrganismTemplate {
 					$id = $queried_object->ID;
 				}
 
-				$list_atom_args['list_args']['child_of'] = $id;
+				$this->list_args['child_of'] = $id;
 
 				break;
 		}
