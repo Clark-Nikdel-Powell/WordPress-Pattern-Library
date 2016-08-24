@@ -10,6 +10,7 @@ class AtomTemplate {
 	public $attributes;
 	public $markup;
 	public $post_object;
+	public $hide;
 
 	public function __construct( $data ) {
 
@@ -20,6 +21,7 @@ class AtomTemplate {
 		$this->before     = isset( $data['before'] ) ? $data['before'] : '';
 		$this->after      = isset( $data['after'] ) ? $data['after'] : '';
 		$this->attributes = isset( $data['attributes'] ) ? $data['attributes'] : array();
+		$this->hide       = isset( $data['hide'] ) ? $data['hide'] : array();
 		$this->markup     = '';
 
 		if ( isset( $data['post'] ) ) {

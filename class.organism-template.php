@@ -18,12 +18,17 @@ class OrganismTemplate {
 	public $attribute_quote_style;
 	public $before_content;
 	public $after_content;
+	public $hide;
 
 	public function __construct( $data ) {
 
 		if ( isset( $data['name'] ) ) {
 			$this->name = sanitize_html_class( $data['name'] );
 		}
+
+		/*——————————————————————————————————————————
+		/  Miscellaneous Attributes
+		——————————————————————————————————————————*/
 
 		$this->tag = isset( $data['tag'] ) ? $data['tag'] : 'div';
 
@@ -35,6 +40,13 @@ class OrganismTemplate {
 
 		$this->attributes            = isset( $data['attributes'] ) ? $data['attributes'] : '';
 		$this->attribute_quote_style = isset( $data['attribute_quote_style'] ) ? $data['attribute_quote_style'] : '"';
+
+		// Hide is used mostly for ACF integrations, so that we can turn off a layout without deleting it.
+		$this->hide = isset( $data['hide'] ) ? $data['hide'] : false;
+
+		/*——————————————————————————————————————————
+		/  Class Settings
+		——————————————————————————————————————————*/
 
 		// Ensures that the 'class' attribute is set if it wasn't passed in with attributes.
 		if ( ! isset( $this->attributes['class'] ) ) {
