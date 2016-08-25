@@ -65,24 +65,3 @@ include_once( $organisms_dir . 'subnav.php' );
 include_once( $organisms_dir . 'post-header-singular.php' );
 include_once( $organisms_dir . 'post-header-archive.php' );
 include_once( $organisms_dir . 'section-header.php' );
-
-
-/*——————————————————————————————————————————————————————————————————————————————
-/  ACF Atoms/Organisms
-——————————————————————————————————————————————————————————————————————————————*/
-
-$acf_dir = 'organisms/ACF/';
-
-include_once( $acf_dir . 'atom.open-column.php' );
-include_once( $acf_dir . 'atom.close-column.php' );
-include_once( $acf_dir . 'atom.open-row.php' );
-include_once( $acf_dir . 'atom.close-row.php' );
-include_once( $acf_dir . 'atom.content.php' );
-include_once( $acf_dir . 'organism.map.php' );
-include_once( $acf_dir . 'organism.blurb.php' );
-include_once( $acf_dir . 'organism.slideshow.php' );
-include_once( $acf_dir . 'organism.blurb-list.php' );
-include_once( $acf_dir . 'organism.post-list.php' );
-include_once( $acf_dir . 'organism.header.php' );
-include_once( $acf_dir . 'organism.tabs.php' );
-include_once( $acf_dir . 'organism.gallery.php' );
