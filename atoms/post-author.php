@@ -20,12 +20,15 @@ class PostAuthor extends AtomTemplate {
 		if ( '' == $this->name ) {
 			$this->name = 'postauthor';
 		}
-		$this->tag      = isset( $data['tag'] ) ? $data['tag'] : 'p';
+		if ( isset( $data['post'] ) ) {
+			$author_id = $data['post']->post_author;
+		}
+		$this->tag = isset( $data['tag'] ) ? $data['tag'] : 'p';
 
 		$this->prefix = isset( $data['prefix'] ) ? $data['prefix'] : 'By: ';
 		$this->suffix = isset( $data['suffix'] ) ? $data['suffix'] : '.';
 
-		$author = get_the_author();
+		$author = get_the_author_meta( 'display_name', $author_id );
 
 		$this->content = $this->prefix . $author . $this->suffix;
 	}
