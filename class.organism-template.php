@@ -19,6 +19,7 @@ class OrganismTemplate {
 	public $before_content;
 	public $after_content;
 	public $hide;
+	public $suppress_filters;
 
 	public function __construct( $data ) {
 
@@ -43,6 +44,9 @@ class OrganismTemplate {
 
 		// Hide is used mostly for ACF integrations, so that we can turn off a layout without deleting it.
 		$this->hide = isset( $data['hide'] ) ? $data['hide'] : false;
+
+		// Suppress filters if we don't need them.
+		$this->suppress_filters = isset( $data['suppress_filters'] ) ? $data['suppress_filters'] : true;
 
 		/*——————————————————————————————————————————
 		/  Class Settings
@@ -85,16 +89,15 @@ class OrganismTemplate {
 		$this->posts           = isset( $data['posts'] ) ? $data['posts'] : array();
 		$this->posts_structure = isset( $data['posts-structure'] ) ? $data['posts-structure'] : array();
 
-		$this->posts_markup_array = array();
-		$this->markup             = '';
+		$this->markup = '';
 
-		// Filter the Organism structure.
+		// Filter the Organism structure. This is the one filter that cannot be suppressed.
 		$organism_name_structure_filter = $this->name . '_structure_filter';
 		$this->structure                = apply_filters( $organism_name_structure_filter, $this->structure, $this, $data );
 		Atom::add_debug_entry( 'Filter', $organism_name_structure_filter );
 
 		// Filter the Post Args
-		if ( ! empty( $this->post_args ) ) {
+		if ( ! empty( $this->post_args ) && false === $this->suppress_filters ) {
 			$organism_name_post_args_filter = $this->name . '_post_args_filter';
 			$this->post_args                = apply_filters( $organism_name_post_args_filter, $this->post_args, $this );
 			Atom::add_debug_entry( 'Filter', $organism_name_post_args_filter );
@@ -132,17 +135,15 @@ class OrganismTemplate {
 			$markup_pieces[] = self::setup_markup_array( $this->structure );
 		}
 
-		if ( ! empty( $this->posts ) && empty( $this->posts_markup_array ) ) {
-			$markup_pieces[] = self::loop_posts();
-		}
-
 		if ( '' !== $this->after_content ) {
 			$markup_pieces[] = $this->after_content;
 		}
 
-		$organism_name_markup_pieces_order_filter = $this->name . '_markup_pieces_order';
-		$markup_pieces                            = apply_filters( $organism_name_markup_pieces_order_filter, $markup_pieces );
-		Atom::add_debug_entry( 'Filter', $organism_name_markup_pieces_order_filter );
+		if ( false === $this->suppress_filters ) {
+			$organism_name_markup_pieces_order_filter = $this->name . '_markup_pieces_order';
+			$markup_pieces                            = apply_filters( $organism_name_markup_pieces_order_filter, $markup_pieces );
+			Atom::add_debug_entry( 'Filter', $organism_name_markup_pieces_order_filter );
+		}
 
 		$wrapper_args = [
 			'tag'                   => $this->tag,
@@ -150,6 +151,11 @@ class OrganismTemplate {
 			'attributes'            => $this->attributes,
 			'attribute_quote_style' => $this->attribute_quote_style,
 		];
+
+		// Suppression args on the organism filter down to all atoms.
+		if ( true === $this->suppress_filters ) {
+			$wrapper_args['suppress_filters'] = true;
+		}
 
 		$wrapper = Atom::assemble( $this->name, $wrapper_args );
 
@@ -184,15 +190,77 @@ class OrganismTemplate {
 
 			// Access the current $post object.
 			global $post;
-
-			$post_atoms_arr[] = self::setup_markup_array( $this->posts_structure, $post, 'posts_markup_array' );
+			$post_atoms_arr[] = self::setup_markup_array( $this->posts_structure, $post );
 
 		}
 		wp_reset_postdata();
 
-		$post_atoms = implode( '', $post_atoms_arr );
+		return $post_atoms_arr;
+	}
 
-		return $post_atoms;
+	protected function determine_piece_type( $piece_name, $piece_args_and_content ) {
+
+		$piece_type = '';
+
+		/*
+		 * Part 1: Determine piece type. If $piece_args_and_content is a string, then it's either the atom content (and should be passed through in
+		 * the atom atom_args), or it's the atom name. We test this by checking if $piece_name is a string.
+		 */
+		if ( is_string( $piece_args_and_content ) ) {
+
+			// 0 => 'footer'
+			if ( is_int( $piece_name ) ) {
+				$piece_type = 'name-only';
+			}
+
+			// 'title' => 'Title Text'
+			if ( is_string( $piece_name ) ) {
+				$piece_type = 'self-content-only';
+			}
+		}
+
+		/*
+		 * If $piece_args_and_content is an array, it's a more complex piece. We determine *how* complex by testing
+		 * the array keys of $piece_args_and_content. If 'children' exists, then we know this is a parent item, and
+		 * it resolves to $piece_type = 'split-with-children'. If 'parts' exists, it resolves to 'split-with-parts'.
+		 */
+		if ( '' === $piece_type && is_array( $piece_args_and_content ) ) {
+
+			/*
+			 * @EXIT: prevents atom_args like '' => ['content' => 'Content'] from passing through
+			 */
+			if ( empty( $piece_name ) ) {
+				$piece_type = '';
+			}
+
+			if ( isset( $piece_args_and_content['children'] ) ) {
+				$piece_type = 'split-with-children';
+			}
+
+			if ( isset( $piece_args_and_content['parts'] ) ) {
+				$piece_type = 'split-with-parts';
+			}
+
+			if ( isset( $piece_args_and_content['content'] ) ) {
+				$piece_type = 'self-with-content';
+			}
+		}
+
+		/*
+		 * This if statement will catch both 'posts-loop' and 'posts-loop' => [ 'additional-setting' => '' ]
+		 */
+		if ( 'posts-loop' === $piece_name || 'posts-loop' === $piece_args_and_content ) {
+			$piece_type = 'posts-loop';
+		}
+
+		if ( empty( $piece_type ) ) {
+
+			if ( is_string( $piece_name ) && is_array( $piece_args_and_content ) ) {
+				$piece_type = 'self-with-content';
+			}
+		}
+
+		return $piece_type;
 	}
 
 	/**
@@ -221,60 +289,11 @@ class OrganismTemplate {
 			 * ('title' => 'Item Title' / 'PostClass' => ['children' => ['image', 'text', 'metatext']]) or the atom's
 			 * name in the case of simple atoms ('item').
 			 */
-			$piece_type = '';
-			$atom_args  = array();
+			$piece_type = self::determine_piece_type( $piece_name, $piece_args_and_content );
 
-			/*
-			 * Part 1: Determine piece type. If $piece_args_and_content is a string, then it's either the atom content (and should be passed through in
-			 * the atom atom_args), or it's the atom name. We test this by checking if $piece_name is a string.
-			 */
-			if ( is_string( $piece_args_and_content ) ) {
-
-				// 0 => 'footer'
-				if ( is_int( $piece_name ) ) {
-					$piece_type = 'name-only';
-				}
-
-				// 'title' => 'Title Text'
-				if ( is_string( $piece_name ) ) {
-					$piece_type = 'self-content-only';
-				}
-			}
-
-			/*
-			 * If $piece_args_and_content is an array, it's a more complex piece. We determine *how* complex by testing
-			 * the array keys of $piece_args_and_content. If 'children' exists, then we know this is a parent item, and
-			 * it resolves to $piece_type = 'split-with-children'. If 'parts' exists, it resolves to 'split-with-parts'.
-			 */
-			if ( '' === $piece_type && is_array( $piece_args_and_content ) ) {
-
+			$atom_args = array();
+			if ( is_array( $piece_args_and_content ) ) {
 				$atom_args = $piece_args_and_content;
-
-				/*
-				 * @EXIT: prevents atom_args like '' => ['content' => 'Content'] from passing through
-				 */
-				if ( empty( $piece_name ) ) {
-					continue;
-				}
-
-				if ( isset( $piece_args_and_content['children'] ) ) {
-					$piece_type = 'split-with-children';
-				}
-
-				if ( isset( $piece_args_and_content['parts'] ) ) {
-					$piece_type = 'split-with-parts';
-				}
-
-				if ( isset( $piece_args_and_content['content'] ) ) {
-					$piece_type = 'self-with-content';
-				}
-			}
-
-			if ( empty( $piece_type ) ) {
-
-				if ( is_string( $piece_name ) && is_array( $piece_args_and_content ) ) {
-					$piece_type = 'self-with-content';
-				}
 			}
 
 			// Sanity check: we can't go any further if $piece_type isn't resolved.
@@ -282,12 +301,17 @@ class OrganismTemplate {
 				continue;
 			}
 
-
 			/*
 			 * Part 2: Switch through $piece_type. Now that we know what type of piece we're dealing with, we can get the
 			 * markup for the piece and add the markup to the markup_array in the right way.
 			 */
 			switch ( $piece_type ) {
+
+				case 'posts-loop':
+
+					$atom_name = 'posts-loop';
+
+					break;
 
 				case 'name-only':
 
@@ -323,12 +347,27 @@ class OrganismTemplate {
 					break;
 			}
 
+			// Sanity check: we can't go any further if $atom_name isn't resolved.
+			if ( empty( $atom_name ) ) {
+				continue;
+			}
+
 			/*
 			 * Part 3: Get markup and add it to markup_array.
 			 */
 			$markup_arr[ $atom_name ] = array();
 
 			switch ( $piece_type ) {
+
+				case 'posts-loop':
+
+					$atom_args['tag_type']    = 'split';
+					$markup_arr[ $atom_name ] = self::get_structure_part( $atom_name, $atom_args, $post_obj );
+
+					$posts_arr                         = self::loop_posts();
+					$markup_arr[ $atom_name ]['parts'] = $posts_arr;
+
+					break;
 
 				case 'name-only':
 
@@ -392,11 +431,6 @@ class OrganismTemplate {
 			 */
 			if ( ! empty( $previous_atom_name ) ) {
 
-				// TODO: keep an eye on this risky code, there might be some cases I'm not thinking of
-				// this can go wrong if it's the second item in a 'children' array-- 'sibling' gets set even though it doesn't need to be.
-				/*				if ( ! isset( $markup_arr[ $previous_atom_name ]['children'] ) && ! isset( $markup_arr[ $previous_atom_name ]['sibling'] ) && ! isset( $markup_arr[ $previous_atom_name ]['parts'] ) ) {
-									$markup_arr[ $previous_atom_name ]['sibling'] = $atom_name;
-								}*/
 				if ( 'self-content-only' == $markup_arr[ $previous_atom_name ]['piece_type'] || 'name-only' == $markup_arr[ $previous_atom_name ]['piece_type'] ) {
 					$markup_arr[ $previous_atom_name ]['sibling'] = $atom_name;
 				}
@@ -489,6 +523,11 @@ class OrganismTemplate {
 		// Set up the atom class.
 		$atom_args['attributes']['class'][] = $namespaced_atom_name;
 
+		// Check for whether to apply filters, or not.
+		if ( true === $this->suppress_filters ) {
+			$atom_args['suppress_filters'] = true;
+		}
+
 		// If the class exists, then it's a named atom, and we need to
 		// run the get_markup method based on the namespaced atom name.
 		if ( class_exists( $class_atom_name ) ) {
@@ -503,11 +542,12 @@ class OrganismTemplate {
 		// If the class does not exist, then it's a generic atom.
 		// Run it through the Atom class to assemble it
 		if ( ! class_exists( $class_atom_name ) ) {
-
 			$atom = Atom::assemble( $namespaced_atom_name, $atom_args );
 
 			return $atom;
 		}
+
+		return true;
 	}
 
 	/**
@@ -620,10 +660,22 @@ class OrganismTemplate {
 				}
 
 				break;
+
+			case 'posts-loop':
+
+				// Markup keys: 'open', 'close' and 'parts'
+				if ( isset( $organism_part['parts'] ) ) {
+
+					foreach ( $organism_part['parts'] as $piece ) {
+						$markup .= $piece;
+					}
+				}
+
+				break;
 		}
 
 		if ( isset( $organism_part['close'] ) ) {
-			$markup .= $organism_part['close'] . '<!--' . $organism_part['name'] . '-->';
+			$markup .= $organism_part['close'];
 		}
 
 		// Siblings are placed after the current item is done.

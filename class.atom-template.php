@@ -11,18 +11,20 @@ class AtomTemplate {
 	public $markup;
 	public $post_object;
 	public $hide;
+	public $suppress_filters;
 
 	public function __construct( $data ) {
 
-		$this->name       = isset( $data['name'] ) ? $data['name'] : '';
-		$this->tag        = isset( $data['tag'] ) ? $data['tag'] : '';
-		$this->tag_type   = isset( $data['tag_type'] ) ? $data['tag_type'] : '';
-		$this->content    = isset( $data['content'] ) ? $data['content'] : '';
-		$this->before     = isset( $data['before'] ) ? $data['before'] : '';
-		$this->after      = isset( $data['after'] ) ? $data['after'] : '';
-		$this->attributes = isset( $data['attributes'] ) ? $data['attributes'] : array();
-		$this->hide       = isset( $data['hide'] ) ? $data['hide'] : array();
-		$this->markup     = '';
+		$this->name             = isset( $data['name'] ) ? $data['name'] : '';
+		$this->tag              = isset( $data['tag'] ) ? $data['tag'] : '';
+		$this->tag_type         = isset( $data['tag_type'] ) ? $data['tag_type'] : '';
+		$this->content          = isset( $data['content'] ) ? $data['content'] : '';
+		$this->before           = isset( $data['before'] ) ? $data['before'] : '';
+		$this->after            = isset( $data['after'] ) ? $data['after'] : '';
+		$this->attributes       = isset( $data['attributes'] ) ? $data['attributes'] : array();
+		$this->hide             = isset( $data['hide'] ) ? $data['hide'] : false;
+		$this->suppress_filters = isset( $data['suppress_filters'] ) ? $data['suppress_filters'] : true;
+		$this->markup           = '';
 
 		if ( isset( $data['post'] ) ) {
 			$this->post_object = $data['post'];
