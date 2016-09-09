@@ -33,6 +33,10 @@ class AtomTemplate {
 			$this->post_object = $post;
 		}
 
+		// Filter the Atom properties.
+		$atom_structure_filter = $this->name . '_properties_filter';
+		apply_filters( $atom_structure_filter, $this, $data );
+		Atom::add_debug_entry( 'Filter', $atom_structure_filter );
 	}
 
 	public function get_markup() {
