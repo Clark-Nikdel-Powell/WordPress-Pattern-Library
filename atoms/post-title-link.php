@@ -19,6 +19,7 @@ class PostTitleLink extends PostTitle {
 
 		$this->link_data['name']    = $this->name . 'Anchor';
 		$this->link_data['content'] = $this->content;
+		$this->link_data['post']    = $this->post_object;
 
 		$this->link = new PostLink( $this->link_data );
 		$this->link->get_markup();
