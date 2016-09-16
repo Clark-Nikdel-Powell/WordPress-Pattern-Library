@@ -16,13 +16,14 @@ class Helpers {
 	 *
 	 * @return mixed
 	 */
-	public static function set_background_on_structure_array( $data, $background_key, $structure_array ) {
+	public static function set_background_on_structure_array( $data, $background_key, $structure_array, $args = array() ) {
 
 		$background_type = $data['background_type'];
 
 		// @EXIT: If there is no background, get rid of the atom.
 		if ( 'None' === $background_type ) {
 			unset( $structure_array[ $background_key ] );
+
 			return $structure_array;
 		}
 
@@ -39,7 +40,7 @@ class Helpers {
 			$structure_array[ $background_key ]['parts']['image'] = [
 				'atom'          => 'Image',
 				'attachment_id' => $data['background_image'],
-				'size'          => 'full',
+				'size'          => isset( $args['image-size'] ) ? $args['image-size'] : 'full',
 				'attributes'    => [
 					'sizes' => '100vw',
 				],
