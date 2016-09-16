@@ -8,17 +8,14 @@ namespace CNP;
  *
  * @since 0.2.0
  */
-class PostAuthorUrl extends AtomTemplate {
-
-	private $prefix;
-	private $suffix;
+class PostAuthorLink extends AtomTemplate {
 
 	public function __construct( $data ) {
 
 		parent::__construct( $data );
 
 		if ( '' == $this->name ) {
-			$this->name = 'postauthorlink';
+			$this->name = 'post-author-link';
 		}
 
 		$author_id   = $data['post']->post_author;

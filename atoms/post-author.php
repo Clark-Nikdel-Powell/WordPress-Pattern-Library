@@ -18,7 +18,7 @@ class PostAuthor extends AtomTemplate {
 		parent::__construct( $data );
 
 		if ( '' == $this->name ) {
-			$this->name = 'postauthor';
+			$this->name = 'post-author';
 		}
 		if ( isset( $data['post'] ) ) {
 			$author_id = $data['post']->post_author;

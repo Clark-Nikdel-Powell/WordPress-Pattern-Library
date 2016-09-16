@@ -46,6 +46,7 @@ include_once( $atoms_dir . 'taxonomy-list.php' );
 include_once( $atoms_dir . 'list-terms.php' );
 include_once( $atoms_dir . 'list-pages.php' );
 include_once( $atoms_dir . 'post-author.php' );
+include_once( $atoms_dir . 'post-author-link.php' );
 include_once( $atoms_dir . 'menu.php' );
 include_once( $atoms_dir . 'image.php' );
 include_once( $atoms_dir . 'content-source-link.php' );
