@@ -18,7 +18,7 @@ class PostAuthorLink extends AtomTemplate {
 			$this->name = 'post-author-link';
 		}
 
-		$author_id   = $data['post']->post_author;
+		$author_id   = $this->post_object->post_author;
 		$author_name = get_the_author_meta( 'display_name', $author_id );
 		$author_url  = get_author_posts_url( $author_id );
 
