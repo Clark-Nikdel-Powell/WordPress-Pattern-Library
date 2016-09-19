@@ -33,8 +33,12 @@ class Image extends AtomTemplate {
 		// Set up attachment ID
 		$this->attachment_id = '';
 
-		if ( isset( $data['image_object'] ) ) {
+		if ( isset( $data['image_object'] ) && is_object( $data['image_object'] ) ) {
 			$this->attachment_id = $data['image_object']->ID;
+		}
+
+		if ( empty( $this->attachment_id ) && isset( $data['image_object'] ) && is_array( $data['image_object'] ) ) {
+			$this->attachment_id = $data['image_object']['ID'];
 		}
 
 		// Set up attachment ID if it isn't set yet. This gives us flexibility for ACF fields.
