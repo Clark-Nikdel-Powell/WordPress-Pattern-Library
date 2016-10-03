@@ -17,11 +17,11 @@ class Loop extends AtomTemplate {
 
 		parent::__construct( $data );
 
-		if ( '' == $this->name ) {
+		if ( '' === $this->name ) {
 			$this->name = 'loop';
 		}
 
-		if ( '' == $data['tag'] ) {
+		if ( '' === $this->tag ) {
 			$this->tag = 'div';
 		}
 
