@@ -107,6 +107,8 @@ class Subnav extends OrganismTemplate {
 		self::determine_subnav_settings();
 
 		// Parse global list args.
+		$this->list_args['subnav'] = true;
+
 		if ( isset( $data['list_args'] ) ) {
 			$this->list_args = $data['list_args'];
 		}
