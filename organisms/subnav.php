@@ -106,8 +106,7 @@ class Subnav extends OrganismTemplate {
 		// Figure out which page we're dealing with here.
 		self::determine_subnav_settings();
 
-		// Parse global list args.
-		$this->list_args['subnav'] = true;
+		// Parse global list args
 
 		if ( isset( $data['list_args'] ) ) {
 			$this->list_args = $data['list_args'];
@@ -116,6 +115,8 @@ class Subnav extends OrganismTemplate {
 		if ( isset( $this->settings['list_args'] ) ) {
 			$this->list_args = array_merge( $this->list_args, $this->settings['list_args'] );
 		}
+
+		$this->list_args['subnav'] = true;
 
 		if ( isset( $this->settings['behavior'] ) ) {
 			$this->behavior = $this->settings['behavior'];
