@@ -52,6 +52,7 @@ include_once( $atoms_dir . 'image.php' );
 include_once( $atoms_dir . 'content-source-link.php' );
 include_once( $atoms_dir . 'background-video.php' );
 include_once( $atoms_dir . 'post-term-link-single.php' );
+include_once( $atoms_dir . 'comment-number.php' );
 
 
 /*——————————————————————————————————————————————————————————————————————————————
