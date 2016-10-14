@@ -48,6 +48,10 @@ class TaxonomyList extends AtomTemplate {
 		if ( true === $this->include_links ) {
 			$this->content = get_the_term_list( $this->post_object->ID, $this->taxonomy, $this->before_list, $this->separator, $this->after_list );
 		} else {
+			if ( ! $this->post_object ) {
+				return;
+			}
+
 			$terms_arr      = get_the_terms( $this->post_object->ID, $this->taxonomy );
 			$term_names_arr = array();
 
