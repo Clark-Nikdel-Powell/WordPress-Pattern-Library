@@ -29,8 +29,7 @@ class AtomTemplate {
 		if ( isset( $data['post'] ) ) {
 			$this->post_object = $data['post'];
 		} else {
-			global $post;
-			$this->post_object = $post;
+			$this->post_object = get_post();
 		}
 
 		// Filter the Atom properties.
@@ -40,6 +39,7 @@ class AtomTemplate {
 	}
 
 	public function get_markup() {
+
 		$this->markup = Atom::assemble( $this->name, $this );
 	}
 }
