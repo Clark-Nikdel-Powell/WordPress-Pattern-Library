@@ -103,6 +103,12 @@ class OrganismTemplate {
 			Atom::add_debug_entry( 'Filter', $organism_name_post_args_filter );
 		}
 
+		// Use the post args if they've been supplied
+		if ( empty( $this->posts ) && ! empty( $this->post_args ) && ! empty( $this->posts_structure ) ) {
+
+			$this->posts = new \WP_Query( $this->post_args );
+		}
+
 		if ( ! empty( $this->posts_structure ) && isset( $this->posts->found_posts ) && 0 === $this->posts->found_posts ) {
 			$this->attributes['class'][] = $this->name . '--noPosts';
 		}
