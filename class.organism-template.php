@@ -196,12 +196,88 @@ class OrganismTemplate {
 
 			// Access the current $post object.
 			global $post;
-			$post_atoms_arr[] = self::setup_markup_array( $this->posts_structure, $post );
+			$current_post_index = $this->posts->current_post;
+			$total_posts_count  = $this->posts->post_count;
+
+			// Find any items before this post
+			$post_atoms_arr[] = self::get_post_pieces( 'before', 'string', $current_post_index, $total_posts_count );
+
+			// Find the correct post structure for this post.
+			$posts_structure  = self::get_post_pieces( 'structure', 'array', $current_post_index, $total_posts_count );
+			$post_atoms_arr[] = self::setup_markup_array( $posts_structure, $post );
+
+			// Find any items after this post.
+			$post_atoms_arr[] = self::get_post_pieces( 'after', 'string', $current_post_index, $total_posts_count );
 
 		}
 		wp_reset_postdata();
 
 		return $post_atoms_arr;
+	}
+
+	/**
+	 * get_post_pieces
+	 *
+	 * Function for looking
+	 *
+	 * @param $type
+	 * @param string $return_format
+	 * @param $current_post_index
+	 * @param $total_posts_count
+	 *
+	 * @return array|string
+	 */
+	protected function get_post_pieces( $type, $return_format = 'string', $current_post_index, $total_posts_count ) {
+
+		if ( 'string' === $return_format ) {
+			$return = '';
+		}
+		if ( 'array' === $return_format ) {
+			$return = array();
+		}
+
+		$current_post_index_type_property = 'post_' . $current_post_index . '_' . $type;
+		$post_first_type_property         = 'post_first_' . $type;
+		$post_last_type_property          = 'post_last_' . $type;
+		$post_even_type_property          = 'post_even_' . $type;
+		$post_odd_type_property           = 'post_odd_' . $type;
+
+		// Check for first post.
+		if ( isset( $this->$post_first_type_property ) && 0 === $current_post_index ) {
+			$return = $this->$post_first_type_property;
+		}
+
+		// Check for last post.
+		if ( isset( $this->$post_last_type_property ) && $total_posts_count === $current_post_index ) {
+			$return = $this->$post_last_type_property;
+		}
+
+		// Check for even post.
+		if ( isset( $this->$post_even_type_property ) && 0 === $current_post_index % 2 ) {
+			$return = $this->$post_even_type_property;
+		}
+
+		// Check for odd post.
+		if ( isset( $this->$post_odd_type_property ) && 0 !== $current_post_index % 2 ) {
+			$return = $this->$post_odd_type_property;
+		}
+
+		// Check for specific index.
+		if ( isset( $this->$current_post_index_type_property ) && ! empty( $this->$current_post_index_type_property ) ) {
+			$return = $this->$current_post_index_type_property;
+		}
+
+		// This is the one non-agnostic part of this function, so that we're always assured to get the posts structure.
+		if ( 'structure' === $type && empty( $return ) ) {
+			$return = $this->posts_structure;
+		}
+
+		// Add a filter for good measure.
+		$organism_name_post_type_filter = $this->name . '_post_' . $type;
+		$return                         = apply_filters( $organism_name_post_type_filter, $return, $current_post_index, $total_posts_count );
+		Atom::add_debug_entry( 'Filter', $organism_name_post_type_filter );
+
+		return $return;
 	}
 
 	protected function determine_piece_type( $piece_name, $piece_args_and_content ) {
@@ -529,10 +605,9 @@ class OrganismTemplate {
 		// Set up the atom class.
 		$atom_args['attributes']['class'][] = $namespaced_atom_name;
 
-		// Check for whether to apply filters, or not.
-		if ( true === $this->suppress_filters ) {
-			$atom_args['suppress_filters'] = true;
-		}
+		// Pass the Organism's filter setting to all atoms.
+		$atom_args['suppress_filters'] = $this->suppress_filters;
+
 
 		// If the class exists, then it's a named atom, and we need to
 		// run the get_markup method based on the namespaced atom name.
