@@ -32,6 +32,24 @@ class AtomTemplate {
 			$this->post_object = get_post();
 		}
 
+		// Ensures that the 'class' attribute is set if it wasn't passed in with attributes.
+		if ( ! isset( $this->attributes['class'] ) ) {
+			$this->attributes['class'] = array();
+		}
+
+		// Add the Atom name as a class
+		$this->attributes['class'][] = $this->name;
+
+		if ( ! empty( $data['class'] ) ) {
+
+			$classes_arr = Utility::parse_classes_as_array( $data['class'] );
+
+			if ( ! empty( $classes_arr ) ) {
+				$this->attributes['class'] = array_merge( $this->attributes['class'], $classes_arr );
+			}
+		}
+		unset( $this->class );
+
 		// Filter the Atom properties.
 		$atom_structure_filter = $this->name . '_properties_filter';
 		apply_filters( $atom_structure_filter, $this, $data );
