@@ -20,8 +20,8 @@ class PostAuthor extends AtomTemplate {
 		if ( '' == $this->name ) {
 			$this->name = 'post-author';
 		}
-		if ( isset( $data['post'] ) ) {
-			$author_id = $data['post']->post_author;
+		if ( isset( $this->post_object ) ) {
+			$author_id = $this->post_object->post_author;
 		}
 		$this->tag = isset( $data['tag'] ) ? $data['tag'] : 'p';
 
