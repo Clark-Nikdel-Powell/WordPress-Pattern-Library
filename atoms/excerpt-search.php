@@ -54,7 +54,7 @@ class ExcerptSearch extends Excerpt {
 		// If our projected length is longer than the content string, then we don't need an ellipsis afterward,
 		// and the length of the substr needs to be adjusted.
 		if ( ( $start + $this->chars_total ) > strlen( $content ) ) {
-			$length = strlen( $content ) - $key_position;
+			$length = strlen( $content ) - $start;
 			$after  = '';
 		}
 
@@ -64,7 +64,7 @@ class ExcerptSearch extends Excerpt {
 		// Find matches for the search term.
 		preg_match_all( "/$key+/i", $search_excerpt_raw, $matches );
 
-		$search_excerpt_highlights = '';
+		$search_excerpt_highlights = $search_excerpt_raw;
 
 		// If we have matches (we should), add a span to each match for special styles.
 		if ( is_array( $matches[0] ) && count( $matches[0] ) >= 1 ) {
