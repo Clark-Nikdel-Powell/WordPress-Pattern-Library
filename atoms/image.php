@@ -10,9 +10,9 @@ namespace CNP;
  */
 class Image extends AtomTemplate {
 
-	private $attachment_id;
-	private $image_size;
-	private $icon;
+	public $attachment_id;
+	public $image_size;
+	public $icon;
 
 	public function __construct( $data ) {
 
