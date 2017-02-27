@@ -1,7 +1,7 @@
 <?php
 namespace CNP;
 
-class BackgroundVideo extends AtomTemplate {
+class BackgroundVideoVide extends AtomTemplate {
 
 	private $vide_bg;
 	private $vide_options;
