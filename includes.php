@@ -23,6 +23,7 @@ $atoms_dir = 'atoms/';
 
 include_once( $atoms_dir . 'link.php' );
 include_once( $atoms_dir . 'post-link.php' );
+include_once( $atoms_dir . 'post-parent-link.php' );
 include_once( $atoms_dir . 'front-page-link.php' );
 include_once( $atoms_dir . 'site-title-front-page-link.php' );
 include_once( $atoms_dir . 'posts-page-link.php' );
