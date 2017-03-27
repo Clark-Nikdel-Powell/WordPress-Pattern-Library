@@ -52,7 +52,6 @@ include_once( $atoms_dir . 'menu.php' );
 include_once( $atoms_dir . 'image.php' );
 include_once( $atoms_dir . 'image-background.php' );
 include_once( $atoms_dir . 'content-source-link.php' );
-include_once( $atoms_dir . 'background-video.php' );
 include_once( $atoms_dir . 'post-term-link-single.php' );
 include_once( $atoms_dir . 'post-term-single.php' );
 include_once( $atoms_dir . 'comment-number.php' );
@@ -64,6 +63,7 @@ include_once( $atoms_dir . 'comment-number.php' );
 
 $organisms_dir = 'organisms/';
 
+include_once( $organisms_dir . 'background-video.php' );
 include_once( $organisms_dir . 'post-list.php' );
 include_once( $organisms_dir . 'event-list.php' );
 include_once( $organisms_dir . 'subnav.php' );
