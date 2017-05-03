@@ -61,15 +61,19 @@ class ExcerptSearch extends Excerpt {
 		// Get the part of the content that we'll use for the SearchExcerpt
 		$search_excerpt_raw = substr( $content, $start, $length );
 
-		// Find matches for the search term.
-		preg_match_all( "/$key+/i", $search_excerpt_raw, $matches );
-
 		$search_excerpt_highlights = $search_excerpt_raw;
 
-		// If we have matches (we should), add a span to each match for special styles.
-		if ( is_array( $matches[0] ) && count( $matches[0] ) >= 1 ) {
-			foreach ( $matches[0] as $match ) {
-				$search_excerpt_highlights = str_replace( $match, '<strong class="highlighted">' . $match . '</strong>', $search_excerpt_raw );
+		// Don't try to find matches if somebody is searching with an empty key.
+		if ( '' !== $key ) {
+
+			// Find matches for the search term.
+			preg_match_all( "/$key+/i", $search_excerpt_raw, $matches );
+
+			// If we have matches (we should), add a span to each match for special styles.
+			if ( is_array( $matches[0] ) && count( $matches[0] ) >= 1 ) {
+				foreach ( $matches[0] as $match ) {
+					$search_excerpt_highlights = str_replace( $match, '<strong class="highlighted">' . $match . '</strong>', $search_excerpt_raw );
+				}
 			}
 		}
 
@@ -77,6 +81,5 @@ class ExcerptSearch extends Excerpt {
 		$search_excerpt = $before . $search_excerpt_highlights . $after;
 
 		$this->content = $search_excerpt;
-
 	}
 }
