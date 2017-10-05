@@ -1,4 +1,5 @@
 <?php
+
 namespace CNP;
 
 /**
@@ -27,7 +28,7 @@ class Image extends AtomTemplate {
 		// Convert any classes to a string. We do this because the $attr variable of wp_get_attachment_image is set
 		// to take a single-dimensional array, not a multi-dimensional array.
 		if ( isset( $this->attributes['class'] ) && is_array( $this->attributes['class'] ) && ! empty( $this->attributes['class'] ) ) {
-			$this->attributes['class'] = implode( ' ', $this->attributes['class'] );
+			$this->attributes['class'] = implode( ' ', array_unique( $this->attributes['class'] ) );
 		}
 
 		// Set up attachment ID
