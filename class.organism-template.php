@@ -39,7 +39,7 @@ class OrganismTemplate {
 
 		$this->tag_type = 'split';
 
-		$this->attributes            = isset( $data['attributes'] ) ? $data['attributes'] : '';
+		$this->attributes            = isset( $data['attributes'] ) ? $data['attributes'] : array();
 		$this->attribute_quote_style = isset( $data['attribute_quote_style'] ) ? $data['attribute_quote_style'] : '"';
 
 		// Hide is used mostly for ACF integrations, so that we can turn off a layout without deleting it.
